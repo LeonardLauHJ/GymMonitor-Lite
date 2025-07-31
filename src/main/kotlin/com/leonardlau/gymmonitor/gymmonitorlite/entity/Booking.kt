@@ -30,8 +30,8 @@ data class Booking(
     val member: User,
 
     @Column(name = "booked_at", nullable = false)
-    val bookedAt: Instant = Instant.now() // Automatically assigns the current date
+    val bookedAt: Instant = Instant.now(), // Automatically assigns the current date
 
     @Column(nullable = false)
-    val status: String,  // e.g., "BOOKED", "CANCELLED", "COMPLETED"
+    val status: String  // e.g., "BOOKED", "CANCELLED", "COMPLETED"
 )
