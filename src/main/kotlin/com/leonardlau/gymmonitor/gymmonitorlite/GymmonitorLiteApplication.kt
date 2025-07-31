@@ -1,4 +1,4 @@
-package com.leonardlau.gymmonitor.gymmonitor_lite
+package com.leonardlau.gymmonitor.gymmonitorlite
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
