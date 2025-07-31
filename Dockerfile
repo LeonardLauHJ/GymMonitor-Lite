@@ -17,4 +17,4 @@ RUN ./gradlew clean build -x test
 EXPOSE 8080
 
 # Run the generated JAR file
-CMD ["sh", "-c", "java -jar ./build/libs/*.jar"]
+CMD ["java", "-jar", "./build/libs/gymmonitor-lite-0.0.1-SNAPSHOT.jar"]
