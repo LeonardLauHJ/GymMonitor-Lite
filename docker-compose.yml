@@ -7,11 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080" 
-    environment:
-      # Environment variables should be loaded from a .env file in this directory
-      DB_URL: ${DB_URL}
-      PG_USER: ${PG_USER}
-      PG_PASSWORD: ${PG_PASSWORD}
+    env_file: # Loads all variables from .env
+      - .env
     depends_on:
       - db
   db:
