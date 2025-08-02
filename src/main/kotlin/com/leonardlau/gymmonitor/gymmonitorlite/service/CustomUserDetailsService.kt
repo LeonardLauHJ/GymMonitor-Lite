@@ -31,7 +31,7 @@ class CustomUserDetailsService(
 		userRepo.findByEmail(email)?.let { user ->
 			// Build a Spring Security User object using the found user's details
             org.springframework.security.core.userdetails.User
-                .withUsername(user.email)
+                .withUsername(user.email) // Set the username as the email
                 .password(user.passwordHash)
                 .roles(user.role)
                 .build()

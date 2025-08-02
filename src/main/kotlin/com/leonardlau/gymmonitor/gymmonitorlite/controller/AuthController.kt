@@ -6,8 +6,11 @@ import com.leonardlau.gymmonitor.gymmonitorlite.entity.User
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.ClubRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.MembershipPlanRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.UserRepository
+import com.leonardlau.gymmonitor.gymmonitorlite.security.JwtUtil
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
@@ -21,6 +24,8 @@ import java.time.Instant
  * @property clubRepository Repository for accessing club data
  * @property membershipPlanRepository Repository for accessing membership plan data
  * @property passwordEncoder Encodes passwords securely before saving to the database
+ * @property authenticationManager Authenticates login credentials
+ * @property jwtUtil Utility for generating and validating JWT tokens
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -29,6 +34,8 @@ class AuthController(
     private val clubRepository: ClubRepository,
     private val membershipPlanRepository: MembershipPlanRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val authenticationManager: AuthenticationManager,
+    private val jwtUtil: JwtUtil
 ) {
 
     /**
@@ -76,8 +83,37 @@ class AuthController(
         return ResponseEntity.ok(mapOf("message" to "User registered successfully"))
     }
 
+    /**
+     * Authenticates user with email and password, returning JWT token if successful.
+     *
+     * @param request LoginDto containing email and password
+     * @return HTTP 200 with JWT token or HTTP 401 if authentication fails
+     */
     @PostMapping("/login")
-    fun login(): ResponseEntity<String> {
-        return ResponseEntity.ok("Login endpoint hit")
+    fun login(@Valid @RequestBody request: LoginDto): ResponseEntity<Any> {
+        return try {
+            // Try to authenticate the user using the provided email and password
+            val auth = authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(request.email, request.password)
+            )
+
+            // Get the user details from the authentication result
+            val userDetails = auth.principal as org.springframework.security.core.userdetails.User
+
+            // Get the user with the matching email (saved in userDetails as username) from the database
+            val user = userRepository.findByEmail(userDetails.username)
+                ?: return ResponseEntity.status(401).body(mapOf("error" to "User not found"))
+
+            // Generate JWT token for authenticated user
+            val token = jwtUtil.generateToken(user)
+
+            // If authentication succeeded and user is found, return a 200 OK with the JWT token in the response body.
+            // This token will be used to authenticate the user in future requests
+            ResponseEntity.ok(mapOf("token" to token))
+
+        } catch (ex: org.springframework.security.core.AuthenticationException) {
+            // Authentication failed due to bad credentials
+            ResponseEntity.status(401).body(mapOf("error" to "Invalid email or password"))
+        }
     }
 }
