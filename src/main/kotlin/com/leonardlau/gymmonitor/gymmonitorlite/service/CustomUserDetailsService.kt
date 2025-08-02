@@ -33,7 +33,7 @@ class CustomUserDetailsService(
             org.springframework.security.core.userdetails.User
                 .withUsername(user.email) // Set the username as the email
                 .password(user.passwordHash)
-                .roles(user.role)
+                .roles(user.role) // Assigns the user's role as an authority (e.g. "MEMBER" becomes "ROLE_MEMBER")
                 .build()
         } ?: throw UsernameNotFoundException("User not found") // Throw exception if user is not found
 }
