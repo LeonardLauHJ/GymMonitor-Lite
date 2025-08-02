@@ -40,3 +40,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+## SQLTools session script ##
+gymmonitor-lite.session.sql
