@@ -14,7 +14,7 @@ import java.time.Instant
  * @property email Email address for login.
  * @property passwordHash Hashed password for authentication.
  * @property dateJoined When the user joined the club.
- * @property balanceCents Amount owed by the user in cents.
+ * @property centsOwed Amount the users owes their club in cents.
  */
 @Entity
 @Table(name = "users")
@@ -51,6 +51,6 @@ data class User(
     @Column(name = "date_joined", nullable = false)
     val dateJoined: Instant = Instant.now(), // Automatically assigns the current date
 
-    @Column(name = "balance_cents", nullable = false)
-    val balanceCents: Int = 0 // Defaults to 0
+    @Column(name = "cents_owed", nullable = false)
+    val centsOwed: Int = 0 // Defaults to 0
 )

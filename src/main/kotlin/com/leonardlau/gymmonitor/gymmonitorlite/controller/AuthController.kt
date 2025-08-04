@@ -73,7 +73,7 @@ class AuthController(
             email = request.email,
             passwordHash = passwordEncoder.encode(request.password), // Hash the password for security
             dateJoined = Instant.now(), // Set 
-            balanceCents = 0
+            centsOwed = 0
         )
 
         // Save the new user to the database
