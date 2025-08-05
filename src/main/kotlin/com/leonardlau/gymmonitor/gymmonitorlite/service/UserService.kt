@@ -1,0 +1,77 @@
+package com.leonardlau.gymmonitor.gymmonitorlite.service
+
+import com.leonardlau.gymmonitor.gymmonitorlite.entity.User
+import com.leonardlau.gymmonitor.gymmonitorlite.repository.BookingRepository
+import com.leonardlau.gymmonitor.gymmonitorlite.repository.UserRepository
+import com.leonardlau.gymmonitor.gymmonitorlite.repository.VisitRepository
+import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+
+/**
+ * Service class for user-related business logic.
+ *
+ * @property userRepository Repository for User entities.
+ * @property bookingRepository Repository for Booking entities.
+ * @property visitRepository Repository for Visit entities.
+ */
+@Service
+class UserService(
+    private val userRepository: UserRepository,
+    private val bookingRepository: BookingRepository,
+    private val visitRepository: VisitRepository
+) {
+
+    /**
+     * Finds a User entity by their email address.
+     *
+     * @param email Email of the user.
+     * @return The User entity or null if not found.
+     */
+    fun findByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
+    }
+
+    /**
+     * Retrieves all bookings made by the user.
+     * 
+     * @param user The user to retrieve bookings for.
+     * @return List of the user's bookings.
+     */
+    fun getAllBookings(user: User) = bookingRepository.findByMember(user)
+
+    /**
+     * Retrieves the upcoming bookings for a user.
+     * Only bookings with status "BOOKED" and gym class start time after now are returned.
+     *
+     * @param user The user to retrieve bookings for.
+     * @return List of upcoming bookings.
+     */
+    fun getUpcomingBookings(user: User) =
+        bookingRepository.findByMemberAndStatusAndGymClass_StartTimeAfter(user, "BOOKED", LocalDateTime.now())
+
+    /**
+     * Counts the total visits a user has made to any club.
+     *
+     * @param user The user to count visits for.
+     * @return The number of visits.
+     */
+    fun getTotalVisits(user: User): Long {
+        return visitRepository.countByMember(user)
+    }
+
+    /**
+     * Retrieves the membership plan assigned to the user.
+     *
+     * @param user The user to retrieve the membership plan for.
+     * @return The membership plan or null if none assigned.
+     */
+    fun getMembershipPlan(user: User) = user.membershipPlan
+
+    /**
+     * Retrieves the current number of cents owed by the user to their club.
+     *
+     * @param user The user to retrieve the amount for.
+     * @return The number of cents owed by the user to their club.
+     */
+    fun getCentsOwed(user: User) = user.centsOwed
+}
