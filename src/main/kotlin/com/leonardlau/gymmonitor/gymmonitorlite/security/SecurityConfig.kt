@@ -41,8 +41,15 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers("/api/auth/**").permitAll() // Allow unauthenticated access to auth endpoints (e.g. /login, /signup)
-                    .anyRequest().authenticated() // Authentication required for any other requests
+                auth
+                    // Auth routes (e.g. /login, /signup) are accessible to everyone
+                    .requestMatchers("/api/auth/**").permitAll()
+                    // Member-only routes
+                    .requestMatchers("/api/test-member", "/api/member/**").hasRole("MEMBER")
+                    // Staff-only routes
+                    .requestMatchers("/api/test-staff", "/api/staff/**").hasRole("STAFF")
+                    // Authentication required for any other requests
+                    .anyRequest().authenticated()
             }
             .sessionManagement { 
                 // Tell Spring Security not to create or use HTTP sessions (as JWT tokens will be used instead)
