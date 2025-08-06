@@ -58,7 +58,8 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 (3, 1, 'HIIT Express', 'Quick high intensity workout', NOW() - INTERVAL '22 days 12 hours', NOW() - INTERVAL '22 days 12 hours' + INTERVAL '30 minutes', 15),
 (1, 1, 'Pilates Stretch', 'Full body stretch pilates', NOW() - INTERVAL '21 days 15 hours', NOW() - INTERVAL '21 days 16 hours', 10),
 (2, 2, 'Spin Sprint', 'Sprint intervals', NOW() - INTERVAL '20 days 07 hours', NOW() - INTERVAL '20 days 08 hours', 12),
-(2, 2, 'Strength Training', 'Full body strength training', NOW() + INTERVAL '2 days 04 hours', NOW() + INTERVAL '2 days 05 hours', 5);
+(2, 2, 'Strength Training', 'Full body strength training', NOW() + INTERVAL '2 days 04 hours', NOW() + INTERVAL '2 days 05 hours', 5),
+(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '3 days 03 hours 15 minutes', NOW() + INTERVAL '3 days 04 hours', 10);
 
 -- Bookings for ActiveGymGoer (user_id = 3)
 INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
@@ -73,7 +74,8 @@ INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
 (9, 3, NOW() - INTERVAL '23 days', 'CANCELLED'),
 (10, 3, NOW() - INTERVAL '22 days', 'COMPLETED'),
 (11, 3, NOW() - INTERVAL '21 days', 'COMPLETED'),
-(12, 3, NOW() - INTERVAL '1 days', 'BOOKED');
+(12, 3, NOW() - INTERVAL '1 days', 'BOOKED'),
+(13, 3, NOW() - INTERVAL '1 days', 'BOOKED');
 
 -- Visits for ActiveGymGoer (user_id = 3)
 INSERT INTO visits (member_id, club_id, scanned_at) VALUES
@@ -105,8 +107,8 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 (2, 2, 'MaxCapacityClass', 'This class does not have any more room to book', NOW() + INTERVAL '1 day 08 hours', NOW() + INTERVAL '1 day 09 hours', 1);
 
 INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
-(13, 5, NOW() - INTERVAL '1 day', 'BOOKED'),
-(14, 6, NOW() - INTERVAL '1 hour', 'BOOKED');
+(14, 5, NOW() - INTERVAL '1 day', 'BOOKED'),
+(15, 6, NOW() - INTERVAL '1 hour', 'BOOKED');
 
 -- Visits for BusyBee for a past visit
 INSERT INTO visits (member_id, club_id, scanned_at) VALUES
