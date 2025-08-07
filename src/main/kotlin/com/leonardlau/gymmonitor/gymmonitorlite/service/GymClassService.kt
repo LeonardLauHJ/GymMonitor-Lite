@@ -21,6 +21,16 @@ class GymClassService(
 ) {
 
     /**
+     * Retrieves a gym class by its ID.
+     *
+     * @param id The ID of the gym class.
+     * @return The GymClass entity, or null if not found.
+     */
+    fun getClassById(id: Int): GymClass? {
+        return gymClassRepository.findById(id).orElse(null)
+    }
+
+    /**
      * Retrieves all gym classes for a specific club on a given date.
      *
      * @param clubId ID of the club.
