@@ -113,3 +113,11 @@ INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
 -- Visits for BusyBee for a past visit
 INSERT INTO visits (member_id, club_id, scanned_at) VALUES
 (5, 1, NOW() - INTERVAL '3 days 10 hours');
+
+
+INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
+(1, 1, 'New Year Yoga', 'Start 2050 with calm and focus', '2050-01-01 08:00:00', '2050-01-01 09:00:00', 15),
+(2, 2, 'NYE HIIT Blast', 'High intensity training to kick off the year', '2050-01-01 10:00:00', '2050-01-01 11:00:00', 20),
+(3, 1, 'New Year Zumba', 'Celebrate with fun dance cardio', '2050-01-01 14:00:00', '2050-01-01 15:00:00', 25),
+(1, 2, 'Midday Pilates', 'Core strengthening Pilates session', '2050-01-01 12:00:00', '2050-01-01 13:00:00', 20),
+(2, 1, 'Evening Spin', 'Indoor cycling workout', '2050-01-01 18:30:00', '2050-01-01 19:15:00', 18);
