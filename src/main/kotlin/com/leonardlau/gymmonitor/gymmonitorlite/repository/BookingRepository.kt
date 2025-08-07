@@ -27,4 +27,13 @@ interface BookingRepository : JpaRepository<Booking, Int> {
     fun findByMemberAndStatusAndGymClass_StartTimeAfter(
         member: User, status: String, startTime: LocalDateTime
     ): List<Booking>
+
+    /**
+     * Counts how many bookings exist for a given gym class with a specific status.
+     *
+     * @param gymClassId The ID of the gym class.
+     * @param status The status of the booking (e.g., "CONFIRMED", "CANCELLED").
+     * @return The number of bookings that match the given class ID and status.
+     */
+    fun countByGymClassIdAndStatus(gymClassId: Int, status: String): Int
 }
