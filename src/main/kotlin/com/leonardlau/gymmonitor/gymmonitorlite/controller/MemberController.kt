@@ -99,6 +99,7 @@ class MemberController(
             val durationMinutes = java.time.Duration.between(gymClass.startTime, gymClass.endTime).toMinutes()
             TimetableEntryDto(
                 className = gymClass.name,
+                instructorName = gymClass.staff.name,
                 locationName = gymClass.location.name,
                 startTime = gymClass.startTime,
                 durationMinutes = durationMinutes,
