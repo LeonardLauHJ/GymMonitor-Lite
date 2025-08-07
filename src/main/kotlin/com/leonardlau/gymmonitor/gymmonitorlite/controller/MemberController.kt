@@ -1,12 +1,17 @@
 package com.leonardlau.gymmonitor.gymmonitorlite.controller
 
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.BookingSummaryDto
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.TimetableEntryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.service.UserService
+import com.leonardlau.gymmonitor.gymmonitorlite.service.GymClassService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -18,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/member")
 class MemberController(
-    private val userService: UserService
+    private val userService: UserService,
+    private val gymClassService: GymClassService
 ) {
 
     /**
@@ -29,6 +35,7 @@ class MemberController(
      */
     @GetMapping("/dashboard")
     fun viewDashboard(@AuthenticationPrincipal userDetails: UserDetails): ResponseEntity<Any> {
+        // Get the currently authenticated user, return a 404 error if not found
         val user = userService.findByEmail(userDetails.username)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))
 
@@ -49,5 +56,57 @@ class MemberController(
         )
 
         return ResponseEntity.ok(response)
+    }
+
+    /**
+     * Returns the timetable of gym classes at the authenticated member's club.
+     *
+     * If a date is provided in the query (/timetable?date=YYYY-MM-DD), only classes on that date will be returned.
+     * Otherwise, all upcoming classes at the club will be shown.
+     *
+     * @param userDetails The authenticated user's details, used to identify their club.
+     * @param date (Optional) The date to filter classes by. Format: YYYY-MM-DD.
+     * @return A list of timetable entries showing class name, location, start time, duration, bookings, and capacity.
+     */
+    @GetMapping("/timetable")
+    fun viewTimetable(
+        @AuthenticationPrincipal userDetails: UserDetails,
+        @RequestParam(required = false) date: String? = null // Date is optional
+    ): ResponseEntity<Any> {
+        // Get the currently authenticated user, return a 404 error if not found
+        val user = userService.findByEmail(userDetails.username)
+            ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))
+        // Get the club which the user belongs to
+        val clubId = user.club.id
+        // If a date was given as a parameter, get a list of all gym classes at that club on the given date
+        val gymClasses = if (date != null) {
+            // Attempt to parse the given date (should be in format YYYY-MM-DD) into a LocalDate object.
+            val parsedDate = try {
+                LocalDate.parse(date)
+            } catch (e: DateTimeParseException) {
+                // If the given date can't be parsed (invalid format), return an error
+                return ResponseEntity.badRequest().body(mapOf("error" to "Invalid date format. Use YYYY-MM-DD"))
+            }
+            gymClassService.getClassesForDate(clubId, parsedDate)
+        } else {
+            // If no date was given, get a list of all upcoming classes at the club
+            gymClassService.getAllUpcomingClassesForClub(clubId)
+        }
+
+        // Convert the list of found gym classes into display format (TimetableEntryDto)
+        val timetableEntries = gymClasses.map { gymClass ->
+            val currentBookings = gymClassService.getcurrentBookingsForClass(gymClass.id)
+            val durationMinutes = java.time.Duration.between(gymClass.startTime, gymClass.endTime).toMinutes()
+            TimetableEntryDto(
+                className = gymClass.name,
+                locationName = gymClass.location.name,
+                startTime = gymClass.startTime,
+                durationMinutes = durationMinutes,
+                currentBookings = currentBookings,
+                maxCapacity = gymClass.maxCapacity
+            )
+        }
+
+        return ResponseEntity.ok(timetableEntries)
     }
 }
