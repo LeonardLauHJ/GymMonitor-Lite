@@ -36,13 +36,14 @@ class GymClassService(
     }
 
     /**
-     * Retrieves all gym classes for a specific club, regardless of date.
+     * Retrieves all upcoming gym classes for a specific club.
      *
      * @param clubId ID of the club.
-     * @return List of all GymClass entities for that club.
+     * @return List of upcoming GymClass entities for that club.
      */
-    fun getAllClassesForClub(clubId: Int): List<GymClass> {
-        return gymClassRepository.findByLocation_Club_IdOrderByStartTimeAsc(clubId)
+    fun getAllUpcomingClassesForClub(clubId: Int): List<GymClass> {
+        val now = LocalDateTime.now()
+        return gymClassRepository.findByLocation_Club_IdAndStartTimeGreaterThanEqualOrderByStartTimeAsc(clubId, now)
     }
 
     /**
