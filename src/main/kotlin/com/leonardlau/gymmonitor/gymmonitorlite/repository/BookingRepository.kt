@@ -29,6 +29,15 @@ interface BookingRepository : JpaRepository<Booking, Int> {
     ): List<Booking>
 
     /**
+     * Counts how many users have booked the given class.
+     *
+     * @param gymClass The class to check.
+     * @return The number of current bookings for the class.
+     */
+    fun countByGymClass(gymClass: GymClass): Int
+
+
+    /**
      * Counts how many bookings exist for a given gym class with a specific status.
      *
      * @param gymClassId The ID of the gym class.
@@ -36,4 +45,28 @@ interface BookingRepository : JpaRepository<Booking, Int> {
      * @return The number of bookings that match the given class ID and status.
      */
     fun countByGymClassIdAndStatus(gymClassId: Int, status: String): Int
+
+    /**
+     * Counts how many classes the member has booked within the given time range.
+     *
+     * @param member The member to check.
+     * @param start The start of the time range.
+     * @param end The end of the time range.
+     * @return The number of bookings within the time range.
+     */
+    fun countByMemberAndGymClass_StartTimeBetween(
+        member: User,
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): Int
+
+    /**
+     * Checks if the given user has already booked the given class.
+     *
+     * @param member The user/member to check.
+     * @param gymClass The class to check.
+     * @return True if the member has already booked the class.
+     */
+    fun existsByMemberAndGymClass(member: User, gymClass: GymClass): Boolean
+
 }
