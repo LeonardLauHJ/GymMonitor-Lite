@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
+import java.time.LocalDate
 
 /**
  * Controller for authentication endpoints: signup and login.
@@ -64,6 +65,13 @@ class AuthController(
             return ResponseEntity.badRequest().body(mapOf("error" to "Membership plan does not belong to club"))
         }
 
+        // Calculate the initial next billing date based on the membership plan's billing period.
+        // If the user has no membership plan (e.g., staff), this will be null.
+        val initialBillingDate: LocalDate? = membershipPlan?.let { // var?.let will only run the body if var is not null
+            // Take the current date and add the number of days from the chosen plan's billing period
+            LocalDate.now().plusDays(it.billingPeriodDays.toLong()) // 'it' refers to the membershipPlan instance
+        }
+
         // Create a new user entity with the provided information
         val user = User(
             club = club,
@@ -72,8 +80,9 @@ class AuthController(
             role = "MEMBER", // Only member accounts can be created with signup
             email = request.email,
             passwordHash = passwordEncoder.encode(request.password), // Hash the password for security
-            dateJoined = Instant.now(), // Set 
-            centsOwed = 0
+            dateJoined = Instant.now(),
+            centsOwed = 0,
+            nextBillingDate = initialBillingDate
         )
 
         // Save the new user to the database
