@@ -33,17 +33,17 @@ INSERT INTO membership_plans (club_id, name, billing_period_days, classes_per_we
 -- All default users have the password: password
 
 -- Users Club 1: Staff and Members
-INSERT INTO users (club_id, membership_plan_id, name, role, email, password_hash, date_joined, cents_owed) VALUES
-(1, NULL, 'Alice Staff', 'STAFF', 'alice.staff@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '30 days', 0),
-(1, NULL, 'Bob Staff', 'STAFF', 'bob.staff@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '25 days', 0),
-(1, 1, 'ActiveGymGoer', 'MEMBER', 'active@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '60 days', 3000),
-(1, 2, 'CasualMember', 'MEMBER', 'casual@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '15 days', 1000),
-(1, 3, 'BusyBee', 'MEMBER', 'busybee@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '10 days', 0);
+INSERT INTO users (club_id, membership_plan_id, name, role, email, password_hash, date_joined, cents_owed, next_billing_date) VALUES
+(1, NULL, 'Alice Staff', 'STAFF', 'alice.staff@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '30 days', 0, NULL),
+(1, NULL, 'Bob Staff', 'STAFF', 'bob.staff@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '25 days', 0, NULL),
+(1, 1, 'ActiveGymGoer', 'MEMBER', 'active@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '60 days', 3000, NOW() + INTERVAL '1 days'),
+(1, 2, 'CasualMember', 'MEMBER', 'casual@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '15 days', 1000, NOW() + INTERVAL '4 days'),
+(1, 3, 'BusyBee', 'MEMBER', 'busybee@dtf.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '10 days', 0, NOW() + INTERVAL '6 days');
 
 -- Users Club 2
-INSERT INTO users (club_id, membership_plan_id, name, role, email, password_hash, date_joined, cents_owed) VALUES
-(2, NULL, 'Grace Staff', 'STAFF', 'grace.staff@utg.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '30 days', 0),
-(2, NULL, 'OtherMember', 'MEMBER', 'other@utg.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '25 days', 0);
+INSERT INTO users (club_id, membership_plan_id, name, role, email, password_hash, date_joined, cents_owed, next_billing_date) VALUES
+(2, NULL, 'Grace Staff', 'STAFF', 'grace.staff@utg.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '30 days', 0, NULL),
+(2, NULL, 'OtherMember', 'MEMBER', 'other@utg.com', '$2a$10$.C/BaQSo7AgNENmMiDRSA.VmWM9q18e4GGyasdpFtHi0sfcXRcVyG', NOW() - INTERVAL '25 days', 0, NOW() + INTERVAL '3 days');
 
 -- Gym Classes for ActiveGymGoer
 INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES

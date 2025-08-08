@@ -2,6 +2,7 @@ package com.leonardlau.gymmonitor.gymmonitorlite.entity
 
 import jakarta.persistence.*
 import java.time.Instant
+import java.time.LocalDate
 
 /**
  * Represents a user account, which can be either a member or a staff account.
@@ -15,6 +16,7 @@ import java.time.Instant
  * @property passwordHash Hashed password for authentication.
  * @property dateJoined When the user joined the club.
  * @property centsOwed Amount the users owes their club in cents.
+ * @property nextBillingDate Date when user will next be billed for their membership.
  */
 @Entity
 @Table(name = "users")
@@ -52,5 +54,8 @@ data class User(
     val dateJoined: Instant = Instant.now(), // Automatically assigns the current date
 
     @Column(name = "cents_owed", nullable = false)
-    val centsOwed: Int = 0 // Defaults to 0
+    val centsOwed: Int = 0, // Defaults to 0
+
+    @Column(name = "next_billing_date")
+    var nextBillingDate: LocalDate? = null // Required for members, nullable for staff
 )
