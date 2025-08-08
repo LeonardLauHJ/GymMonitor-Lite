@@ -10,6 +10,9 @@ sealed class BookingResult {
     /** Booking was successful. */
     object Success : BookingResult()
 
+    /** The class start date has already passed */
+    object ClassInPast : BookingResult()
+
     /** The user has already booked this class. */
     object AlreadyBooked : BookingResult()
 
