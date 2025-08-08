@@ -5,6 +5,7 @@ import com.leonardlau.gymmonitor.gymmonitorlite.repository.BookingRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.UserRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.VisitRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 /**
@@ -74,4 +75,38 @@ class UserService(
      * @return The number of cents owed by the user to their club.
      */
     fun getCentsOwed(user: User) = user.centsOwed
+
+    /**
+     * Charges all members whose `nextBillingDate` is today or earlier.
+     *
+     * This method should be called daily by a scheduler.
+     * For each user with a non-null `nextBillingDate` that is due:
+     * - Adds their membership plan's cost to their `centsOwed`
+     * - Updates their `nextBillingDate` by adding the billing period
+     */
+    fun chargeDueMembers() {
+        // Filter users with a billing date that is due or past
+        val membersToCharge = userRepository.findAll().filter { user ->
+            user.nextBillingDate != null &&
+            user.membershipPlan != null &&
+            !(user.nextBillingDate!!.isAfter(LocalDate.now())) // the !! asserts that nextBillingDate is not null (safe as we've already checked)
+        }
+
+        // Go through each member that needs to be charged
+        for (user in membersToCharge) {
+            val plan = user.membershipPlan!! // Safe to assert not null as all members should have a membershipPlan
+            val billingAmount = plan.priceCents
+            val billingPeriodDays = plan.billingPeriodDays
+
+            // Add the plan's cost to the amount the user owes
+            user.centsOwed += billingAmount
+
+            // Schedule the next billing date by adding the plan's number of days between payments to the current date
+            user.nextBillingDate = user.nextBillingDate!!.plusDays(billingPeriodDays.toLong())
+
+            // Save the updated user
+            userRepository.save(user)
+        }
+    }
+
 }
