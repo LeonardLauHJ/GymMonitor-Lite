@@ -19,6 +19,6 @@ sealed class BookingResult {
     /** The class with the given ID was not found. */
     object NotFound : BookingResult()
 
-    /** The user has reached their weekly booking limit. */
-    object TooManyThisWeek : BookingResult()
+    /** The user has already reached their weekly booking limit. */
+    object WeeklyBookingLimitReached : BookingResult()
 }

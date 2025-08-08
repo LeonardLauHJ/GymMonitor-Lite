@@ -2,6 +2,7 @@ package com.leonardlau.gymmonitor.gymmonitorlite.repository
 
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.Booking
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.User
+import com.leonardlau.gymmonitor.gymmonitorlite.entity.GymClass
 import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDateTime
 
