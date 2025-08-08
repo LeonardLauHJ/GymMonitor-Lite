@@ -21,7 +21,7 @@ INSERT INTO locations (club_id, name) VALUES
 
 -- Membership Plans for Club 1
 INSERT INTO membership_plans (club_id, name, billing_period_days, classes_per_week, price_cents, active) VALUES
-(1, '2 Classes per Week (Paid Weekly)', 7, 2, 3000, true),
+(1, '3 Classes per Week (Paid Weekly)', 7, 3, 3000, true),
 (1, '2 Classes per Week (Paid Fortnightly)', 14, 2, 6000, true),
 (1, '4 Classes per Week (Paid Weekly)', 7, 4, 5000, true);
 
@@ -58,8 +58,8 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 (3, 1, 'HIIT Express', 'Quick high intensity workout', NOW() - INTERVAL '22 days 12 hours', NOW() - INTERVAL '22 days 12 hours' + INTERVAL '30 minutes', 15),
 (1, 1, 'Pilates Stretch', 'Full body stretch pilates', NOW() - INTERVAL '21 days 15 hours', NOW() - INTERVAL '21 days 16 hours', 10),
 (2, 2, 'Spin Sprint', 'Sprint intervals', NOW() - INTERVAL '20 days 07 hours', NOW() - INTERVAL '20 days 08 hours', 12),
-(2, 2, 'Strength Training', 'Full body strength training', NOW() + INTERVAL '2 days 04 hours', NOW() + INTERVAL '2 days 05 hours', 5),
-(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '3 days 03 hours 15 minutes', NOW() + INTERVAL '3 days 04 hours', 10);
+(2, 2, 'Strength Training', 'Full body strength training', NOW() + INTERVAL '2 days 00 hours', NOW() + INTERVAL '2 days 01 hours', 5),
+(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 02 hours', 10);
 
 -- Bookings for ActiveGymGoer (user_id = 3)
 INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
@@ -114,10 +114,15 @@ INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
 INSERT INTO visits (member_id, club_id, scanned_at) VALUES
 (5, 1, NOW() - INTERVAL '3 days 10 hours');
 
-
+-- Classes for gym 1 to test timetable for specific day (all on 2050-01-01)
 INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
 (1, 1, 'New Year Yoga', 'Start 2050 with calm and focus', '2050-01-01 08:00:00', '2050-01-01 09:00:00', 15),
 (2, 2, 'NYE HIIT Blast', 'High intensity training to kick off the year', '2050-01-01 10:00:00', '2050-01-01 11:00:00', 20),
 (3, 1, 'New Year Zumba', 'Celebrate with fun dance cardio', '2050-01-01 14:00:00', '2050-01-01 15:00:00', 25),
 (1, 2, 'Midday Pilates', 'Core strengthening Pilates session', '2050-01-01 12:00:00', '2050-01-01 13:00:00', 20),
 (2, 1, 'Evening Spin', 'Indoor cycling workout', '2050-01-01 18:30:00', '2050-01-01 19:15:00', 18);
+
+-- Class that occurs on the same day as ActiveGymGoer's currently booked upcoming classes
+-- (to test the maximum weekly bookings limit error)
+INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
+(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '2 days 00 hours 15 minutes', NOW() + INTERVAL '2 days 01 hours', 10);
