@@ -4,6 +4,8 @@ import jakarta.persistence.*
 
 /**
  * Represents a membership plan available for users to choose when signing up to a club.
+ * (For simplicity, only recurring memberships are currently supported (members pay 
+ * automatically every x days))
  *
  * @property id Unique identifier for the membership plan.
  * @property club The club offering the plan.
