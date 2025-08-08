@@ -54,7 +54,7 @@ data class User(
     val dateJoined: Instant = Instant.now(), // Automatically assigns the current date
 
     @Column(name = "cents_owed", nullable = false)
-    val centsOwed: Int = 0, // Defaults to 0
+    var centsOwed: Int = 0, // Defaults to 0
 
     @Column(name = "next_billing_date")
     var nextBillingDate: LocalDate? = null // Required for members, nullable for staff
