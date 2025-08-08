@@ -45,9 +45,9 @@ class SecurityConfig(
                     // Auth routes (e.g. /login, /signup) are accessible to everyone
                     .requestMatchers("/api/auth/**").permitAll()
                     // Member-only routes
-                    .requestMatchers("/api/test-member", "/api/member/**").hasRole("MEMBER")
+                    .requestMatchers("/api/member/**").hasRole("MEMBER")
                     // Staff-only routes
-                    .requestMatchers("/api/test-staff", "/api/staff/**").hasRole("STAFF")
+                    .requestMatchers("/api/staff/**").hasRole("STAFF")
                     // Authentication required for any other requests
                     .anyRequest().authenticated()
             }
