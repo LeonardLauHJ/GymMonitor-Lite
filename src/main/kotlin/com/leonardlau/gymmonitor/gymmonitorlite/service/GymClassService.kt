@@ -1,9 +1,12 @@
 package com.leonardlau.gymmonitor.gymmonitorlite.service
 
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.GymClass
+import com.leonardlau.gymmonitor.gymmonitorlite.entity.User
+import com.leonardlau.gymmonitor.gymmonitorlite.entity.Booking
 import org.springframework.stereotype.Service
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.GymClassRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.BookingRepository
+import com.leonardlau.gymmonitor.gymmonitorlite.service.BookingResult
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -65,4 +68,80 @@ class GymClassService(
     fun getcurrentBookingsForClass(gymClassId: Int): Int {
         return bookingRepository.countByGymClassIdAndStatus(gymClassId, "BOOKED")
     }
+
+    /**
+     * Attempts to book a class for the given user.
+     *
+     * Booking is only allowed if:
+     * - The class exists
+     * - The class has not yet started
+     * - The user hasn't already booked the class
+     * - The class has not reached its max capacity
+     * - The user's membership plan allows more bookings this week
+     *
+     * @param classId ID of the gym class to book.
+     * @param user The member attempting to book.
+     * @return A BookingResult representing the outcome of the booking attempt.
+     */
+    fun bookClass(classId: Int, user: User): BookingResult {
+        // Get the gym class being booked, return the not found result if it cannot be found
+        val gymClass = gymClassRepository.findById(classId).orElse(null) ?: return BookingResult.NotFound
+
+        // Check that the class start time has not already passed
+        if (gymClass.startTime.isBefore(LocalDateTime.now())) {
+            return BookingResult.ClassInPast
+        }
+
+        // Check if user has already booked this class
+        if (bookingRepository.existsByMemberAndGymClass(user, gymClass)) {
+            return BookingResult.AlreadyBooked
+        }
+
+        // Check if class is full
+        val currentBookings = bookingRepository.countByGymClass(gymClass)
+        if (currentBookings >= gymClass.maxCapacity) {
+            return BookingResult.Full
+        }
+
+        // Check that this booking does not exceed the member's number of allowed
+        // classes per week
+        val plan = user.membershipPlan
+        if (plan != null) {
+            // To do this, we need to figure out what week the class is happening on,
+            // then check the number of classes the user has booked for that week, 
+            // and make sure that they are not already at their limit
+            
+            // Find the Monday (start) of the week for the class’s scheduled start date
+            val classWeekStart = gymClass.startTime
+                .toLocalDate()
+                .with(java.time.DayOfWeek.MONDAY) // Shift to Monday of that week
+                .atStartOfDay() // Set time to 00:00
+
+            // Calculate the end of that week, 7 days later
+            val classWeekEnd = classWeekStart.plusDays(7)
+
+            // Count how many classes the user has booked that start within the same week
+            val bookingsInThatWeek = bookingRepository.countByMemberAndGymClass_StartTimeBetween(
+                member = user,
+                start = classWeekStart,
+                end = classWeekEnd
+            )
+
+            // If the user has already reached their weekly class limit, block the booking
+            if (bookingsInThatWeek >= plan.classesPerWeek) {
+                return BookingResult.WeeklyBookingLimitReached
+            }
+        }
+
+        // If all checks have passed
+        // Save the booking to the database and return a success result
+        val booking = Booking(
+            gymClass = gymClass,
+            member = user,
+            status = "BOOKED"
+        )
+        bookingRepository.save(booking)
+        return BookingResult.Success
+    }
+
 }
