@@ -16,7 +16,7 @@ import java.time.LocalDate
 data class MembershipDetailsDto(
     val clubName: String,
     val dateJoined: Instant,
-    val totalVisits: Int,
+    val totalVisits: Long,
     val membershipPlanName: String?,
     val nextBillingDate: LocalDate?,
     val amountDue: String
