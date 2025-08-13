@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Controller for endpoints accessible by authenticated members.
- * Displays dashboard data including bookings, visits, and payment info.
+ * Controller for endpoints accessible by authenticated member users.
  * 
  * @property userService Service for retrieving user-related data.
+ * @property gymClassService Service for retrieving gym-class-related data.
  */
 @RestController
 @RequestMapping("/api/member")
