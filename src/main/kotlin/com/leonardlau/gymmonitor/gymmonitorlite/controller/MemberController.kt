@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.BookingSummaryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.TimetableEntryDto
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.MembershipDetailsDto
 import com.leonardlau.gymmonitor.gymmonitorlite.service.UserService
 import com.leonardlau.gymmonitor.gymmonitorlite.service.GymClassService
 import org.springframework.http.ResponseEntity
@@ -64,7 +65,7 @@ class MemberController(
      * If a date is provided in the query (/timetable?date=YYYY-MM-DD), only classes on that date will be returned.
      * Otherwise, all upcoming classes at the club will be shown.
      *
-     * @param userDetails The authenticated user's details, used to identify their club.
+     * @param userDetails Spring Security object containing the authenticated user's details (from JWT).
      * @param date (Optional) The date to filter classes by. Format: YYYY-MM-DD.
      * @return A list of timetable entries showing class name, location, start time, duration, bookings, and capacity.
      */
@@ -110,4 +111,36 @@ class MemberController(
 
         return ResponseEntity.ok(timetableEntries)
     }
+
+    /**
+     * Returns membership details for the authenticated member.
+     *
+     * This includes the club name, the date the member joined, total visits made,
+     * the name of the active membership plan (if any), the next billing date, and the
+     * total amount currently owed to the club.
+     *
+     * @param userDetails Spring Security object containing the authenticated user's details (from JWT).
+     * @return A response entity containing the member's membership details, or a 404 error if the user cannot be found.
+     */
+    @GetMapping("/membership")
+    fun viewMembership(@AuthenticationPrincipal userDetails: UserDetails): ResponseEntity<Any> {
+        // Get the currently authenticated user, return a 404 error if not found
+        val user = userService.findByEmail(userDetails.username)
+            ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))
+
+        // Get the user's number of total visits
+        val totalVisits = userService.getTotalVisits(user)
+
+        val membershipDetails = MembershipDetailsDto(
+            clubName = user.club.name,
+            dateJoined = user.dateJoined,
+            totalVisits = totalVisits,
+            membershipPlanName = user.membershipPlan?.name,
+            nextBillingDate = user.nextBillingDate,
+            amountDue = "$%.2f".format(userService.getCentsOwed(user) / 100.0) // Formats cents to dollar amount (e.g., 1234 -> $12.34)
+        )
+
+        return ResponseEntity.ok(membershipDetails)
+    }
+
 }
