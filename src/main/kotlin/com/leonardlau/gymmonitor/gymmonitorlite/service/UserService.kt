@@ -130,6 +130,6 @@ class UserService(
      * @param clubId The ID of the club to fetch members from.
      * @return The list of Users who are members of the club.
      */
-    fun getMembersByClubId(clubId: Long) = userRepository.findByClubIdAndRole(clubId, "MEMBER")
+    fun getMembersByClubId(clubId: Int) = userRepository.findByClubIdAndRole(clubId, "MEMBER")
 
 }

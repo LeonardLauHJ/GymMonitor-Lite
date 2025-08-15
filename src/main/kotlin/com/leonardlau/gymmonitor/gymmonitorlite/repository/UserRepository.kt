@@ -22,6 +22,6 @@ interface UserRepository : JpaRepository<User, Int> {
      * @param role The role to filter by (e.g., "MEMBER").
      * @return A list of Users matching the club and role criteria.
      */
-    fun findByClubIdAndRole(clubId: Long, role: String): List<User>
+    fun findByClubIdAndRole(clubId: Int, role: String): List<User>
 
 }
