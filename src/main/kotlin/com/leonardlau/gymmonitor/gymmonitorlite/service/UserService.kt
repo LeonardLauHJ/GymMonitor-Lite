@@ -1,6 +1,7 @@
 package com.leonardlau.gymmonitor.gymmonitorlite.service
 
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.User
+import com.leonardlau.gymmonitor.gymmonitorlite.entity.Visit
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.BookingRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.UserRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.VisitRepository
