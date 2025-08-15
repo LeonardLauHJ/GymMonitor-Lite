@@ -123,4 +123,12 @@ class UserService(
         visitRepository.save(visit)
     }
 
+    /**
+     * Retrieves all member users of the club with the given ID.
+     *
+     * @param clubId The ID of the club to fetch members from.
+     * @return The list of Users who are members of the club.
+     */
+    fun getMembersByClubId(clubId: Long) = userRepository.findByClubIdAndRole(clubId, "MEMBER")
+
 }

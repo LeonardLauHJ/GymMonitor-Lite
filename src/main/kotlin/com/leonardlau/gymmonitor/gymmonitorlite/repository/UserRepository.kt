@@ -14,4 +14,14 @@ interface UserRepository : JpaRepository<User, Int> {
      * @return The user registered with the given email, or null if no user has that email.
      */
     fun findByEmail(email: String): User?
+
+    /**
+     * Finds all users in a given club with a specific role.
+     *
+     * @param clubId The ID of the club.
+     * @param role The role to filter by (e.g., "MEMBER").
+     * @return A list of Users matching the club and role criteria.
+     */
+    fun findByClubIdAndRole(clubId: Long, role: String): List<User>
+
 }
