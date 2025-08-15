@@ -109,4 +109,18 @@ class UserService(
         }
     }
 
+    /**
+     * Records a visit for the given member to their club, at the current time.
+     *
+     * @param member The member who is scanning in to their club.
+     */
+    fun recordVisit(member: User) {
+        val visit = Visit(
+            member = member,
+            club = member.club
+            // the scannedAt column automatically assigns the current time
+        )
+        visitRepository.save(visit)
+    }
+
 }
