@@ -144,4 +144,32 @@ class GymClassService(
         return BookingResult.Success
     }
 
+    /**
+     * Retrieves all gym classes taught by a specific staff user on a given date.
+     *
+     * @param staffId ID of the instructor teaching the classes.
+     * @param date Date to retrieve classes for.
+     * @return List of GymClass entities taught by that instructor on the given date.
+     */
+    fun getClassesStaffTeachesOnDate(staffId: Int, date: LocalDate): List<GymClass> {
+        val startOfDay = date.atStartOfDay()
+        val endOfDay = date.atTime(LocalTime.MAX)
+        return gymClassRepository.findByStaff_IdAndStartTimeBetweenOrderByStartTimeAsc(
+            staffId, startOfDay, endOfDay
+        )
+    }
+
+    /**
+     * Retrieves all upcoming gym classes taught by a specific staff user.
+     *
+     * @param staffId ID of the instructor teaching the classes.
+     * @return List of upcoming GymClass entities taught by that instructor.
+     */
+    fun getAllUpcomingClassesStaffTeaches(staffId: Int): List<GymClass> {
+        val now = LocalDateTime.now()
+        return gymClassRepository.findByStaff_IdAndStartTimeGreaterThanEqualOrderByStartTimeAsc(
+            staffId, now
+        )
+    }
+
 }
