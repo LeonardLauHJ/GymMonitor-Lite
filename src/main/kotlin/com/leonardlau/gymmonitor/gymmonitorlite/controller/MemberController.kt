@@ -61,25 +61,28 @@ class MemberController(
     }
 
     /**
-     * Returns the timetable of gym classes at the authenticated member's club.
+     * Returns the timetable of gym classes happening at the authenticated member's club.
      *
      * If a date is provided in the query (/timetable?date=YYYY-MM-DD), only classes on that date will be returned.
      * Otherwise, all upcoming classes at the club will be shown.
      *
      * @param userDetails Spring Security object containing the authenticated user's details (from JWT).
      * @param date (Optional) The date to filter classes by. Format: YYYY-MM-DD.
-     * @return A list of timetable entries showing class name, location, start time, duration, bookings, and capacity.
+     * @return A list of timetable entries showing class name, instructor name, location, start time, duration, bookings, and capacity.
      */
     @GetMapping("/timetable")
-    fun viewTimetable(
+    fun viewClubTimetable(
         @AuthenticationPrincipal userDetails: UserDetails,
         @RequestParam(required = false) date: String? = null // Date is optional
     ): ResponseEntity<Any> {
+
         // Get the currently authenticated user, return a 404 error if not found
         val user = userService.findByEmail(userDetails.username)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))
+
         // Get the club which the user belongs to
         val clubId = user.club.id
+        
         // If a date was given as a parameter, get a list of all gym classes at that club on the given date
         val gymClasses = if (date != null) {
             // Attempt to parse the given date (should be in format YYYY-MM-DD) into a LocalDate object.
