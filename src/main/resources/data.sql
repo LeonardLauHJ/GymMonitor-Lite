@@ -125,4 +125,4 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 -- Class that occurs on the same day as ActiveGymGoer's currently booked upcoming classes
 -- (to test the maximum weekly bookings limit error)
 INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
-(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '2 days 00 hours 15 minutes', NOW() + INTERVAL '2 days 01 hours', 10);
+(3, 1, 'Light workout', 'A light workout to keep you in shape', NOW() + INTERVAL '2 days 00 hours 15 minutes', NOW() + INTERVAL '2 days 01 hours', 10);
