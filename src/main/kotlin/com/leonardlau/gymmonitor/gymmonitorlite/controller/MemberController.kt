@@ -75,7 +75,6 @@ class MemberController(
         @AuthenticationPrincipal userDetails: UserDetails,
         @RequestParam(required = false) date: String? = null // Date is optional
     ): ResponseEntity<Any> {
-
         // Get the currently authenticated user, return a 404 error if not found
         val user = userService.findByEmail(userDetails.username)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))

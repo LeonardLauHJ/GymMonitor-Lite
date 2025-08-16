@@ -33,4 +33,32 @@ interface GymClassRepository : JpaRepository<GymClass, Int> {
         clubId: Int,
         startTime: LocalDateTime
     ): List<GymClass>
+
+    /**
+     * Find all gym classes taught by a specific staff user between the given start and end times.
+     *
+     * @param instructorId The ID of the staff user teaching the class.
+     * @param start The start timestamp of the time range.
+     * @param end The end timestamp of the time range.
+     * @return A list of GymClass objects taught by the staff user that start within the given time range,
+     *         ordered by start time ascending.
+     */
+    fun findByStaff_IdAndStartTimeBetweenOrderByStartTimeAsc(
+        staffId: Int,
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): List<GymClass>
+
+    /**
+     * Find all upcoming classes taught by a specific staff user, ordered by their start time in ascending order.
+     *
+     * @param instructorId The ID of the staff user teaching the class.
+     * @param startTime Only include classes starting at or after this time.
+     * @return A list of GymClass objects taught by the staff user, ordered by start time ascending.
+     */
+    fun findByStaff_IdAndStartTimeGreaterThanEqualOrderByStartTimeAsc(
+        staffId: Int,
+        startTime: LocalDateTime
+    ): List<GymClass>
+
 }
