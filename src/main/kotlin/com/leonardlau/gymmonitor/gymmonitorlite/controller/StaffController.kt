@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffViewMemberSummaryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffScheduleEntryDto
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.CreateGymClassRequestDto
 import com.leonardlau.gymmonitor.gymmonitorlite.service.UserService
 import com.leonardlau.gymmonitor.gymmonitorlite.service.GymClassService
 import org.springframework.http.ResponseEntity
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -105,4 +107,43 @@ class StaffController(
 
         return ResponseEntity.ok(scheduleEntries)
     }
+
+    /**
+     * Creates a new gym class for the authenticated staff member.
+     *
+     * This endpoint allows a staff user to create a new gym class at one of the
+     * locations in their club. The staff member is automatically assigned as the
+     * instructor of the class.
+     *
+     * Example request JSON:
+     * {
+     *   "locationId": 2,
+     *   "name": "Evening Yoga",
+     *   "description": "Relaxing flow yoga session",
+     *   "startTime": "2025-08-20T18:00:00",
+     *   "endTime": "2025-08-20T19:00:00",
+     *   "maxCapacity": 20
+     * }
+     *
+     * @param userDetails Spring Security object containing the authenticated user's details (from JWT).
+     * @param request The request body containing the new class details, following the format of CreateGymClassRequestDto.
+     * @return The created gym class, or an error message if creation failed.
+     */
+    @PostMapping("/classes")
+    fun createClass(
+        @AuthenticationPrincipal userDetails: UserDetails,
+        @RequestBody request: CreateGymClassRequestDto // Request body, must follow the structure of CreateGymClassRequestDto.
+    ): ResponseEntity<Any> {
+        // NOTE: Currently no restrictions on classes you can create e.g. scheduling conflicts
+
+        // Get the currently authenticated staff user, return a 404 error if not found
+        val staffUser = userService.findByEmail(userDetails.username)
+            ?: return ResponseEntity.status(404).body(mapOf("error" to "Staff user not found"))
+
+        // Create the gym class and save it to the database
+        val gymClass = gymClassService.createClass(staffUser, request)
+
+        return ResponseEntity.ok(gymClass)
+    }
+
 }
