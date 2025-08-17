@@ -1,10 +1,12 @@
 package com.leonardlau.gymmonitor.gymmonitorlite.service
 
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.CreateGymClassRequestDto
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.GymClass
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.User
 import com.leonardlau.gymmonitor.gymmonitorlite.entity.Booking
 import org.springframework.stereotype.Service
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.GymClassRepository
+import com.leonardlau.gymmonitor.gymmonitorlite.repository.LocationRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.repository.BookingRepository
 import com.leonardlau.gymmonitor.gymmonitorlite.service.BookingResult
 import java.time.LocalDate
@@ -20,7 +22,8 @@ import java.time.LocalTime
 @Service
 class GymClassService(
     private val gymClassRepository: GymClassRepository,
-    private val bookingRepository: BookingRepository
+    private val bookingRepository: BookingRepository,
+    private val locationRepository: LocationRepository
 ) {
 
     /**
@@ -170,6 +173,37 @@ class GymClassService(
         return gymClassRepository.findByStaff_IdAndStartTimeGreaterThanEqualOrderByStartTimeAsc(
             staffId, now
         )
+    }
+
+    /**
+     * Creates a new gym class for the given staff user. The staff user will automatically be assigned as the instructor.
+     *
+     * @param staff The staff user creating the class.
+     * @param request The details of the new class.
+     * @return The created GymClass entity.
+     * @throws IllegalArgumentException if the location is invalid or does not belong to the staff's club.
+     */
+    fun createClass(staff: User, request: CreateGymClassRequestDto): GymClass {
+        // Check that the given location exists
+        val location = locationRepository.findById(request.locationId)
+            .orElseThrow { IllegalArgumentException("Location not found") }
+
+        // Ensure the given location belongs to the same club as the staff
+        if (location.club.id != staff.club.id) {
+            throw IllegalArgumentException("Location does not belong to staff's club")
+        }
+
+        // If the checks pass, create the gym class and save it to the database
+        val gymClass = GymClass(
+            location = location,
+            staff = staff,
+            name = request.name,
+            description = request.description,
+            startTime = request.startTime,
+            endTime = request.endTime,
+            maxCapacity = request.maxCapacity
+        )
+        return gymClassRepository.save(gymClass)
     }
 
 }
