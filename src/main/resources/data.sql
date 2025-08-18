@@ -58,8 +58,8 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 (3, 1, 'HIIT Express', 'Quick high intensity workout', NOW() - INTERVAL '22 days 12 hours', NOW() - INTERVAL '22 days 12 hours' + INTERVAL '30 minutes', 15),
 (1, 1, 'Pilates Stretch', 'Full body stretch pilates', NOW() - INTERVAL '21 days 15 hours', NOW() - INTERVAL '21 days 16 hours', 10),
 (2, 2, 'Spin Sprint', 'Sprint intervals', NOW() - INTERVAL '20 days 07 hours', NOW() - INTERVAL '20 days 08 hours', 12),
-(2, 2, 'Strength Training', 'Full body strength training', NOW() + INTERVAL '2 days 00 hours', NOW() + INTERVAL '2 days 01 hours', 5),
-(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 02 hours', 10);
+(2, 2, 'Strength Training', 'Full body strength training', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 02 hours', 5),
+(3, 1, 'Pilates', 'Focused on improving flexibility and core strength', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 03 hours', 10);
 
 -- Bookings for ActiveGymGoer (user_id = 3)
 INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
@@ -124,5 +124,6 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 
 -- Class that occurs on the same day as ActiveGymGoer's currently booked upcoming classes
 -- (to test the maximum weekly bookings limit error)
+-- (This class will have the id 21)
 INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
-(3, 1, 'Light workout', 'A light workout to keep you in shape', NOW() + INTERVAL '2 days 00 hours 15 minutes', NOW() + INTERVAL '2 days 01 hours', 10);
+(3, 1, 'Light workout', 'A light workout to keep you in shape', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 01 hours', 10);
