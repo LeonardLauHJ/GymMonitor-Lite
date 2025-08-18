@@ -295,6 +295,7 @@ This ensures that membership billing information stays up-to-date automatically.
 A Postman collection is included in this repo to test all API endpoints. These tests are intended to be run **in order**, as some depend on data created in previous requests.  
 
 - The collection is preconfigured with environment variables for JWT tokens (e.g. `{{member_token}}`, `{{staff_token}}`), so you **do not need to manually generate or paste tokens** to test endpoints.  
+- The initial demo data generates dates and times relative to when the app is run (e.g., ± a certain offset from the current time). This ensures that most tests work correctly regardless of when the app is started.
 - For demo purposes:
   - **Club 1** is the only club with meaningful data.  
   - **Demo member user (ActiveGymGoer):**  
@@ -305,8 +306,6 @@ A Postman collection is included in this repo to test all API endpoints. These t
     }
     ```
     Use this account to test member-only endpoints like `/member/dashboard` or booking classes. This account is pre-populated with sufficient data to explore and test all member-related functionality in the API.
-
-- You can also use the provided staff user accounts in the collection to test staff-only endpoints.
 
 
 ## How to run
