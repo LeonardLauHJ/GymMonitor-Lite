@@ -8,6 +8,7 @@ import com.leonardlau.gymmonitor.gymmonitorlite.repository.VisitRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * Service class for user-related business logic.
@@ -122,6 +123,21 @@ class UserService(
             // the scannedAt column automatically assigns the current time
         )
         visitRepository.save(visit)
+    }
+
+    /**
+     * Checks if the given user has already scanned in a visit today at their club.
+     *
+     * @param user The user to check.
+     * @return true if a visit already exists today, false otherwise.
+     */
+    fun hasVisitedToday(user: User): Boolean {
+        // Calculate when the current day starts and ends
+        val today = LocalDate.now()
+        val startOfDay = today.atStartOfDay().toInstant(ZoneOffset.UTC)
+        val startOfTomorrow = today.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC)
+        
+        return visitRepository.existsByMemberAndClubAndScannedAtBetween(user, user.club, startOfDay, startOfTomorrow)
     }
 
     /**
