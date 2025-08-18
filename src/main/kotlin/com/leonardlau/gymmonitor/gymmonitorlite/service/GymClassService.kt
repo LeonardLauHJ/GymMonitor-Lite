@@ -193,6 +193,11 @@ class GymClassService(
             throw IllegalArgumentException("Location does not belong to staff's club")
         }
 
+        // Ensure that the end time is after the start time
+        if (!request.endTime.isAfter(request.startTime)) {
+            throw IllegalArgumentException("End time must be after start time")
+        }
+
         // If the checks pass, create the gym class and save it to the database
         val gymClass = GymClass(
             location = location,
