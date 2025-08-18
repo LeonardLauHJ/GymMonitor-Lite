@@ -292,7 +292,14 @@ This ensures that membership billing information stays up-to-date automatically.
 
 ## 🧪 Postman Tests
 
-A Postman collection is included in this repo to test all API endpoints. These tests are intended to be run **in order**, as some depend on data created in previous requests.  
+A Postman collection is included in this repo to test all API endpoints. It contains 32 tests covering both success cases and important error cases for each endpoint.
+
+These tests are intended to be run **in order**, as some depend on data created in previous requests.  
+
+Each Postman test includes a full description of its purpose and expected outcome, with test scripts to validate that the endpoint returns the expected status code.
+
+- **Initial Demo Data:**  
+  The app includes pre-populated demo data located in `data.sql`. Each time the application starts, the database is **wiped and repopulated** with this demo data. This ensures a consistent starting state for testing and exploration of all features.
 
 - The collection is preconfigured with environment variables for JWT tokens (e.g. `{{member_token}}`, `{{staff_token}}`), so you **do not need to manually generate or paste tokens** to test endpoints.  
 - The initial demo data generates dates and times relative to when the app is run (e.g., ± a certain offset from the current time). This ensures that most tests work correctly regardless of when the app is started.
@@ -313,6 +320,20 @@ A Postman collection is included in this repo to test all API endpoints. These t
 > **Note:** You must have Docker running before starting these steps.  
 > - **Windows / macOS:** Open **Docker Desktop** to start the Docker Engine.  
 > - **Linux:** Ensure the Docker daemon (`dockerd`) is running (usually starts automatically).
+
+0. Before starting the containers, create a `.env` file in the project root with the following variables:
+
+```env
+DB_URL=jdbc:postgresql://db:5432/postgres
+PG_USER=postgres
+PG_PASSWORD=postgres
+
+APP_JWT_SECRET=n2D90Zp8m4hYJxTz7KsA0PqRfWxVlEbCgHsJrT1MvYfW6p8dKqNxRsTuVzYxAzGp
+APP_JWT_EXPIRATION_MS=86400000
+```
+
+You can use these example values for testing/demo purposes. 
+In a production environment, replace APP_JWT_SECRET with a secure random string.
 
 1. Open your terminal.  
 
