@@ -278,6 +278,18 @@ Creates a new class with the authenticated staff member as the instructor.
 - Only locations belonging to the staff member’s club may be used (validated in service).
 - `400/404` style errors may be returned for invalid location IDs, cross-club usage, etc.
 
+
+## 🗓️ Scheduled Billing
+
+The system runs a daily scheduler at **2:00 AM** to automatically handle membership billing updates. For each user, it:
+
+1. Checks if their membership billing date is today or has already passed.
+2. Updates their billing records with the amount due for their current membership plan.
+3. Updates their next billing date according to the plan’s billing period.
+
+This ensures that membership billing information stays up-to-date automatically.
+
+
 ## 🧪 Postman Tests
 
 A Postman collection is included in this repo to test all API endpoints. These tests are intended to be run **in order**, as some depend on data created in previous requests.  
