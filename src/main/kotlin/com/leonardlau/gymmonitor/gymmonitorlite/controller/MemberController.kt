@@ -3,6 +3,7 @@ package com.leonardlau.gymmonitor.gymmonitorlite.controller
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.BookingSummaryDto
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.DashboardDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.TimetableEntryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.MembershipDetailsDto
 import com.leonardlau.gymmonitor.gymmonitorlite.service.UserService
@@ -49,15 +50,16 @@ class MemberController(
         val totalVisits = userService.getTotalVisits(user)
         val centsOwed = userService.getCentsOwed(user)
 
-        val response = mapOf(
-            "message" to "${user.name}'s Dashboard",
-            "Total Bookings" to upcomingBookings.size,
-            "Upcoming Bookings" to upcomingBookings,
-            "Total Visits" to totalVisits,
-            "Amount owed to the club" to "$%.2f".format(centsOwed / 100.0) // Formats cents to dollar amount (e.g., 1234 -> $12.34)
+        // Pack the dashboard data into a strongly typed DTO, for a clear, consistent, and easily extendable API response.
+        val dashboardDetails = DashboardDto(
+            dashboardTitle = "${user.name}'s Dashboard",
+            totalBookings = upcomingBookings.size,
+            upcomingBookings = upcomingBookings,
+            totalVisits = totalVisits,
+            amountOwed = "$%.2f".format(centsOwed / 100.0)
         )
 
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(dashboardDetails)
     }
 
     /**
