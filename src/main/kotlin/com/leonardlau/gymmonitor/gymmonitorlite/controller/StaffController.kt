@@ -2,6 +2,7 @@ package com.leonardlau.gymmonitor.gymmonitorlite.controller
 
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
+import java.net.URI
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffViewMemberSummaryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffScheduleEntryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.CreateGymClassRequestDto
@@ -143,7 +144,8 @@ class StaffController(
         // Attempt to create the gym class, save it to the database and respond with the created gym class entity
         return try {
             val gymClass = gymClassService.createClass(staffUser, request)
-            ResponseEntity.ok(gymClass)
+            ResponseEntity.created(URI.create("/api/classes/${gymClass.id}")) // Location of the new class' details page
+                          .body(gymClass) // Response body with the created gym class
         } catch (ex: IllegalArgumentException) {
             // If an error occured with creating the class (failed validation), respond with the error message
             ResponseEntity.badRequest().body(mapOf("error" to ex.message))

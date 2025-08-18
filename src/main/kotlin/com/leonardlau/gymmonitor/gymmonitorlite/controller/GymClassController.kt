@@ -82,7 +82,7 @@ class GymClassController(
 
         // What we return depends on the result of the booking attempt
         return when (result) {
-            is BookingResult.Success -> ResponseEntity.ok(mapOf("message" to "Successfully booked class"))
+            is BookingResult.Success -> ResponseEntity.status(201).body((mapOf("message" to "Successfully booked class")))
             is BookingResult.ClassInPast -> ResponseEntity.badRequest().body(mapOf("error" to "Cannot book a class in the past"))
             is BookingResult.AlreadyBooked -> ResponseEntity.badRequest().body(mapOf("error" to "You have already booked this class"))
             is BookingResult.Full -> ResponseEntity.badRequest().body(mapOf("error" to "This class is full"))
