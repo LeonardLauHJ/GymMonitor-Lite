@@ -314,6 +314,33 @@ Each Postman test includes a full description of its purpose and expected outcom
     ```
     Use this account to test member-only endpoints like `/member/dashboard` or booking classes. This account is pre-populated with sufficient data to explore and test all member-related functionality in the API.
 
+### Running the Postman Tests
+
+1. **Ensure the app is running**  
+   Follow the steps in the "How to Run" section to start the Kotlin app and the PostgreSQL database. The API must be accessible before running the tests.
+
+2. **Open Postman**  
+   If you don’t already have a workspace, create one for this project.
+
+3. **Import the collection and environment**  
+   - Go to the **postman/** folder in the repo.  
+   - Import `GymMonitor-Lite.postman_collection.json` as the collection.  
+   - Import `GymMonitor-Lite.postman_environment.json` as the environment.
+
+4. **Select the environment**  
+   In Postman, switch to the imported environment (`GymMonitor-Lite Test Environment`) to ensure all environment variables (e.g., `{{member_token}}`, `{{staff_token}}`) are available.
+
+5. **Run the tests**  
+   - Open the imported collection.  
+   - Run the requests **in order**, as some tests depend on data created in previous requests.  
+   - You can run tests individually, or use the Collection Runner to execute the entire suite of tests at once.
+   - The login requests include scripts that automatically populate JWT tokens in the environment for subsequent requests.  
+
+6. **Check the results**  
+   - Each test validates the expected status code, and the login tests will also validate that a JWT token was given.  
+   - Passed requests show **PASSED** in green, failed requests show **FAILED** in red. If the Collection Runner is used, a summary of total tests passed/failed is displayed at the end.
+
+
 
 ## How to run
 
