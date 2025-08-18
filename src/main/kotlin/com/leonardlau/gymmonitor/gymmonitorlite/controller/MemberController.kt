@@ -151,6 +151,7 @@ class MemberController(
     /**
      * Records a visit for the authenticated member to their club.
      * Simulates the member's "scan in" at the club.
+     * Members can only scan-in once per day, to avoid members trying to inflate their visit count.
      * 
      * @param userDetails Spring Security object containing the authenticated user's details (from JWT).
      * @return A response entity containing a success response and the member's total number of visits, or 404 if user is not found.
@@ -160,6 +161,12 @@ class MemberController(
         // Get the currently authenticated user, return a 404 error if not found
         val user = userService.findByEmail(userDetails.username)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))
+
+        // Check that the user has not already recorded a visit to their club today
+        if (userService.hasVisitedToday(user)) {
+            // If they have, respond with an error message
+            return ResponseEntity.badRequest().body(mapOf("error" to "You have already scanned in today"))
+        }
 
         // Create a new Visit at the current time and save it to the database
         userService.recordVisit(user)
