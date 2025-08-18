@@ -140,10 +140,14 @@ class StaffController(
         val staffUser = userService.findByEmail(userDetails.username)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "Staff user not found"))
 
-        // Create the gym class and save it to the database
-        val gymClass = gymClassService.createClass(staffUser, request)
-
-        return ResponseEntity.ok(gymClass)
+        // Attempt to create the gym class, save it to the database and respond with the created gym class entity
+        return try {
+            val gymClass = gymClassService.createClass(staffUser, request)
+            ResponseEntity.ok(gymClass)
+        } catch (ex: IllegalArgumentException) {
+            // If an error occured with creating the class (failed validation), respond with the error message
+            ResponseEntity.badRequest().body(mapOf("error" to ex.message))
+        }
     }
 
 }
