@@ -1,0 +1,1496 @@
+{
+	"info": {
+		"_postman_id": "e3756958-b2ad-48cb-b22c-4a49b858bf2f",
+		"name": "GymMonitor-Lite API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43526484",
+		"_collection_link": "https://www.postman.com/team66-8986/workspace/gymmonitor-lite/collection/43526484-e3756958-b2ad-48cb-b22c-4a49b858bf2f?action=share&source=collection_link&creator=43526484"
+	},
+	"item": [
+		{
+			"name": "Sign up - New Member created",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"New Member\",\r\n  \"email\": \"new@example.com\",\r\n  \"password\": \"password\",\r\n  \"clubCode\": \"DTF001\",\r\n  \"membershipPlanId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "This test should successfully create a new Member user account, to test the sign up functionality.\n\nThe response should be a 200 OK with the message: \"User registered successfully\""
+			},
+			"response": []
+		},
+		{
+			"name": "Sign up - email already in use",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 409 Conflict\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"New Member\",\r\n  \"email\": \"active@dtf.com\", // This email is already in use\r\n  \"password\": \"password\",\r\n  \"clubCode\": \"DTF001\",\r\n  \"membershipPlanId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "Attempts to sign up with an email that is already being used by an existing user.\n\nResponse should be a 400 Bad Request with the error message: \"Email is already in use\""
+			},
+			"response": []
+		},
+		{
+			"name": "Sign up - invalid club code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"New Member\",\r\n  \"email\": \"new2@example.com\",\r\n  \"password\": \"password\",\r\n  \"clubCode\": \"DOESNOTEXIST\", // This club code does not belong to any club\r\n  \"membershipPlanId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "Attempts to sign up with the a club code that does not belong to any club.\n\nResponse should be a 400 Bad Request with the error message: \"Invalid club code\""
+			},
+			"response": []
+		},
+		{
+			"name": "Sign up - membership plan id belongs to different club",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"New Member\",\r\n  \"email\": \"new2@example.com\",\r\n  \"password\": \"password\",\r\n  \"clubCode\": \"DTF001\", // Club code for Club 1\r\n  \"membershipPlanId\": 4 // This membership plan belongs to club 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "Attempts to sign up with the id of a membership plan that belongs to a different club than the one entered.\n\nResponse should be a 400 Bad Request with the error message: \"Membership plan does not belong to club\""
+			},
+			"response": []
+		},
+		{
+			"name": "Login - New Member",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// If login is successful, this script will take the token from the response and save it as an environment variable\r",
+							"// named \"new_user_token\". The value can then be accessed in subsequent postman requests using {{new_user_token}}\r",
+							"\r",
+							"// (To send the saved token with any request, go to Authorization tab, select Auth Type: Bearer Token, \r",
+							"// then enter {{new_user_token}} in the Token field)\r",
+							"\r",
+							"// Parse JSON response body\r",
+							"const response = pm.response.json();\r",
+							"// If the response contains a token (login was successful)\r",
+							"if (response.token) {\r",
+							"    // Save the token string to an environment variable called \"new_user_token\"\r",
+							"    pm.environment.set(\"new_user_token\", response.token);\r",
+							"} else {\r",
+							"    console.log(\"No token found in response.\");\r",
+							"}\r",
+							"\r",
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Assert that the response includes a JWT token\r",
+							"pm.test(\"Response contains JWT token\", function () {\r",
+							"    pm.expect(pm.response.json()).to.have.property(\"token\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"new@example.com\",\r\n  \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Logs in as the member created from the 'Sign up - New Member created' test.\n\nThe response should return 200 OK with a JWT token, which will be automatically saved to the new_user_token variable. This is not currently used in any of the included tests, but feel free to create new tests using this token."
+			},
+			"response": []
+		},
+		{
+			"name": "Login - invalid credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 401 Unauthorized\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"new@example.com\",\r\n  \"password\": \"wrongpassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "This test attempts to log in as the newly created member user, but with an incorrect password. This should respond with a 401 Unauthorized error, with the error message: \"Invalid email or password\".\n\nThis error message is the same regardless of if the email or password is wrong, as having a different error message if the email is correct but the password is wrong could be a security risk (known as user enumeration vulnerability)."
+			},
+			"response": []
+		},
+		{
+			"name": "Login - ActiveGymGoer Member",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// If login is successful, this script will take the token from the response and save it as an environment variable\r",
+							"// named \"activegymgoer_token\". The value can then be accessed in subsequent postman requests using {{activegymgoer_token}}\r",
+							"\r",
+							"// (To send the saved token with any request, go to Authorization tab, select Auth Type: Bearer Token, \r",
+							"// then enter {{activegymgoer_token}} in the Token field)\r",
+							"\r",
+							"// Parse JSON response body\r",
+							"const response = pm.response.json();\r",
+							"// If the response contains a token (login was successful)\r",
+							"if (response.token) {\r",
+							"    // Save the token string to an environment variable called \"activegymgoer_token\"\r",
+							"    pm.environment.set(\"activegymgoer_token\", response.token);\r",
+							"} else {\r",
+							"    console.log(\"No token found in response.\");\r",
+							"}\r",
+							"\r",
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Assert that the response includes a JWT token\r",
+							"pm.test(\"Response contains JWT token\", function () {\r",
+							"    pm.expect(pm.response.json()).to.have.property(\"token\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"active@dtf.com\",\r\n  \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Logs in as the pre-populated ActiveGymGoer member. This account will be used for the subsequent member-related tests and includes enough data to explore all member functionality.\n\nThe response should return 200 OK with a JWT token, which will be automatically saved to the activegymgoer_token variable for use in later member-related tests."
+			},
+			"response": []
+		},
+		{
+			"name": "Member Dashboard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/member/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"member",
+						"dashboard"
+					]
+				},
+				"description": "The response should be a 200 OK with the ActiveGymGoer member's full dashboard details.\n\nThis should include a title, their total number of bookings, a list of their upcoming bookings (each showing the class name, location, start time and duration in minutes), their total number of visits to the club, and the amount of money they owe to the club."
+			},
+			"response": []
+		},
+		{
+			"name": "Member Timetable - all upcoming classes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/member/timetable",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"member",
+						"timetable"
+					]
+				},
+				"description": "The response should be a 200 OK with the ActiveGymGoer member's full list of upcoming classes which they have booked, ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
+			},
+			"response": []
+		},
+		{
+			"name": "Member Timetable - specific date",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/member/timetable?date=2050-01-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"member",
+						"timetable"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2050-01-01"
+						}
+					]
+				},
+				"description": "The response should be a 200 OK with the ActiveGymGoer member's list of classes they have booked which start on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
+			},
+			"response": []
+		},
+		{
+			"name": "Get class details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"1"
+					]
+				},
+				"description": "This test gets the details for the class with id 1. This is the Morning Yoga class, which is instructed by Alice Staff.\n\nThe response should be a 200 OK with the following information: name of the class, instructor name, start time, end time, name of the club and location its at, and a description of the class.\n\nThis endpoint is accessible to both member and staff users."
+			},
+			"response": []
+		},
+		{
+			"name": "Get class details - Class does not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 404 Not Found\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/10000000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"10000000"
+					]
+				},
+				"description": "This test attempts to get the details for the class with an id that does not exist.\n\nThe response should be a 404 Not Found with the error message: \"Class not found\"."
+			},
+			"response": []
+		},
+		{
+			"name": "Book class - Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 201 Created\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/14/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"14",
+						"book"
+					]
+				},
+				"description": "This test should successfully book the class with id 14 for the ActiveGymGoer user.\n\nThe response should be a 201 Created with the message: \"Successfully booked class\"\n\nThe /book endpoint should be accessible only to member users."
+			},
+			"response": []
+		},
+		{
+			"name": "Book class - Cannot book past class",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/1/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"1",
+						"book"
+					]
+				},
+				"description": "This test attempts to book a class which has already started/ended.\n\nThe response should be a 400 Bad Request with the message: \"Cannot book a class in the past\""
+			},
+			"response": []
+		},
+		{
+			"name": "Book class - Class is full",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/15/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"15",
+						"book"
+					]
+				},
+				"description": "This test attempts to book a class which is full (has already reached maximum capacity).\n\nThe response should be a 400 Bad Request with the message: \"This class is full\".\n\nThis test is done as the ActiveGymGoer user, but can be done with any member of the Downtown Fitness club other than BusyBee ([busybee@dtf.com](https://mailto:busybee@dtf.com))."
+			},
+			"response": []
+		},
+		{
+			"name": "Book class - Already booked this class",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/12/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"12",
+						"book"
+					]
+				},
+				"description": "This test attempts to book a class which ActiveGymGoer has already booked.\n\nThe response should be a 400 Bad Request with the message: \"You have already booked this class\"."
+			},
+			"response": []
+		},
+		{
+			"name": "Book class - Weekly booking limit already reached",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/21/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"21",
+						"book"
+					]
+				},
+				"description": "This test attempts to book a class which starts during a week where ActiveGymGoer has already used up the weekly number of bookings allowed by their membership plan.\n\nThe response should be a 400 Bad Request with the message: \"Weekly booking limit has already been reached\"."
+			},
+			"response": []
+		},
+		{
+			"name": "Book class - Class does not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 404 Not Found\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/1000000/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"1000000",
+						"book"
+					]
+				},
+				"description": "This test attempts to book a class with an id that does not exist.\n\nThe response should be a 404 Not Found with the message: \"Class not found\"."
+			},
+			"response": []
+		},
+		{
+			"name": "View Membership details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/member/membership",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"member",
+						"membership"
+					]
+				},
+				"description": "This test gets the details for the ActiveGymGoer's current membership plan.\n\nThe response should be a 200 OK with the information: club name, date joined (signed up), total number of visits, name of the membership plan, next billing date, amount owed to the club."
+			},
+			"response": []
+		},
+		{
+			"name": "Member scan-in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/member/scan-in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"member",
+						"scan-in"
+					]
+				},
+				"description": "This test registers a visit for ActiveGymGoer to their club, Downtown Fitness.\n\nThis endpoint simulates a user scanning in to their club.\n\nThe response should be a 200 OK, with the message \"Scan successful\", and the updated number of visits made by ActiveGymGoer (which should be 11)."
+			},
+			"response": []
+		},
+		{
+			"name": "Member scan-in - already scanned in today",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{activegymgoer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/member/scan-in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"member",
+						"scan-in"
+					]
+				},
+				"description": "This test checks that members cannot scan-in multiple times per day (which could be abused to inflate visit counts).\n\nThis test is meant to be performed after the previous test, \"Member scan-in\", which should create the ActiveGymGoer's only recorded visit for today.\n\nThe response should be a 400 Bad Request with the error message: \"You have already scanned in today\""
+			},
+			"response": []
+		},
+		{
+			"name": "Login Staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// If login is successful, this script will take the token from the response and save it as an environment variable\r",
+							"// named \"staff_token\". The value can then be accessed in subsequent postman requests using {{staff_token}}\r",
+							"\r",
+							"// (To send the saved token with any request, go to Authorization tab, select Auth Type: Bearer Token, \r",
+							"// then enter {{staff_token}} in the Token field)\r",
+							"\r",
+							"// Parse JSON response body\r",
+							"const response = pm.response.json();\r",
+							"// If the response contains a token (login was successful)\r",
+							"if (response.token) {\r",
+							"    // Save the token string to an environment variable called \"staff_token\"\r",
+							"    pm.environment.set(\"staff_token\", response.token);\r",
+							"} else {\r",
+							"    console.log(\"No token found in response.\");\r",
+							"}\r",
+							"\r",
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Assert that the response includes a JWT token\r",
+							"pm.test(\"Response contains JWT token\", function () {\r",
+							"    pm.expect(pm.response.json()).to.have.property(\"token\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"alice.staff@dtf.com\",\r\n  \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Logs in as the pre-populated Alice Staff ([alice.staff@dtf.com](https://mailto:alice.staff@dtf.com)) account, which is a staff user for the Downtown Fitness club. This account will be used for the subsequent staff-related tests.\n\nThe response should return 200 OK with a JWT token, which will be automatically saved to the staff_token variable for use in later staff-related tests."
+			},
+			"response": []
+		},
+		{
+			"name": "Staff view club members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/staff/members",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"members"
+					]
+				},
+				"description": "This test should return a 200 OK with a list of all members at the staff user's club.\n\nFor each member, the following information will be shown: user id, name, membership plan name, the dollar amount they owe to the club."
+			},
+			"response": []
+		},
+		{
+			"name": "Staff Schedule - all upcoming classes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/staff/schedule",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"schedule"
+					]
+				},
+				"description": "The response should be a 200 OK with the Alice Staff user's full list of upcoming classes which they are instructing, ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
+			},
+			"response": []
+		},
+		{
+			"name": "Staff Schedule - specific date",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/staff/schedule?date=2050-01-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"schedule"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2050-01-01"
+						}
+					]
+				},
+				"description": "The response should be a 200 OK with the Alice Staff user's list of classes they are instructing which start on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
+			},
+			"response": []
+		},
+		{
+			"name": "Create gym class - Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Save the id of the created class so that it can be searched up\r",
+							"const response = pm.response.json();\r",
+							"if (response.id) {\r",
+							"    pm.environment.set(\"created_class_id\", response.id);\r",
+							"} else {\r",
+							"    console.log(\"No id found in response.\");\r",
+							"}\r",
+							"\r",
+							"// Assert that the response gives a status code 201 Created\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"locationId\": 3,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2025-08-18T06:30:00\",\r\n  \"endTime\": \"2025-08-18T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/staff/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"classes"
+					]
+				},
+				"description": "This test should successfully create a new gym class and return its details in the response, testing that gym class creation works.\n\nThe response should be a 201 Created, with the location header set to the new gym class' details page (/api/classes/22), and the body should include: the gym class id, the location, the staff member instructing it (this will automatically be assigned to the authenticatted staff member, which should be Alice Staff), the class name, description, start and ending time, and the maximum capacity."
+			},
+			"response": []
+		},
+		{
+			"name": "Get details of created class",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/classes/{{created_class_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"classes",
+						"{{created_class_id}}"
+					]
+				},
+				"description": "Follow-up test to the 'Create gym class - Success' test, which must be run prior to this test.\n\nThis test simply gets the details of the created gym class, showing that it was saved properly and is usable.\n\nThe response should be a 200 OK, with the gym class' details."
+			},
+			"response": []
+		},
+		{
+			"name": "Create gym class - Location does not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"locationId\": 10000,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2025-08-18T06:30:00\",\r\n  \"endTime\": \"2025-08-18T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/staff/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"classes"
+					]
+				},
+				"description": "This test attempts to create a gym class with a location that does not exist anywhere.\n\nThe response should be a 400 Bad Request, with the error message: \"Location not found\"."
+			},
+			"response": []
+		},
+		{
+			"name": "Create gym class - Location belongs to different club",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"locationId\": 4,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2025-08-18T06:30:00\",\r\n  \"endTime\": \"2025-08-18T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/staff/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"classes"
+					]
+				},
+				"description": "This test attempts to create a gym class with a location that belongs to a club other than the one the staff is a part of.\n\nThe response should be a 400 Bad Request, with the error message: \"Location does not belong to staff's club\"."
+			},
+			"response": []
+		}
+	]
+}
