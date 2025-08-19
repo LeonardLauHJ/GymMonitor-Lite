@@ -25,8 +25,6 @@ This API is designed for demo purposes, with preconfigured users and a Postman c
 
 ## 🔐 Authentication
 
-> All authenticated routes require an `Authorization: Bearer <JWT>` header.
-
 ### `POST /auth/signup`
 Registers a **member** account for a specific club using a club code and membership plan.
 
@@ -53,7 +51,7 @@ Registers a **member** account for a specific club using a club code and members
 ---
 
 ### `POST /auth/login`
-Authenticates with email & password. Returns a JWT token.
+Authenticates with email & password. If successful, returns a JWT token that can be used to authenticate as that user.
 
 **Request body**
 ```json
