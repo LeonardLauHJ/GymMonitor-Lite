@@ -40,6 +40,15 @@ android {
 }
 
 dependencies {
+    // Retrofit for API calls
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+
+    // Gson converter to parse JSON
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+
+    // Coroutines for async work
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
