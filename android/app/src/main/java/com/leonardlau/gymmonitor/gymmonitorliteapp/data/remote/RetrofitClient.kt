@@ -17,7 +17,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // Base URL of the backend API
-    private const val BASE_URL = "http://localhost:8080/"
+    // NOTE: the backend uses the URL http://localhost:8080/ on the host machine (the PC)
+    // However, if we use localhost here inside the emulator, it would point to
+    // the emulator itself rather than the PC. Instead, we can use 10.0.2.2,
+    // a magic IP which lets us reach the host machine.
+    private const val BASE_URL = "http://10.0.2.2:8080/"
 
     // Single instance used to make API calls throughout the app
     // The endpoints which can be called are defined in the ApiService Interface
