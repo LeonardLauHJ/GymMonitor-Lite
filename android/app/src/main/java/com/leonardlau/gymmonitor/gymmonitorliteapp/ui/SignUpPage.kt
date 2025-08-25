@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -63,8 +64,9 @@ fun SignUpPage(mainScope: CoroutineScope) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Signup",
-                fontSize = 25.sp
+                text = "Sign Up",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -151,7 +153,7 @@ fun SignUpPage(mainScope: CoroutineScope) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Signup")
+            Text("Sign Up")
         }
 
         Spacer(modifier = Modifier.weight(3f))
