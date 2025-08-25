@@ -61,7 +61,7 @@ fun LandingPage(navController: NavController) {
         // Log In page Button
         Button(
             onClick = {
-                // navController.navigate("login")
+                navController.navigate("login")
             },
             modifier = Modifier.fillMaxWidth()
         ) {

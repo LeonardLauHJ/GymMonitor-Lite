@@ -1,0 +1,160 @@
+package com.leonardlau.gymmonitor.gymmonitorliteapp.ui
+
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+
+/**
+ * LoginPage
+ * Screen for logging in to an existing user account.
+ *
+ * @param mainScope CoroutineScope from the Activity, used to run network calls in the background
+ * @param navController NavController used to navigate between screens.
+ */
+@Composable
+fun LoginPage(mainScope: CoroutineScope, navController: NavController) {
+    // Get the current Android context
+    // this will be used for showing Toast status messages
+    val context = LocalContext.current
+
+    // State variables for each input field
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    // State variable to track if password is visible
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    // State variable to track if a login request is currently in progress
+    var isLoading by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Spacer(modifier = Modifier.weight(2f))
+
+        // Screen Title
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(30.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Log In",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        // Input fields
+        // Typing into these fields will update the corresponding state variables
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth(),
+            // For on-screen keyboard, use the email keyboard type (has easy access to @ symbol)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth(),
+            // Show password text if passwordVisible is true, otherwise mask it
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            // Eye icon button at the end for toggling visibility
+            trailingIcon = {
+                // The image icon to use will depend on the value of passwordVisible
+                val image = if (passwordVisible)
+                    Icons.Default.Visibility
+                else Icons.Default.VisibilityOff
+
+                // When the icon is clicked, flip the value of the passwordVisible state variable
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    // Update the icon's image and description accordingly
+                    Icon(
+                        imageVector = image,
+                        contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                    )
+                }
+            }
+        )
+
+        // Submit Log In button
+        Button(
+            onClick = {
+                mainScope.launch {
+                    // Ensure that all fields are filled, otherwise show an error Toast message
+                    if (email.isBlank() || password.isBlank()) {
+                        Toast.makeText(context, "All fields are required", Toast.LENGTH_LONG).show()
+                        return@launch
+                    }
+
+                    // Indicate that the login request is now loading
+                    isLoading = true
+
+                    // Make the login request to the backend
+                    // loginUser(email, password, context)
+
+                    // Indicate that the login request has finished/is no longer loading
+                    isLoading = false
+                }
+            },
+            // Disable the button if a login request is currently in progress
+            enabled = !isLoading,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // If a login request is currently in progress, display a loading spinner
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            } else {
+                // Otherwise display the Log In text
+                Text(
+                    text = "Log In",
+                    fontSize = 17.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(3f))
+    }
+}

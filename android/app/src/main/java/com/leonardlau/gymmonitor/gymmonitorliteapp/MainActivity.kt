@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LandingPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LoginPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.SignUpPage
 import kotlinx.coroutines.MainScope
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("landing") { LandingPage(navController) }
                     composable("signup") { SignUpPage(mainScope, navController) }
+                    composable("login") { LoginPage(mainScope, navController) }
                 }
             }
         }
