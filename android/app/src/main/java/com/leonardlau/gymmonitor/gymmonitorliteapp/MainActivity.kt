@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LoginPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
@@ -28,6 +29,10 @@ class MainActivity : ComponentActivity() {
     // coroutines/background calls safely without blocking the UI
     private val mainScope = MainScope()
 
+    // UserPreferences instance for handling locally stored data such as JWT tokens
+    // Initialized later in onCreate() because it needs the Activity context
+    private lateinit var userPrefs: UserPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,6 +40,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             // Create a navController to manage which screen is shown
             val navController = rememberNavController()
+
+            // Create the UserPreferences instance tied to this Activity's Context
+            // This will manage storing and retrieving data locally such as JWT tokens
+            userPrefs = UserPreferences(this)
 
             GymMonitorLiteAppTheme {
                 // NavHost defines all the screens in the app and the start destination
@@ -44,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("landing") { LandingPage(navController) }
                     composable("signup") { SignUpPage(mainScope, navController) }
-                    composable("login") { LoginPage(mainScope, navController) }
+                    composable("login") { LoginPage(mainScope, navController, userPrefs) }
                 }
             }
         }

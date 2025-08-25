@@ -208,8 +208,8 @@ private suspend fun signupUser(
         // (it will run in a coroutine so it doesn't block the UI)
         val response = RetrofitClient.apiService.signup(request)
 
+        // If the request was successful (response has status 200 OK)
         if (response.isSuccessful) {
-            // If the signup request was successful (response has status 200 OK)
             val success = response.body()
             // Show a Toast message with the success message from the backend
             Toast.makeText(context, success?.message ?: "Signup successful", Toast.LENGTH_LONG).show()

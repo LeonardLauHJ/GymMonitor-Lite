@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
@@ -49,7 +50,7 @@ import kotlinx.coroutines.launch
  * @param navController NavController used to navigate between screens.
  */
 @Composable
-fun LoginPage(mainScope: CoroutineScope, navController: NavController) {
+fun LoginPage(mainScope: CoroutineScope, navController: NavController, userPrefs: UserPreferences) {
     // Get the current Android context
     // this will be used for showing Toast status messages
     val context = LocalContext.current
@@ -137,7 +138,8 @@ fun LoginPage(mainScope: CoroutineScope, navController: NavController) {
                     isLoading = true
 
                     // Make the login request to the backend
-                    loginUser(email, password, context)
+                    // If successful, save the returned JWT token
+                    loginUser(email, password, context, userPrefs)
 
                     // Indicate that the login request has finished/is no longer loading
                     isLoading = false
@@ -169,7 +171,8 @@ fun LoginPage(mainScope: CoroutineScope, navController: NavController) {
 private suspend fun loginUser(
     email: String,
     password: String,
-    context: android.content.Context
+    context: android.content.Context,
+    userPrefs: UserPreferences
 ) {
     try {
         // Create the request object with the filled in form details.
@@ -179,11 +182,16 @@ private suspend fun loginUser(
         // (it will run in a coroutine so it doesn't block the UI)
         val response = RetrofitClient.apiService.login(request)
 
+        // If the request was successful (response has status 200 OK)
         if (response.isSuccessful) {
-            // If the login request was successful (response has status 200 OK)
-            val success = response.body()
+            // Get the response, which should contain the JWT token for authorising as the user
+            val loginResponse = response.body()!! // !! asserts that it will be non-null
+
+            // Save the JWT token locally
+            userPrefs.saveToken(loginResponse.token)
+
             // Show a success Toast message
-            Toast.makeText(context, "Login successful", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, loginResponse.token, Toast.LENGTH_LONG).show()
         } else {
             // If the API returned an error
             // get the JSON error message from the backend and then parse it
