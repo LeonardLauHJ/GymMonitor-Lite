@@ -1,5 +1,6 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -10,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.gson.Gson
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +26,9 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun SignUpPage(mainScope: CoroutineScope) {
+    // Get the current Android context
+    // this will be used for showing Toast status messages
+    val context = LocalContext.current
 
     // State variables for each input field
     var name by remember { mutableStateOf("") }
@@ -100,6 +106,7 @@ fun SignUpPage(mainScope: CoroutineScope) {
                         signupUser(name, email, password, clubCode, planId)
                     } else {
                         // Error
+                        signupUser(name, email, password, clubCode, planId, context)
                     }
 
                 }
@@ -119,7 +126,8 @@ private suspend fun signupUser(
     email: String,
     password: String,
     clubCode: String,
-    membershipPlanId: Int
+    membershipPlanId: Int,
+    context: android.content.Context
 ) {
     try {
         // Create the request object with the filled in form details.
@@ -129,8 +137,24 @@ private suspend fun signupUser(
         // (it will run in a coroutine so it doesn't block the UI)
         val response = RetrofitClient.apiService.signup(request)
 
+        if (response.isSuccessful) {
+            // If the signup request was successful (response has status 200 OK)
+            val success = response.body()
+            // Show a Toast message with the success message from the backend
+            Toast.makeText(context, success?.message ?: "Signup successful", Toast.LENGTH_LONG).show()
+        } else {
+            // If the API returned an error
+            // get the JSON error message from the backend and then parse it
+            val errorJson = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorJson, ErrorResponse::class.java)
+            // Show the error message in a Toast message
+            Toast.makeText(context, errorResponse.error, Toast.LENGTH_LONG).show()
+        }
+
     } catch (e: Exception) {
         // If an error occurred, log the error to the console
         e.printStackTrace()
+        // Show a generic failure message to the user
+        Toast.makeText(context, "Signup failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
     }
 }
