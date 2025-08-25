@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -45,8 +46,11 @@ fun SignUpPage(mainScope: CoroutineScope) {
     var clubCode by remember { mutableStateOf("") }
     var membershipPlanId by remember { mutableStateOf("") }
 
-    // State to track if password is visible
+    // State variable to track if password is visible
     var passwordVisible by remember { mutableStateOf(false) }
+
+    // State variable to track if a signup request is currently in progress
+    var isLoading by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -147,13 +151,30 @@ fun SignUpPage(mainScope: CoroutineScope) {
                         return@launch
                     }
 
-                    // If the previous checks passed, make the signup request to the backend
+                    // Indicate that the signup request is now loading
+                    isLoading = true
+
+                    // Make the signup request to the backend
                     signupUser(name, email, password, clubCode, planId, context)
+
+                    // Indicate that the signup request has finished/is no longer loading
+                    isLoading = false
                 }
             },
+            // Disable the button if a signup request is currently in progress
+            enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Sign Up")
+            // If a sign up request is currently in progress, display a loading spinner
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            } else {
+                // Otherwise display the Sign Up text
+                Text(
+                    text = "Sign Up",
+                    fontSize = 17.sp
+                )
+            }
         }
 
         Spacer(modifier = Modifier.weight(3f))
