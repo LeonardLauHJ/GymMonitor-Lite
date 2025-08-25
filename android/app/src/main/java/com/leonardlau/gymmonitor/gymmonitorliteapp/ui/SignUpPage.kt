@@ -53,6 +53,8 @@ fun SignUpPage(mainScope: CoroutineScope) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        Spacer(modifier = Modifier.weight(1f))
+
         // Title
         Box(
             modifier = Modifier
@@ -151,6 +153,8 @@ fun SignUpPage(mainScope: CoroutineScope) {
         ) {
             Text("Signup")
         }
+
+        Spacer(modifier = Modifier.weight(3f))
     }
 }
 
