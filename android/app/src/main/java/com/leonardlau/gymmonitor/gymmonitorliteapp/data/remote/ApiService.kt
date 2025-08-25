@@ -1,5 +1,7 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote
 
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupResponse
 import retrofit2.Response
@@ -19,4 +21,11 @@ interface ApiService {
      */
     @POST("api/auth/signup")
     suspend fun signup(@Body request: SignupRequest): Response<SignupResponse>
+
+    /**
+     * Login endpoint.
+     * @return Response<LoginResponse> to handle success and error separately
+     */
+    @POST("api/auth/login")
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 }
