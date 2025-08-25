@@ -39,8 +39,9 @@ class MainActivity : ComponentActivity() {
                 // NavHost defines all the screens in the app and the start destination
                 NavHost(
                     navController = navController,
-                    startDestination = "signup" // The page shown when starting the app
+                    startDestination = "landing" // The page shown when starting the app
                 ) {
+                    composable("landing") { LandingPage(navController) }
                     composable("signup") { SignUpPage(mainScope, navController) }
                 }
             }
