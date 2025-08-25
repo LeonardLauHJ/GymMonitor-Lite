@@ -56,6 +56,9 @@ dependencies {
     // Compose Navigation for swapping between screens / pages
     implementation("androidx.navigation:navigation-compose:2.7.3")
 
+    // DataStore for saving values locally (e.g. auth token)
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
