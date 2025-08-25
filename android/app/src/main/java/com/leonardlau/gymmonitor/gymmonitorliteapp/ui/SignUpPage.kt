@@ -2,13 +2,20 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.gson.Gson
@@ -36,6 +43,9 @@ fun SignUpPage(mainScope: CoroutineScope) {
     var password by remember { mutableStateOf("") }
     var clubCode by remember { mutableStateOf("") }
     var membershipPlanId by remember { mutableStateOf("") }
+
+    // State to track if password is visible
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -79,7 +89,25 @@ fun SignUpPage(mainScope: CoroutineScope) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            // Show password text if passwordVisible is true, otherwise mask it
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            // Eye icon button at the end for toggling visibility
+            trailingIcon = {
+                // The image icon to use will depend on the value of passwordVisible
+                val image = if (passwordVisible)
+                    Icons.Default.Visibility
+                else Icons.Default.VisibilityOff
+
+                // When the icon is clicked, flip the value of the passwordVisible state variable
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    // Update the icon's image and description accordingly
+                    Icon(
+                        imageVector = image,
+                        contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                    )
+                }
+            }
         )
 
         OutlinedTextField(
