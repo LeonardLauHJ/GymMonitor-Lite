@@ -34,8 +34,8 @@ Registers a **member** account for a specific club using a club code and members
   "name": "Alice Wong",
   "email": "alice@example.com",
   "password": "Secret123!",
-  "clubCode": "DTOWN-001",
-  "membershipPlanId": 2
+  "clubCode": "DTF001",
+  "membershipPlanId": 1
 }
 ```
 
@@ -68,6 +68,33 @@ Authenticates with email & password. If successful, returns a JWT token that can
 
 **Notes**
 - After logging in, you need to include the returned JWT token in the Authorization header (as Bearer Token) with each request to be authenticated as that user. The included postman tests use placeholders like {{staff_token}} and {{member_token}}, so you shouldn't need to manually type in your JWTs, just ensure the environment variables are set.
+
+---
+
+### `GET /auth/check`
+Checks if the current user is authenticated. Returns user details if logged in, otherwise returns 401 Unauthorized.
+
+**Request body**
+```json
+{
+  "email": "alice@example.com",
+  "password": "Secret123!"
+}
+```
+
+**Response (if authenticated)**
+```json
+{
+  "id": 101,
+  "name": "Alice Wong",
+  "role": "MEMBER"
+}
+```
+
+**Response (if not authenticated)**
+```json
+{ "message": "Unauthorized" }
+```
 
 ---
 
