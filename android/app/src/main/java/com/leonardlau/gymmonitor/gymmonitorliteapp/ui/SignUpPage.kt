@@ -64,7 +64,7 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        // Title
+        // Screen Title
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -140,7 +140,7 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
-        // Signup button
+        // Submit Sign Up button
         Button(
             onClick = {
                 mainScope.launch {
