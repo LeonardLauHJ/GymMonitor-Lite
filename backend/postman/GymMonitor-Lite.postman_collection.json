@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "e3756958-b2ad-48cb-b22c-4a49b858bf2f",
+		"_postman_id": "ea9f63bd-5938-4fd7-aaca-5cbb8bc5728f",
 		"name": "GymMonitor-Lite API Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43526484",
-		"_collection_link": "https://www.postman.com/team66-8986/workspace/gymmonitor-lite/collection/43526484-e3756958-b2ad-48cb-b22c-4a49b858bf2f?action=share&source=collection_link&creator=43526484"
+		"_collection_link": "https://www.postman.com/team66-8986/workspace/gymmonitor-lite/collection/43526484-ea9f63bd-5938-4fd7-aaca-5cbb8bc5728f?action=share&source=collection_link&creator=43526484"
 	},
 	"item": [
 		{
@@ -194,6 +194,53 @@
 			"response": []
 		},
 		{
+			"name": "Check Auth - Not Logged In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 401 Unauthorized\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"check"
+					]
+				},
+				"description": "Checks the user's current authentication status.\n\nHere, the user is not logged in, so the response should be a 401 Unauthorized.\n\nThe same result is given if an auth token is provided which is expired or invalid."
+			},
+			"response": []
+		},
+		{
 			"name": "Login - New Member",
 			"event": [
 				{
@@ -233,7 +280,14 @@
 			],
 			"request": {
 				"auth": {
-					"type": "bearer"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -260,6 +314,53 @@
 					]
 				},
 				"description": "Logs in as the member created from the 'Sign up - New Member created' test.\n\nThe response should return 200 OK with a JWT token, which will be automatically saved to the new_user_token variable. This is not currently used in any of the included tests, but feel free to create new tests using this token."
+			},
+			"response": []
+		},
+		{
+			"name": "Check Auth - Logged In New Member",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{new_user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"check"
+					]
+				},
+				"description": "Checks the user's current authentication status.\n\nHere, the user is logged in as the newly created member, so the response should be a 200 OK with the new member's id (8), name (New Member), and role (MEMBER)."
 			},
 			"response": []
 		},
@@ -1119,6 +1220,53 @@
 					]
 				},
 				"description": "Logs in as the pre-populated Alice Staff ([alice.staff@dtf.com](https://mailto:alice.staff@dtf.com)) account, which is a staff user for the Downtown Fitness club. This account will be used for the subsequent staff-related tests.\n\nThe response should return 200 OK with a JWT token, which will be automatically saved to the staff_token variable for use in later staff-related tests."
+			},
+			"response": []
+		},
+		{
+			"name": "Check Auth - Logged In Staff Member",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"check"
+					]
+				},
+				"description": "Checks the user's current authentication status.\n\nHere, the user is logged in as the Alice Staff member, so the response should be a 200 OK with the staff member's id (1), name (Alice Staff), and role (STAFF)."
 			},
 			"response": []
 		},
