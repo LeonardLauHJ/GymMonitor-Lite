@@ -12,7 +12,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
+
 import java.time.Instant
 import java.time.LocalDate
 
@@ -134,18 +137,26 @@ class AuthController(
      *         401 Unauthorized with a message if not authenticated.
      */
     @GetMapping("/check")
-    fun checkAuth(@AuthenticationPrincipal userDetails: CustomUserDetails?): ResponseEntity<Any> {
-        return if (userDetails != null) {
-            ResponseEntity.ok(
-                mapOf(
-                    "id" to userDetails.id,
-                    "name" to userDetails.name,
-                    "role" to userDetails.role
-                )
-            )
-        } else {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapOf("message" to "Unauthorized"))
+    fun checkAuth(
+        @AuthenticationPrincipal userDetails: UserDetails?
+    ): ResponseEntity<Any> {
+        // If userDetails is null, the user is not authenticated, return 401
+        if (userDetails == null) {
+            return ResponseEntity.status(401).body(mapOf("error" to "Unauthorized"))
         }
+
+        // Get the currently authenticated user, return an error 401 if not found
+        val user = userRepository.findByEmail(userDetails.username)
+            ?: return ResponseEntity.status(401).body(mapOf("error" to "Unauthorized"))
+
+        // Return basic user info
+        return ResponseEntity.ok(
+            mapOf(
+                "id" to user.id,
+                "name" to user.name,
+                "role" to user.role
+            )
+        )
     }
 
 }
