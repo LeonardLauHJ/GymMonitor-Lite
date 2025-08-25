@@ -125,4 +125,27 @@ class AuthController(
             ResponseEntity.status(401).body(mapOf("error" to "Invalid email or password"))
         }
     }
+
+    /**
+     * Checks if the current user is authenticated.
+     *
+     * @param userDetails the authenticated user details.
+     * @return 200 OK with user id, name, and role if authenticated;
+     *         401 Unauthorized with a message if not authenticated.
+     */
+    @GetMapping("/check")
+    fun checkAuth(@AuthenticationPrincipal userDetails: CustomUserDetails?): ResponseEntity<Any> {
+        return if (userDetails != null) {
+            ResponseEntity.ok(
+                mapOf(
+                    "id" to userDetails.id,
+                    "name" to userDetails.name,
+                    "role" to userDetails.role
+                )
+            )
+        } else {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapOf("message" to "Unauthorized"))
+        }
+    }
+
 }
