@@ -12,6 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.SignUpPage
 import kotlinx.coroutines.MainScope
@@ -26,10 +30,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
+            // Create a navController to manage which screen is shown
+            val navController = rememberNavController()
+
             GymMonitorLiteAppTheme {
-                // Sign up page
-                SignUpPage(mainScope)
+                // NavHost defines all the screens in the app and the start destination
+                NavHost(
+                    navController = navController,
+                    startDestination = "signup" // The page shown when starting the app
+                ) {
+                    composable("signup") { SignUpPage(mainScope, navController) }
+                }
             }
         }
     }

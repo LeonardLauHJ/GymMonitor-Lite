@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
@@ -32,11 +33,12 @@ import kotlinx.coroutines.launch
 /**
  * SignUpPage
  * Screen for signing-up/registering new Member user accounts.
- * Uses a coroutine (passed from the Activity) to call the backend in the background
- * so the UI can stay responsive while waiting for network responses.
+ *
+ * @param mainScope CoroutineScope from the Activity, used to run network calls in the background
+ * @param navController NavController used to navigate between screens.
  */
 @Composable
-fun SignUpPage(mainScope: CoroutineScope) {
+fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
     // Get the current Android context
     // this will be used for showing Toast status messages
     val context = LocalContext.current
