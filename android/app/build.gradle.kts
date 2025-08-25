@@ -53,6 +53,9 @@ dependencies {
     // Material Icons
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
+    // Compose Navigation for swapping between screens / pages
+    implementation("androidx.navigation:navigation-compose:2.7.3")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
