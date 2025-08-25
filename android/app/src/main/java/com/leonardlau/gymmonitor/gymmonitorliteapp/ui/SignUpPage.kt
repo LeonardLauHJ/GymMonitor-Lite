@@ -100,15 +100,23 @@ fun SignUpPage(mainScope: CoroutineScope) {
         Button(
             onClick = {
                 mainScope.launch {
-                    // Convert the entered membership plan ID into an int
-                    val planId = membershipPlanId.toIntOrNull()
-                    if (planId != null) {
-                        signupUser(name, email, password, clubCode, planId)
-                    } else {
-                        // Error
-                        signupUser(name, email, password, clubCode, planId, context)
+                    // Ensure that all fields are filled, otherwise show an error Toast message
+                    if (name.isBlank() || email.isBlank() || password.isBlank() || clubCode.isBlank()
+                        || membershipPlanId.isBlank()) {
+                        Toast.makeText(context, "All fields are required", Toast.LENGTH_LONG).show()
+                        return@launch
                     }
 
+                    // Try converting membershipPlanId into an Int
+                    val planId = membershipPlanId.toIntOrNull()
+                    // If the value could not be converted to int, show an error Toast message
+                    if (planId == null) {
+                        Toast.makeText(context, "Membership Plan ID must be a number", Toast.LENGTH_LONG).show()
+                        return@launch
+                    }
+
+                    // If the previous checks passed, make the signup request to the backend
+                    signupUser(name, email, password, clubCode, planId, context)
                 }
             },
             modifier = Modifier.fillMaxWidth()
