@@ -2,6 +2,7 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -90,7 +92,9 @@ fun SignUpPage(mainScope: CoroutineScope) {
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            // For on-screen keyboard, use the email keyboard type (has easy access to @ symbol)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
         OutlinedTextField(
@@ -129,7 +133,9 @@ fun SignUpPage(mainScope: CoroutineScope) {
             value = membershipPlanId,
             onValueChange = { membershipPlanId = it },
             label = { Text("Membership Plan ID") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            // For on-screen keyboard, use the numeric keypad
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
         // Signup button
