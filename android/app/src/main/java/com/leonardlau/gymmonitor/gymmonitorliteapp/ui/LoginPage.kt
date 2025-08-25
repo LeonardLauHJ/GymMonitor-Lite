@@ -34,6 +34,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -133,7 +137,7 @@ fun LoginPage(mainScope: CoroutineScope, navController: NavController) {
                     isLoading = true
 
                     // Make the login request to the backend
-                    // loginUser(email, password, context)
+                    loginUser(email, password, context)
 
                     // Indicate that the login request has finished/is no longer loading
                     isLoading = false
@@ -156,5 +160,43 @@ fun LoginPage(mainScope: CoroutineScope, navController: NavController) {
         }
 
         Spacer(modifier = Modifier.weight(3f))
+    }
+}
+
+/**
+ * Makes a request to the backend login endpoint with the filled in form details.
+ */
+private suspend fun loginUser(
+    email: String,
+    password: String,
+    context: android.content.Context
+) {
+    try {
+        // Create the request object with the filled in form details.
+        val request = LoginRequest(email, password)
+
+        // Make a POST request to the login endpoint with the given details using Retrofit
+        // (it will run in a coroutine so it doesn't block the UI)
+        val response = RetrofitClient.apiService.login(request)
+
+        if (response.isSuccessful) {
+            // If the login request was successful (response has status 200 OK)
+            val success = response.body()
+            // Show a success Toast message
+            Toast.makeText(context, "Login successful", Toast.LENGTH_LONG).show()
+        } else {
+            // If the API returned an error
+            // get the JSON error message from the backend and then parse it
+            val errorJson = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorJson, ErrorResponse::class.java)
+            // Show the error message in a Toast message
+            Toast.makeText(context, errorResponse.error, Toast.LENGTH_LONG).show()
+        }
+
+    } catch (e: Exception) {
+        // If an error occurred, log the error to the console
+        e.printStackTrace()
+        // Show a generic failure message to the user
+        Toast.makeText(context, "Login failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
     }
 }
