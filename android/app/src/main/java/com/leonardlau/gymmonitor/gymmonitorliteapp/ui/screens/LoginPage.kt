@@ -33,6 +33,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.LinkText
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 import kotlinx.coroutines.CoroutineScope
@@ -129,21 +130,10 @@ fun LoginPage(
         )
 
         // Link to Log In page
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Don't have an account? Sign up",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF1E88E5),
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
-                    navController.navigate("signup")
-                },
-            )
-        }
+        LinkText(
+            text = "Don't have an account? Sign up",
+            onClick = { navController.navigate("signup") }
+        )
 
         Spacer(modifier = Modifier.weight(3f))
     }

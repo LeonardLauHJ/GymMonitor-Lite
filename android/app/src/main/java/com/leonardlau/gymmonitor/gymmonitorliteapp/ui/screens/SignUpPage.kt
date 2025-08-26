@@ -149,21 +149,10 @@ fun SignUpPage(
         )
 
         // Link to Log In page
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Already have an account? Log in",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF1E88E5),
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
-                    navController.navigate("login")
-                },
-            )
-        }
+        LinkText(
+            text = "Already have an account? Log in",
+            onClick = { navController.navigate("login") }
+        )
 
         Spacer(modifier = Modifier.weight(3f))
     }
@@ -207,14 +196,5 @@ private suspend fun signupUser(
         e.printStackTrace()
         // Show a generic failure message to the user
         Toast.makeText(context, "Signup failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
-    }
-}        Text(
-            text = "Already have an account? Log in",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            color = Color(0xFF1E88E5),
-            textDecoration = TextDecoration.Underline,
-            modifier = Modifier.clickable { onClick() }
-        )
     }
 }
