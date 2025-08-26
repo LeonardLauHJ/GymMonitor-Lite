@@ -1,8 +1,15 @@
-package com.leonardlau.gymmonitor.gymmonitorliteapp.ui
+package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -13,7 +20,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,36 +38,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * SignUpPage
- * Screen for signing-up/registering new Member user accounts.
+ * LoginPage
+ * Screen for logging in to an existing user account.
  *
  * @param mainScope CoroutineScope from the Activity, used to run network calls in the background
  * @param navController NavController used to navigate between screens.
  */
 @Composable
-fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
+fun LoginPage(
+    mainScope: CoroutineScope,
+    navController: NavController,
+    userPrefs: UserPreferences
+) {
     // Get the current Android context
     // this will be used for showing Toast status messages
     val context = LocalContext.current
 
     // State variables for each input field
-    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var clubCode by remember { mutableStateOf("") }
-    var membershipPlanId by remember { mutableStateOf("") }
 
     // State variable to track if password is visible
     var passwordVisible by remember { mutableStateOf(false) }
 
-    // State variable to track if a signup request is currently in progress
+    // State variable to track if a login request is currently in progress
     var isLoading by remember { mutableStateOf(false) }
 
     Column(
@@ -65,7 +78,7 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(2f))
 
         // Screen Title
         Box(
@@ -75,7 +88,7 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Sign Up",
+                text = "Log In",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -83,15 +96,6 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
 
         // Input fields
         // Typing into these fields will update the corresponding state variables
-
-        OutlinedTextField(
-            // text field value is tied to the 'name' state variable
-            value = name,
-            // whenever the text value changes, update the state variable
-            onValueChange = { name = it },
-            label = { Text("Name") },
-            modifier = Modifier.fillMaxWidth()
-        )
 
         OutlinedTextField(
             value = email,
@@ -127,62 +131,38 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
             }
         )
 
-        OutlinedTextField(
-            value = clubCode,
-            onValueChange = { clubCode = it },
-            label = { Text("Club Code") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = membershipPlanId,
-            onValueChange = { membershipPlanId = it },
-            label = { Text("Membership Plan ID") },
-            modifier = Modifier.fillMaxWidth(),
-            // For on-screen keyboard, use the numeric keypad
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-
-        // Submit Sign Up button
+        // Submit Log In button
         Button(
             onClick = {
                 mainScope.launch {
                     // Ensure that all fields are filled, otherwise show an error Toast message
-                    if (name.isBlank() || email.isBlank() || password.isBlank() || clubCode.isBlank()
-                        || membershipPlanId.isBlank()) {
+                    if (email.isBlank() || password.isBlank()) {
                         Toast.makeText(context, "All fields are required", Toast.LENGTH_LONG).show()
                         return@launch
                     }
 
-                    // Try converting membershipPlanId into an Int
-                    val planId = membershipPlanId.toIntOrNull()
-                    // If the value could not be converted to int, show an error Toast message
-                    if (planId == null) {
-                        Toast.makeText(context, "Membership Plan ID must be a number", Toast.LENGTH_LONG).show()
-                        return@launch
-                    }
-
-                    // Indicate that the signup request is now loading
+                    // Indicate that the login request is now loading
                     isLoading = true
 
-                    // Make the signup request to the backend
-                    signupUser(name, email, password, clubCode, planId, context)
+                    // Make the login request to the backend
+                    // If successful, save the returned JWT token
+                    loginUser(email, password, context, userPrefs)
 
-                    // Indicate that the signup request has finished/is no longer loading
+                    // Indicate that the login request has finished/is no longer loading
                     isLoading = false
                 }
             },
-            // Disable the button if a signup request is currently in progress
+            // Disable the button if a login request is currently in progress
             enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // If a sign up request is currently in progress, display a loading spinner
+            // If a login request is currently in progress, display a loading spinner
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.size(20.dp))
             } else {
-                // Otherwise display the Sign Up text
+                // Otherwise display the Log In text
                 Text(
-                    text = "Sign Up",
+                    text = "Log In",
                     fontSize = 17.sp
                 )
             }
@@ -194,13 +174,13 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Already have an account? Log in",
+                text = "Don't have an account? Sign up",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color(0xFF1E88E5),
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
-                    navController.navigate("login")
+                    navController.navigate("signup")
                 },
             )
         }
@@ -210,29 +190,32 @@ fun SignUpPage(mainScope: CoroutineScope, navController: NavController) {
 }
 
 /**
- * Makes a request to the backend signup endpoint with the filled in form details.
+ * Makes a request to the backend login endpoint with the filled in form details.
  */
-private suspend fun signupUser(
-    name: String,
+private suspend fun loginUser(
     email: String,
     password: String,
-    clubCode: String,
-    membershipPlanId: Int,
-    context: android.content.Context
+    context: android.content.Context,
+    userPrefs: UserPreferences
 ) {
     try {
         // Create the request object with the filled in form details.
-        val request = SignupRequest(name, email, password, clubCode, membershipPlanId)
+        val request = LoginRequest(email, password)
 
-        // Make a POST request to the signup endpoint with the given details using Retrofit
+        // Make a POST request to the login endpoint with the given details using Retrofit
         // (it will run in a coroutine so it doesn't block the UI)
-        val response = RetrofitClient.apiService.signup(request)
+        val response = RetrofitClient.apiService.login(request)
 
         // If the request was successful (response has status 200 OK)
         if (response.isSuccessful) {
-            val success = response.body()
-            // Show a Toast message with the success message from the backend
-            Toast.makeText(context, success?.message ?: "Signup successful", Toast.LENGTH_LONG).show()
+            // Get the response, which should contain the JWT token for authorising as the user
+            val loginResponse = response.body()!! // !! asserts that it will be non-null
+
+            // Save the JWT token locally
+            userPrefs.saveToken(loginResponse.token)
+
+            // Show a success Toast message
+            Toast.makeText(context, loginResponse.token, Toast.LENGTH_LONG).show()
         } else {
             // If the API returned an error
             // get the JSON error message from the backend and then parse it
@@ -246,6 +229,6 @@ private suspend fun signupUser(
         // If an error occurred, log the error to the console
         e.printStackTrace()
         // Show a generic failure message to the user
-        Toast.makeText(context, "Signup failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Login failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
     }
 }

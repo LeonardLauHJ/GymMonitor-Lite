@@ -16,10 +16,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
-import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LandingPage
-import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.LoginPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
-import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.SignUpPage
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 

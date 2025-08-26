@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.map
  * Uses Jetpack DataStore (Preferences) for safe, asynchronous storage.
  * This data is persisted even if the app is closed/restarted.
  */
-class UserPreferences(private val context: Context) {
+class UserPreferences(
+    private val context: Context
+) {
 
     // Create a DataStore instance to store key-value pairs
     private val Context.dataStore by preferencesDataStore(name = "user_preferences")

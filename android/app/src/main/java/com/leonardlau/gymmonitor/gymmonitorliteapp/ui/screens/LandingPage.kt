@@ -1,4 +1,4 @@
-package com.leonardlau.gymmonitor.gymmonitorliteapp.ui
+package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,7 +24,9 @@ import androidx.navigation.NavController
  * @param navController NavController used to navigate between screens.
  */
 @Composable
-fun LandingPage(navController: NavController) {
+fun LandingPage(
+    navController: NavController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
