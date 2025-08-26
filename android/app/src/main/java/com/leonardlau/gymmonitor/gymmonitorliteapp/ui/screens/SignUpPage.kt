@@ -21,8 +21,10 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.LinkText
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.NumberInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.TextInputField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -111,13 +113,16 @@ fun SignUpPage(
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Submit Sign Up button
-        Button(
+        // Submit button to send the Sign Up request
+        SubmitButton(
+            text = "Sign Up",
+            isLoading = isLoading,
             onClick = {
                 mainScope.launch {
                     // Ensure that all fields are filled, otherwise show an error Toast message
-                    if (name.isBlank() || email.isBlank() || password.isBlank() || clubCode.isBlank()
-                        || membershipPlanId.isBlank()) {
+                    if (name.isBlank() || email.isBlank() || password.isBlank() ||
+                        clubCode.isBlank() || membershipPlanId.isBlank()
+                    ) {
                         Toast.makeText(context, "All fields are required", Toast.LENGTH_LONG).show()
                         return@launch
                     }
@@ -140,21 +145,8 @@ fun SignUpPage(
                     isLoading = false
                 }
             },
-            // Disable the button if a signup request is currently in progress
-            enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
-        ) {
-            // If a sign up request is currently in progress, display a loading spinner
-            if (isLoading) {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp))
-            } else {
-                // Otherwise display the Sign Up text
-                Text(
-                    text = "Sign Up",
-                    fontSize = 17.sp
-                )
-            }
-        }
+        )
 
         // Link to Log In page
         Box(

@@ -34,6 +34,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -101,8 +102,10 @@ fun LoginPage(
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Submit Log In button
-        Button(
+        // Submit button to send the Log In request
+        SubmitButton(
+            text = "Log In",
+            isLoading = isLoading,
             onClick = {
                 mainScope.launch {
                     // Ensure that all fields are filled, otherwise show an error Toast message
@@ -122,21 +125,8 @@ fun LoginPage(
                     isLoading = false
                 }
             },
-            // Disable the button if a login request is currently in progress
-            enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
-        ) {
-            // If a login request is currently in progress, display a loading spinner
-            if (isLoading) {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp))
-            } else {
-                // Otherwise display the Log In text
-                Text(
-                    text = "Log In",
-                    fontSize = 17.sp
-                )
-            }
-        }
+        )
 
         // Link to Log In page
         Box(
