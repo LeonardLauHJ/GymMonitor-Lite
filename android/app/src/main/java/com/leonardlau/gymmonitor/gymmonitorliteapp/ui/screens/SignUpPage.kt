@@ -30,6 +30,10 @@ import com.google.gson.Gson
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.NumberInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.TextInputField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -55,9 +59,6 @@ fun SignUpPage(
     var password by remember { mutableStateOf("") }
     var clubCode by remember { mutableStateOf("") }
     var membershipPlanId by remember { mutableStateOf("") }
-
-    // State variable to track if password is visible
-    var passwordVisible by remember { mutableStateOf(false) }
 
     // State variable to track if a signup request is currently in progress
     var isLoading by remember { mutableStateOf(false) }
@@ -87,63 +88,37 @@ fun SignUpPage(
         // Input fields
         // Typing into these fields will update the corresponding state variables
 
-        OutlinedTextField(
-            // text field value is tied to the 'name' state variable
+        TextInputField(
             value = name,
-            // whenever the text value changes, update the state variable
             onValueChange = { name = it },
-            label = { Text("Name") },
+            label = "Name",
             modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
+        EmailInputField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            // For on-screen keyboard, use the email keyboard type (has easy access to @ symbol)
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            // Show password text if passwordVisible is true, otherwise mask it
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            // Eye icon button at the end for toggling visibility
-            trailingIcon = {
-                // The image icon to use will depend on the value of passwordVisible
-                val image = if (passwordVisible)
-                    Icons.Default.Visibility
-                else Icons.Default.VisibilityOff
-
-                // When the icon is clicked, flip the value of the passwordVisible state variable
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    // Update the icon's image and description accordingly
-                    Icon(
-                        imageVector = image,
-                        contentDescription = if (passwordVisible) "Hide password" else "Show password"
-                    )
-                }
-            }
-        )
-
-        OutlinedTextField(
-            value = clubCode,
-            onValueChange = { clubCode = it },
-            label = { Text("Club Code") },
             modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
+        PasswordInputField(
+            value = password,
+            onValueChange = { password = it },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        TextInputField(
+            value = clubCode,
+            onValueChange = { clubCode = it },
+            label = "Club Code",
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        NumberInputField(
             value = membershipPlanId,
             onValueChange = { membershipPlanId = it },
-            label = { Text("Membership Plan ID") },
-            modifier = Modifier.fillMaxWidth(),
-            // For on-screen keyboard, use the numeric keypad
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            label = "Membership Plan ID",
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Submit Sign Up button
