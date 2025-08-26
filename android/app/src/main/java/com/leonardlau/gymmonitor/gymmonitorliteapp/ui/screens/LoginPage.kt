@@ -10,15 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,9 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +32,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -97,38 +89,16 @@ fun LoginPage(
         // Input fields
         // Typing into these fields will update the corresponding state variables
 
-        OutlinedTextField(
+        EmailInputField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            // For on-screen keyboard, use the email keyboard type (has easy access to @ symbol)
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
+        PasswordInputField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            // Show password text if passwordVisible is true, otherwise mask it
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            // Eye icon button at the end for toggling visibility
-            trailingIcon = {
-                // The image icon to use will depend on the value of passwordVisible
-                val image = if (passwordVisible)
-                    Icons.Default.Visibility
-                else Icons.Default.VisibilityOff
-
-                // When the icon is clicked, flip the value of the passwordVisible state variable
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    // Update the icon's image and description accordingly
-                    Icon(
-                        imageVector = image,
-                        contentDescription = if (passwordVisible) "Hide password" else "Show password"
-                    )
-                }
-            }
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Submit Log In button
