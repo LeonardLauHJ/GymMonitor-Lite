@@ -1,10 +1,11 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository
 
 import com.google.gson.Gson
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
+import kotlin.collections.get
 
 /**
  * Repository class that handles all authentication-related requests to the backend.
