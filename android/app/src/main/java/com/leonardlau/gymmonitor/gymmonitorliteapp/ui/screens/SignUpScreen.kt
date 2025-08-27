@@ -22,24 +22,11 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.SignUpViewModel
 fun SignUpScreen(
     navController: NavController
 ) {
-    // Repository which handles the backend API calls
-    val repository = AuthRepository()
-
     // Get the current Android context, used for showing Toast status messages
     val context = LocalContext.current
 
-    // Create the ViewModel to hold the state and logic for the signup form
-    val viewModel: SignUpViewModel = viewModel(
-        // Make a custom ViewModel factory so we can pass in our own repository
-        factory = object : ViewModelProvider.Factory {
-            // Create and return a SignUpViewModel instance
-            // Ignore the cast warning, we know the result will be a SignUpViewModel
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SignUpViewModel(repository) as T
-            }
-        }
-    )
+    // Get the ViewModel to hold the state and logic for the signup form
+    val viewModel: SignUpViewModel = viewModel()
 
     // Render the signup screen UI with state from the ViewModel
     SignUpPage(
