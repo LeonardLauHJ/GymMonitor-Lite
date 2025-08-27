@@ -20,25 +20,36 @@ import retrofit2.http.POST
 interface ApiService {
     /**
      * Signup endpoint.
-     * @return Response<SignupResponse> to handle success and error separately
+     * Registers a new user with the provided information.
+     *
+     * @param request The signup request body containing user details.
+     * @return [Response] with [SignupResponse] on success; errors in status/body
      */
     @POST("api/auth/signup")
-    suspend fun signup(@Body request: SignupRequest): Response<SignupResponse>
+    suspend fun signup(
+        @Body request: SignupRequest
+    ): Response<SignupResponse>
 
     /**
      * Login endpoint.
-     * @return Response<LoginResponse> to handle success and error separately
+     * Authenticates a user with email and password.
+     *
+     * @param request The login request body containing credentials.
+     * @return [Response] with [LoginResponse] on success; errors in status/body
      */
     @POST("api/auth/login")
-    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+    suspend fun login(
+        @Body request: LoginRequest
+    ): Response<LoginResponse>
 
     /**
      * Check authorisation endpoint.
-     * This endpoint is used to check the authorisation of the current user.
-     * If logged-in, it will give a 200 OK with the user's id, name and role,
-     * otherwise it responds with a 401 Unauthorized with an error message.
+     * Checks the authorisation of the current user.
+     * If logged-in, returns 200 OK with the user's id, name and role,
+     * otherwise 401 Unauthorized with an error message.
      *
-     * @return Response<CheckAuthResponse> to handle success and error separately
+     * @param authHeader The authorization header containing the Bearer token.
+     * @return [Response] with [CheckAuthResponse] on success; errors in status/body
      */
     @GET("api/auth/check")
     suspend fun checkAuth(
