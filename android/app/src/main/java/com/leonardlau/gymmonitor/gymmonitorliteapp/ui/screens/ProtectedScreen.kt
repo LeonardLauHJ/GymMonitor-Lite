@@ -32,7 +32,7 @@ fun ProtectedScreen(
     authRepository: AuthRepository,
     content: @Composable () -> Unit // Composable lambda to render the screen content
 ) {
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) { // Run once ProtectedScreen is first displayed
         // Get the current authentication token
         val token = userPrefs.token.first()
 
