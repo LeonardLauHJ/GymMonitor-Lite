@@ -3,8 +3,8 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository
 import com.google.gson.Gson
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
-import retrofit2.Response
 
 /**
  * Repository class that handles all authentication-related requests to the backend.
@@ -39,7 +39,36 @@ class AuthRepository {
                 Result.failure(Exception(errorResponse.error))
             }
         } catch (e: Exception) {
-            // If something unexpected happened (e.g., no internet)
+            // If something unexpected happened
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Calls the check auth endpoint to verify that the user is logged in, along with their role.
+     *
+     * @param token JWT token for authentication
+     * @return Result containing user info on success, otherwise exception with an error message
+     */
+    suspend fun checkAuth(token: String): Result<CheckAuthResponse> {
+        return try {
+            // Call the check auth endpoint with "Bearer <token>" in the Authorization header
+            val response = RetrofitClient.apiService.checkAuth("Bearer $token")
+
+            // If the check auth determines that the user is logged in
+            if (response.isSuccessful) {
+                // Set the result as success with the response body (user's id, name, role)
+                Result.success(response.body()!!)
+            } else {
+                // Parse the error JSON from the backend
+                val errorJson = response.errorBody()?.string()
+                val errorMsg = Gson().fromJson(errorJson, Map::class.java)["error"] as? String
+                    ?: "Unauthorized"
+                // Return a failure result with the backend's error message
+                Result.failure(Exception(errorMsg))
+            }
+        } catch (e: Exception) {
+            // If something unexpected happened
             Result.failure(e)
         }
     }
