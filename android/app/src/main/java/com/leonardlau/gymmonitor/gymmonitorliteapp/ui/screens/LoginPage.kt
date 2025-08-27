@@ -35,6 +35,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.LinkText
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -75,18 +76,9 @@ fun LoginPage(
         Spacer(modifier = Modifier.weight(2f))
 
         // Screen Title
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(30.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Log In",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        ScreenTitle(
+            text = "Log In"
+        )
 
         // Input fields
         // Typing into these fields will update the corresponding state variables

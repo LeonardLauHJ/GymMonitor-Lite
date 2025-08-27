@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.sp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.EmailInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.LinkText
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.NumberInputField
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PasswordInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.TextInputField
@@ -60,18 +61,9 @@ fun SignUpPage(
         Spacer(modifier = Modifier.weight(1f))
 
         // Screen Title
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(30.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Sign Up",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        ScreenTitle(
+            text = "Sign Up"
+        )
 
         // Input fields
         TextInputField(
