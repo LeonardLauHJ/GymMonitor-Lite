@@ -19,6 +19,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = "landing" // The page shown when starting the app
                 ) {
                     composable("landing") { LandingPage(navController) }
-                    composable("signup") { SignUpPage(mainScope, navController) }
+                    composable("signup") { SignUpScreen(navController) }
                     composable("login") { LoginPage(mainScope, navController, userPrefs) }
                 }
             }
