@@ -1,5 +1,6 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote
 
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.DashboardResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
@@ -55,4 +56,18 @@ interface ApiService {
     suspend fun checkAuth(
         @Header("Authorization") authHeader: String
     ): Response<CheckAuthResponse>
+
+    /**
+     * Member dashboard endpoint.
+     * This endpoint is accessible to member users only, and is used to get the data
+     * to display on the user's dashboard screen.
+     * Requires an Authorization header with a Bearer token: `Authorization: Bearer <token>`.
+     *
+     * @param authHeader The authorization header containing the Bearer token.
+     * @return [Response] with [DashboardResponse] on success; errors in status/body
+     */
+    @GET("api/member/dashboard")
+    suspend fun getDashboard(
+        @Header("Authorization") authHeader: String
+    ): Response<DashboardResponse>
 }
