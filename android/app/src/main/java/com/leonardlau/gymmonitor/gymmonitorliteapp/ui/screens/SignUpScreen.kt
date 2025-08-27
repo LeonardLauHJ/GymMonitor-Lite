@@ -12,7 +12,11 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepositor
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.SignUpViewModel
 
 /**
- * Connects the [SignUpPage] UI to the [SignUpViewModel], which provides state and logic.
+ * A composable screen that connects the [SignUpPage] UI with the [SignUpViewModel].
+ * It exposes state from the ViewModel to the UI and passes user interactions
+ * back to the ViewModel for handling.
+ *
+ * @param navController Used for navigating between screens.
  */
 @Composable
 fun SignUpScreen(
@@ -37,7 +41,7 @@ fun SignUpScreen(
         }
     )
 
-    // Call the UI and pass in everything it needs
+    // Render the signup screen UI with state from the ViewModel
     SignUpPage(
         name = viewModel.name,
         email = viewModel.email,
@@ -51,9 +55,10 @@ fun SignUpScreen(
         onClubCodeChange = { viewModel.clubCode = it },
         onMembershipPlanChange = { viewModel.membershipPlanId = it },
         onSignUpClick = {
-            // Use the viewmodel's signup function when the submit button is pressed,
-            // and what to do after its successful (error cases are handled by signup function)
+            // Call the viewmodel's signup function when the submit button is pressed,
+            // and handle what to do if its successful (error cases are handled by signup function)
             viewModel.signUp { success, message ->
+                // Show a success Toast message and navigate to the login page
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                 if (success) {
                     navController.navigate("login")
