@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel containing the state and logic for the SignUp screen.
  *
- * @param repository The repository to handle requests to the backend API.
+ * @property repository The repository to handle requests to the backend API.
  */
 class SignUpViewModel(
     private val repository: AuthRepository = AuthRepository()
