@@ -21,10 +21,10 @@ fun SignUpScreen(
     // Get the current Android context, used for showing Toast status messages
     val context = LocalContext.current
 
-    // Get the ViewModel to hold the state and logic for the signup form
+    // Get the ViewModel to hold the state and logic
     val viewModel: SignUpViewModel = viewModel()
 
-    // Render the signup screen UI with state from the ViewModel
+    // Render the screen UI with state from the ViewModel
     SignUpPage(
         name = viewModel.name,
         email = viewModel.email,
@@ -38,11 +38,10 @@ fun SignUpScreen(
         onClubCodeChange = { viewModel.clubCode = it },
         onMembershipPlanChange = { viewModel.membershipPlanId = it },
         onSignUpClick = {
-            // Call the viewmodel's signup function when the submit button is pressed,
-            // and handle what to do if its successful (error cases are handled by signup function)
+            // Call the viewmodel's signup function when the submit button is pressed
             viewModel.signUp { success, message ->
-                // Show a success Toast message and navigate to the login page
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                // If successful, navigate away
                 if (success) {
                     navController.navigate("login")
                 }
