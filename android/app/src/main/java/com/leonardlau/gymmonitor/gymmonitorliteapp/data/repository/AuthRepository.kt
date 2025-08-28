@@ -3,6 +3,7 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository
 import com.google.gson.Gson
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 import kotlin.collections.get
@@ -31,6 +32,44 @@ class AuthRepository {
             if (response.isSuccessful) {
                 // Return the success message (fallback if backend didn't send one)
                 Result.success(response.body()?.message ?: "Signup successful")
+            } else {
+                // Parse the error JSON from the backend
+                val errorJson = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorJson, ErrorResponse::class.java)
+
+                // Return a failure result with the backend's error message
+                Result.failure(Exception(errorResponse.error))
+            }
+        } catch (e: Exception) {
+            // If something unexpected happened
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Makes a request to the backend login endpoint with the provided details.
+     *
+     * @param request The details required for a login request (email, password).
+     * @return A [Result] object containing a success message if the request succeeded,
+     *         or an exception with an error message if it failed.
+     */
+    suspend fun login(
+        request: LoginRequest
+    ): Result<String> {
+        return try {
+            // Send a POST request to the signup endpoint with the provided details
+            val response = RetrofitClient.apiService.login(request)
+
+            // If the response was successful (HTTP 200 OK)
+            if (response.isSuccessful) {
+                // Get the JWT authentication token from the response
+                // Throw an error if not found
+                val token = response.body()?.token
+                    ?: return Result.failure(Exception("Empty response from server"))
+                // Set the Result as a success along with the JWT token
+                // NOTE: repository is only for making API calls, the ViewModel should be
+                // responsible for taking the token from here and saving it locally.
+                Result.success(token)
             } else {
                 // Parse the error JSON from the backend
                 val errorJson = response.errorBody()?.string()
