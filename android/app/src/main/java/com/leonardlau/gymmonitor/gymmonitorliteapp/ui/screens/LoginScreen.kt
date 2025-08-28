@@ -34,14 +34,23 @@ fun LoginScreen(
         onEmailChange = { viewModel.email = it },
         onPasswordChange = { viewModel.password = it },
         onLoginClick = {
-            // Send the login request when the submit button is pressed,
-            // and handle what to do if its successful (error cases are handled by signup function)
+            // Send the login request when the submit button is pressed
             viewModel.login(userPrefs) { success, message ->
-                // Show a success Toast message and navigate away
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                 if (success) {
-                    // TODO: should navigate to dashboard for members, club member overview for staff
-                    navController.navigate("login")
+                    // Navigate based on the user's role after a successful login
+                    if (viewModel.userRole == "MEMBER") {
+                        // TODO: Navigate to dashboard
+                        navController.navigate("landing") {
+                            // Clear back stack so user can't press back to return here
+                            popUpTo("login") { inclusive = true }
+                        }
+                    } else {
+                        // TODO: Navigate to the club members overview
+                        navController.navigate("landing") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
                 }
             }
         },

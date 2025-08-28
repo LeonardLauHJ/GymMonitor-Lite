@@ -30,6 +30,9 @@ class LoginViewModel(
     var successMessage by mutableStateOf<String?>(null)
         private set
 
+    // The role of the user after logging in. Null if not logged in/login was unsuccessful.
+    var userRole: String? = null
+
     /**
      * Attempts to log in the user with the current form data.
      *
@@ -63,8 +66,18 @@ class LoginViewModel(
             result.onSuccess { token ->
                 // take the JWT token from the result and save it locally
                 userPrefs.saveToken(token)
-                // Set the result to a success with a success message
-                onResult(true, "Login Successful")
+
+                // Then check the user's authentication to see what their role is
+                val authResult = repository.checkAuth(token)
+                authResult.onSuccess { user ->
+                    // Save the user's role from the checkAuth result
+                    userRole = user.role
+                    // Set the result to a success with a success message
+                    onResult(true, "Welcome ${user.name}!")
+                }.onFailure { e ->
+                    errorMessage = e.message
+                    onResult(false, e.message ?: "Failed to get user info")
+                }
             }.onFailure { e ->
                 // Otherwise set the result to failure with the message from backend if given
                 errorMessage = e.message ?: "An unknown error occurred"
