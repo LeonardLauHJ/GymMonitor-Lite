@@ -7,6 +7,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+// Create a DataStore instance to store key-value pairs
+private val Context.dataStore by preferencesDataStore(name = "user_preferences")
+
 /**
  * UserPreferences
  * Contains functions for saving and retrieving user-related data locally (such as JWT tokens).
@@ -16,9 +19,6 @@ import kotlinx.coroutines.flow.map
 class UserPreferences(
     private val context: Context
 ) {
-
-    // Create a DataStore instance to store key-value pairs
-    private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
     // Define the key for identifying the JWT token in storage
     private val tokenKey = stringPreferencesKey("jwt_token")
