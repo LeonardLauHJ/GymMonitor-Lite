@@ -1,5 +1,6 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,7 +35,6 @@ fun DashboardPage(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         when {
             // Display a loading spinner if the data has not yet been loaded,
@@ -59,19 +59,26 @@ fun DashboardPage(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
                 ) {
-                    // Dashboard Title
-                    ScreenTitle(
-                        text = dashboard.dashboardTitle,
-                        color = Color(0xFF000000)
-                    )
+                    // Header section
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.2f) // Cover the top 20% of the screen
+                            .background(color = Color(0xFF495D91)),
+                        contentAlignment = Alignment.Center // Center the title text
+                    ) {
+                        ScreenTitle(
+                            text = dashboard.dashboardTitle,
+                            color = Color.White // use white for contrast
+                        )
+                    }
 
                     // Stats row (Number of Bookings, Visits, and the Amount Owed)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp),
+                            .padding(top = 30.dp, bottom = 25.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         DashboardStat(
