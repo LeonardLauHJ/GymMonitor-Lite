@@ -3,14 +3,17 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.BookingSummary
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.DashboardResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.DashboardStat
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
 import java.time.format.DateTimeFormatter
 
@@ -53,35 +56,60 @@ fun DashboardPage(
 
             // If we have the dashboard data
             dashboard != null -> {
-                ScreenTitle(
-                    text = dashboard.dashboardTitle
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    // Dashboard Title
+                    ScreenTitle(
+                        text = dashboard.dashboardTitle,
+                        color = Color(0xFF000000)
+                    )
 
-                Text("Total Bookings: ${dashboard.totalBookings}")
-                Text("Total Visits: ${dashboard.totalVisits}")
-                Text("Amount Owed: ${dashboard.amountOwed}", modifier = Modifier.padding(bottom = 8.dp))
+                    // Stats row (Number of Bookings, Visits, and the Amount Owed)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        DashboardStat(
+                            label = "Bookings",
+                            value = dashboard.totalBookings.toString()
+                        )
+                        DashboardStat(
+                            label = "Visits",
+                            value = dashboard.totalVisits.toString()
+                        )
+                        DashboardStat(
+                            label = "Amount Owed",
+                            value = dashboard.amountOwed
+                        )
+                    }
 
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(dashboard.upcomingBookings) { booking ->
-                        // Parse startTime manually into a readable format
-                        // (Alternative methods such as LocalDateTime.parse may not be supported by older android versions)
-                        val formattedTime = try {
-                            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault())
-                            val date = sdf.parse(booking.startTime) // returns java.util.Date
-                            if (date != null) {
-                                java.text.SimpleDateFormat("hh:mma dd/MM/yyyy", java.util.Locale.getDefault()).format(date)
-                            } else {
-                                "Invalid date"
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(dashboard.upcomingBookings) { booking ->
+                            // Parse startTime manually into a readable format
+                            // (Alternative methods such as LocalDateTime.parse may not be supported by older android versions)
+                            val formattedTime = try {
+                                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault())
+                                val date = sdf.parse(booking.startTime) // returns java.util.Date
+                                if (date != null) {
+                                    java.text.SimpleDateFormat("hh:mma dd/MM/yyyy", java.util.Locale.getDefault()).format(date)
+                                } else {
+                                    "Invalid date"
+                                }
+                            } catch (e: Exception) {
+                                booking.startTime // if parsing fails, just show the start time in its raw format
                             }
-                        } catch (e: Exception) {
-                            booking.startTime // if parsing fails, just show the start time in its raw format
-                        }
 
-                        Column(modifier = Modifier.padding(8.dp)) {
-                            Text(text = booking.className, fontWeight = FontWeight.Bold)
-                            Text(text = "Location: ${booking.locationName}")
-                            Text(text = "Starts: $formattedTime")
-                            Text(text = "Duration: ${booking.durationMinutes} mins")
+                            Column(modifier = Modifier.padding(8.dp)) {
+                                Text(text = booking.className, fontWeight = FontWeight.Bold)
+                                Text(text = "Location: ${booking.locationName}")
+                                Text(text = "Starts: $formattedTime")
+                                Text(text = "Duration: ${booking.durationMinutes} mins")
+                            }
                         }
                     }
                 }
