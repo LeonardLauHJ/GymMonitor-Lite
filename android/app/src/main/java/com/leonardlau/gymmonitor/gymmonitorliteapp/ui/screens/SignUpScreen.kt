@@ -2,13 +2,9 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.SignUpViewModel
 
 /**

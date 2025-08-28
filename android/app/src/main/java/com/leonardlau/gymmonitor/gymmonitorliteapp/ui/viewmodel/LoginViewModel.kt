@@ -1,6 +1,5 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel
 
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

@@ -6,8 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.DashboardResponse
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.DashboardRepository
 import kotlinx.coroutines.launch
 
