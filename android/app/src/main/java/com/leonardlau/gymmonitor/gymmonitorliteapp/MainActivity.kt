@@ -8,8 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.DashboardScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ProtectedScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
 import kotlinx.coroutines.MainScope
@@ -29,6 +32,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        val authRepository = AuthRepository()
+
         setContent {
             // Create a navController to manage which screen is shown
             val navController = rememberNavController()
@@ -46,6 +51,17 @@ class MainActivity : ComponentActivity() {
                     composable("landing") { LandingPage(navController) }
                     composable("signup") { SignUpScreen(navController) }
                     composable("login") { LoginScreen(navController, userPrefs) }
+
+                    composable("dashboard") {
+                        ProtectedScreen(
+                            requiredRole = "MEMBER",
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            DashboardScreen(navController, userPrefs)
+                        }
+                    }
                 }
             }
         }

@@ -41,7 +41,7 @@ fun LoginScreen(
                     // Navigate based on the user's role after a successful login
                     if (viewModel.userRole == "MEMBER") {
                         // TODO: Navigate to dashboard
-                        navController.navigate("landing") {
+                        navController.navigate("dashboard") {
                             // Clear back stack so user can't press back to return here
                             popUpTo("login") { inclusive = true }
                         }
