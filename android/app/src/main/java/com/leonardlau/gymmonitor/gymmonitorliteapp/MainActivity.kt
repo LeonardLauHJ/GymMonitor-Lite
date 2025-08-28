@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
@@ -54,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("landing") { LandingPage(navController) }
                     composable("signup") { SignUpScreen(navController) }
-                    composable("login") { LoginPage(mainScope, navController, userPrefs) }
+                    composable("login") { LoginScreen(navController, userPrefs) }
                 }
             }
         }
