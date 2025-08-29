@@ -24,6 +24,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.DashboardStat
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
 import java.time.format.DateTimeFormatter
 import com.leonardlau.gymmonitor.gymmonitorliteapp.R
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.BookingCard
 
 /**
  * UI composable for the member dashboard.
@@ -120,27 +121,27 @@ fun DashboardPage(
                         )
                     }
 
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(dashboard.upcomingBookings) { booking ->
-                            // Parse startTime manually into a readable format
-                            // (Alternative methods such as LocalDateTime.parse may not be supported by older android versions)
-                            val formattedTime = try {
-                                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault())
-                                val date = sdf.parse(booking.startTime) // returns java.util.Date
-                                if (date != null) {
-                                    java.text.SimpleDateFormat("hh:mma dd/MM/yyyy", java.util.Locale.getDefault()).format(date)
-                                } else {
-                                    "Invalid date"
-                                }
-                            } catch (e: Exception) {
-                                booking.startTime // if parsing fails, just show the start time in its raw format
-                            }
-
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(text = booking.className, fontWeight = FontWeight.Bold)
-                                Text(text = "Location: ${booking.locationName}")
-                                Text(text = "Starts: $formattedTime")
-                                Text(text = "Duration: ${booking.durationMinutes} mins")
+                    // Upcoming Bookings section
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color(0xFFDCDCDC))
+                    ) {
+                        // Section title
+                        Text(
+                            text = "Upcoming Bookings",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                        )
+                        // Upcoming class bookings list
+                        // LazyColumn will only render items that are on-screen
+                        // (if list extends past the screen the off-screen ones aren't loaded)
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(0.dp)
+                        ) {
+                            // Create a BookingCard item for each of the upcoming bookings
+                            items(dashboard.upcomingBookings) { booking ->
+                                BookingCard(booking)
                             }
                         }
                     }
