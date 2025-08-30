@@ -14,7 +14,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
 /**
  * UI composable for the member clubMembersOverview.
  *
- * @param clubMembersOverview The clubMembersOverview data to display. If null, shows empty state.
+ * @param clubMembersOverview The list of MemberOverview data to display. Empty if not yet loaded.
  * @param isLoading Whether the data is currently loading.
  * @param errorMessage Error message to display if something went wrong.
  */

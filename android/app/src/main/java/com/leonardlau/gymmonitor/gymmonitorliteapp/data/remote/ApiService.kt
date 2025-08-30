@@ -79,7 +79,7 @@ interface ApiService {
      * Requires an Authorization header with a Bearer token: `Authorization: Bearer <token>`.
      *
      * @param authHeader The authorization header containing the Bearer token.
-     * @return [Response] with [DashboardResponse] on success; errors in status/body
+     * @return [Response] with a list of [MemberOverview] items on success; errors in status/body
      */
     @GET("api/staff/members")
     suspend fun getClubMembersOverview(

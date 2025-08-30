@@ -19,7 +19,7 @@ class ClubMembersOverviewViewModel(
     private val clubMembersOverviewRepository: ClubMembersOverviewRepository = ClubMembersOverviewRepository()
 ) : ViewModel() {
 
-    // The club members overview data returned from the API. Null if not loaded yet
+    // The list of club members overview data returned from the API. Empty list if not loaded yet
     var overviewData by mutableStateOf<List<MemberOverview>>(emptyList())
         private set // anyone can read, only this class can change
 
