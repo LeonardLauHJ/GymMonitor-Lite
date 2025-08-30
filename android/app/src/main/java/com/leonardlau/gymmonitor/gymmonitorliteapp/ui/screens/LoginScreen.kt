@@ -40,14 +40,12 @@ fun LoginScreen(
                 if (success) {
                     // Navigate based on the user's role after a successful login
                     if (viewModel.userRole == "MEMBER") {
-                        // TODO: Navigate to dashboard
                         navController.navigate("dashboard") {
                             // Clear back stack so user can't press back to return here
                             popUpTo("login") { inclusive = true }
                         }
                     } else {
-                        // TODO: Navigate to the club members overview
-                        navController.navigate("landing") {
+                        navController.navigate("clubMembersOverview") {
                             popUpTo("login") { inclusive = true }
                         }
                     }
