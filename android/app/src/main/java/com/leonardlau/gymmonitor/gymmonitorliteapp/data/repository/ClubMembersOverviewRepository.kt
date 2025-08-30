@@ -1,8 +1,8 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository
 
 import com.google.gson.Gson
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ClubMembersOverviewResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
 
 /**
@@ -16,7 +16,7 @@ class ClubMembersOverviewRepository {
      * @param token JWT token for authentication
      * @return Result containing a list of member overview data, or exception with error message
      */
-    suspend fun getClubMembersOverview(token: String): Result<ClubMembersOverviewResponse> {
+    suspend fun getClubMembersOverview(token: String): Result<List<MemberOverview>> {
         return try {
             // Send a POST request to the club members overview (Staff view club members)
             // endpoint with "Bearer <token>" in the Authorization header

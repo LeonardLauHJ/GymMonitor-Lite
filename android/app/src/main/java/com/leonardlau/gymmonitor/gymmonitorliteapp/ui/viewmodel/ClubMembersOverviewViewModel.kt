@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ClubMembersOverviewResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.ClubMembersOverviewRepository
 import kotlinx.coroutines.launch
 
@@ -20,7 +20,7 @@ class ClubMembersOverviewViewModel(
 ) : ViewModel() {
 
     // The club members overview data returned from the API. Null if not loaded yet
-    var overviewData by mutableStateOf<ClubMembersOverviewResponse?>(null)
+    var overviewData by mutableStateOf<List<MemberOverview>>(emptyList())
         private set // anyone can read, only this class can change
 
     // True while a network request is in progress
