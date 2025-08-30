@@ -1,7 +1,7 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.model
 
 /**
- * Represents the dashboard overview returned by the backend.
+ * Data class that represents the dashboard overview returned by the backend.
  */
 data class DashboardResponse(
     val dashboardTitle: String,
