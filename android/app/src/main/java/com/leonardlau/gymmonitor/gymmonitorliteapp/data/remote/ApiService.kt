@@ -6,6 +6,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ClubMembersOverviewResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -70,4 +71,18 @@ interface ApiService {
     suspend fun getDashboard(
         @Header("Authorization") authHeader: String
     ): Response<DashboardResponse>
+
+    /**
+     * Club Members Overview endpoint.
+     * This endpoint is accessible to staff users only, and is used to get the data
+     * showing an overview of all members at club which the staff user belongs to.
+     * Requires an Authorization header with a Bearer token: `Authorization: Bearer <token>`.
+     *
+     * @param authHeader The authorization header containing the Bearer token.
+     * @return [Response] with [DashboardResponse] on success; errors in status/body
+     */
+    @GET("api/staff/members")
+    suspend fun getClubMembersOverview(
+        @Header("Authorization") authHeader: String
+    ): Response<ClubMembersOverviewResponse>
 }
