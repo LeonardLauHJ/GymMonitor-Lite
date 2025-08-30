@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClubMembersOverviewScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.DashboardScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
@@ -60,6 +61,17 @@ class MainActivity : ComponentActivity() {
                             authRepository = authRepository
                         ) {
                             DashboardScreen(navController, userPrefs)
+                        }
+                    }
+
+                    composable("clubMembersOverview") {
+                        ProtectedScreen(
+                            requiredRole = "STAFF",
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            ClubMembersOverviewScreen(navController, userPrefs)
                         }
                     }
                 }
