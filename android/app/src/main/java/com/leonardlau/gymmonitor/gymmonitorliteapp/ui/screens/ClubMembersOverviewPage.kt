@@ -9,7 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
-import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClubMemberOverviewCard
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PageHeader
 
 /**
  * UI composable for the member clubMembersOverview.
@@ -52,10 +53,9 @@ fun ClubMembersOverviewPage(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    // Title
-                    ScreenTitle(
-                        text = "Club Members"
-                    )
+
+                    // Header Section
+                    PageHeader(text = "Club Members")
 
                     // List of club members with a summary of their information
                     // LazyColumn will only render items that are on-screen
