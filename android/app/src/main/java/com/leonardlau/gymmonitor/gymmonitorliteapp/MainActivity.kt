@@ -15,6 +15,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ProtectedScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpScreen
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.TimetableScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -61,6 +62,17 @@ class MainActivity : ComponentActivity() {
                             authRepository = authRepository
                         ) {
                             DashboardScreen(navController, userPrefs)
+                        }
+                    }
+
+                    composable("timetable") {
+                        ProtectedScreen(
+                            requiredRole = "MEMBER",
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            TimetableScreen(navController, userPrefs)
                         }
                     }
 
