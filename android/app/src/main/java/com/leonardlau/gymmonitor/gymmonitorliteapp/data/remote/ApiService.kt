@@ -82,7 +82,7 @@ interface ApiService {
      * @param authHeader The authorization header containing the Bearer token.
      * @return [Response] with a list of [TimetableEntry] items on success; errors in status/body
      */
-    @GET("api/member/dashboard")
+    @GET("api/member/timetable")
     suspend fun getFullTimetable(
         @Header("Authorization") authHeader: String
     ): Response<List<TimetableEntry>>
