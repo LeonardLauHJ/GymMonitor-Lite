@@ -51,7 +51,8 @@ class AuthController(
     @PostMapping("/signup")
     fun signup(@Valid @RequestBody request: SignUpDto): ResponseEntity<Any> {
         // Check if email is already in use by an existing account
-        if (userRepository.findByEmail(request.email) != null) {
+        // Emails should be saved in lowercase, so convert what they entered to lowercase.
+        if (userRepository.findByEmail(request.email.lowercase()) != null) {
             return ResponseEntity.status(409).body(mapOf("error" to "Email is already in use"))
         }
 
@@ -81,7 +82,7 @@ class AuthController(
             membershipPlan = membershipPlan,
             name = request.name,
             role = "MEMBER", // Only member accounts can be created with signup
-            email = request.email,
+            email = request.email.lowercase(), // Save the given email in full lowercase
             passwordHash = passwordEncoder.encode(request.password), // Hash the password for security
             dateJoined = Instant.now(),
             centsOwed = 0,
@@ -104,9 +105,10 @@ class AuthController(
     @PostMapping("/login")
     fun login(@Valid @RequestBody request: LoginDto): ResponseEntity<Any> {
         return try {
-            // Try to authenticate the user using the provided email and password
+            // Try to authenticate the user using the provided email (in lowercase) and password
+            // (Emails should be case insensitive, and are stored in lowercase)
             val auth = authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(request.email, request.password)
+                UsernamePasswordAuthenticationToken(request.email.lowercase(), request.password)
             )
 
             // Get the user details from the authentication result

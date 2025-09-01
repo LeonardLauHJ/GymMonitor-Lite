@@ -45,6 +45,7 @@ Registers a **member** account for a specific club using a club code and members
 - `409 Conflict` — email already in use
 
 **Notes**
+- Emails are stored in lowercase to allow for case-insentitive login, and to avoid duplicate accounts with different casing.
 - After signing up, you will not be automatically logged in to the account.
 - Only new member users can be created.
 
@@ -67,6 +68,7 @@ Authenticates with email & password. If successful, returns a JWT token that can
 ```
 
 **Notes**
+- Email is case-insensitive. All emails are converted to lowercase before checking credentials.
 - After logging in, you need to include the returned JWT token in the Authorization header (as Bearer Token) with each request to be authenticated as that user. The included postman tests use placeholders like {{staff_token}} and {{member_token}}, so you shouldn't need to manually type in your JWTs, just ensure the environment variables are set.
 
 ---
