@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "e3756958-b2ad-48cb-b22c-4a49b858bf2f",
 		"name": "GymMonitor-Lite API Tests",
+		"description": "This collection contains tests for all endpoints in the GymMonitor-Lite project, a Kotlin/Spring Boot backend API for gym management.\n\nIt is designed for demo and testing purposes, with preloaded sample data and environment variables for JWT tokens. Each request includes detailed descriptions and response code validation tests, so you can easily verify correct functionality, and explore the API workflow. The provided tests are intended to be ran in order, as many tests rely on data created in previous ones.\n\nImportant:\n\n- The backend application must be running before executing these requests. Instructions for starting the app are included in the project README.\n    \n- Ensure the provided Postman environment file (`GymMonitor-Lite.postman_environment.json`) is active so that JWT tokens and other variables are correctly configured.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43526484",
 		"_collection_link": "https://www.postman.com/team66-8986/workspace/gymmonitor-lite/collection/43526484-e3756958-b2ad-48cb-b22c-4a49b858bf2f?action=share&source=collection_link&creator=43526484"
@@ -526,7 +527,7 @@
 						"dashboard"
 					]
 				},
-				"description": "The response should be a 200 OK with the ActiveGymGoer member's full dashboard details.\n\nThis should include a title, their total number of bookings, a list of their upcoming bookings (each showing the class name, location, start time and duration in minutes), their total number of visits to the club, and the amount of money they owe to the club."
+				"description": "The response should be a 200 OK with the ActiveGymGoer member's full dashboard details.\n\nThis should include a title, their total number of bookings, a list of their upcoming bookings (each showing the class id, name, location, start time and duration in minutes), their total number of visits to the club, and the amount of money they owe to the club."
 			},
 			"response": []
 		},
@@ -573,7 +574,7 @@
 						"timetable"
 					]
 				},
-				"description": "The response should be a 200 OK with the full list of upcoming classes happening at ActiveGymGoer's club (Downtown Fitness), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
+				"description": "The response should be a 200 OK with the full list of upcoming classes happening at ActiveGymGoer's club (Downtown Fitness), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class id, name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
 			},
 			"response": []
 		},
@@ -626,7 +627,7 @@
 						}
 					]
 				},
-				"description": "The response should be a 200 OK with the full list of upcoming classes happening at ActiveGymGoer's club (Downtown Fitness) on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
+				"description": "The response should be a 200 OK with the full list of upcoming classes happening at ActiveGymGoer's club (Downtown Fitness) on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class id, name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
 			},
 			"response": []
 		},
@@ -673,7 +674,7 @@
 						"1"
 					]
 				},
-				"description": "This test gets the details for the class with id 1. This is the Morning Yoga class, which is instructed by Alice Staff.\n\nThe response should be a 200 OK with the following information: name of the class, instructor name, start time, end time, name of the club and location its at, and a description of the class.\n\nThis endpoint is accessible to both member and staff users."
+				"description": "This test gets the details for the class with id 1. This is the Morning Yoga class, which is instructed by Alice Staff.\n\nThe response should be a 200 OK with the following information: id and name of the class, instructor name, start time, end time, name of the club and location its at, and a description of the class.\n\nThis endpoint is accessible to both member and staff users."
 			},
 			"response": []
 		},
@@ -1360,7 +1361,7 @@
 						"schedule"
 					]
 				},
-				"description": "The response should be a 200 OK with the Alice Staff user's full list of upcoming classes which they are instructing, ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
+				"description": "The response should be a 200 OK with the Alice Staff user's full list of upcoming classes which they are instructing, ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class id and name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
 			},
 			"response": []
 		},
@@ -1413,7 +1414,7 @@
 						}
 					]
 				},
-				"description": "The response should be a 200 OK with the Alice Staff user's list of classes they are instructing which start on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
+				"description": "The response should be a 200 OK with the Alice Staff user's list of classes they are instructing which start on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class id and name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
 			},
 			"response": []
 		},
