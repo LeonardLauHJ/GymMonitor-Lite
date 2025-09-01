@@ -15,7 +15,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClubMemberOverv
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PageHeader
 
 /**
- * UI composable for the member clubMembersOverview.
+ * UI composable for the club members overview page visible to staff users.
+ * Displays a list of member users at the staff user's club with a summary of their information.
  *
  * @param clubMembersOverview The list of MemberOverview data to display. Empty if not yet loaded.
  * @param isLoading Whether the data is currently loading.
