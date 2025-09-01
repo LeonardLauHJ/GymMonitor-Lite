@@ -126,4 +126,4 @@ INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, e
 -- (to test the maximum weekly bookings limit error)
 -- (This class will have the id 21)
 INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
-(3, 1, 'Light workout', 'A light workout to keep you in shape', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 01 hours', 10);
+(3, 1, 'Light workout', 'A light workout to keep you in shape', NOW() + INTERVAL '2 days 01 hours 15 minutes', NOW() + INTERVAL '2 days 02 hours', 10);
