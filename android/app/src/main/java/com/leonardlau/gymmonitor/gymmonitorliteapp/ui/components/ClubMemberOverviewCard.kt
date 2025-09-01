@@ -86,7 +86,7 @@ fun ClubMemberOverviewCard(
                     Spacer(modifier = Modifier.height(4.dp)) // little space below line
 
                     Text(text = "#${memberOverview.id}")
-                    Text(text = memberOverview.membershipPlanName ?: "None")
+                    Text(text = memberOverview.membershipPlanName ?: "Membership Inactive")
                     Text(text = "Owes Us: ${memberOverview.owesUs}")
                 }
             }
