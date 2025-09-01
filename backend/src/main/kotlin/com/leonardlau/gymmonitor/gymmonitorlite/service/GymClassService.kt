@@ -184,6 +184,16 @@ class GymClassService(
      * @throws IllegalArgumentException if the location is invalid or does not belong to the staff's club.
      */
     fun createClass(staff: User, request: CreateGymClassRequestDto): GymClass {
+        // Check that the start time is in the future
+        if (!request.startTime.isAfter(LocalDateTime.now())) {
+            throw IllegalArgumentException("Start time must be in the future")
+        }
+
+        // Ensure that the end time is after the start time
+        if (!request.endTime.isAfter(request.startTime)) {
+            throw IllegalArgumentException("End time must be after start time")
+        }
+
         // Check that the given location exists
         val location = locationRepository.findById(request.locationId)
             .orElseThrow { IllegalArgumentException("Location not found") }
@@ -191,11 +201,6 @@ class GymClassService(
         // Ensure the given location belongs to the same club as the staff
         if (location.club.id != staff.club.id) {
             throw IllegalArgumentException("Location does not belong to staff's club")
-        }
-
-        // Ensure that the end time is after the start time
-        if (!request.endTime.isAfter(request.startTime)) {
-            throw IllegalArgumentException("End time must be after start time")
         }
 
         // If the checks pass, create the gym class and save it to the database
