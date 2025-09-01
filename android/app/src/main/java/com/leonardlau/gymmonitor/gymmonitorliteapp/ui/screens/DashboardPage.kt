@@ -139,9 +139,20 @@ fun DashboardPage(
                         LazyColumn(
                             verticalArrangement = Arrangement.spacedBy(0.dp)
                         ) {
-                            // Create a BookingCard item for each of the upcoming bookings
-                            items(dashboard.upcomingBookings) { booking ->
-                                BookingCard(booking)
+                            // If there are any bookings to display
+                            if (dashboard.upcomingBookings.isNotEmpty()) {
+                                // Create a BookingCard item for each of the upcoming bookings
+                                items(dashboard.upcomingBookings) { booking ->
+                                    BookingCard(booking)
+                                }
+                            } else {
+                                item {
+                                    Text(
+                                        text = "You have no upcoming bookings",
+                                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
                             }
                         }
                     }
