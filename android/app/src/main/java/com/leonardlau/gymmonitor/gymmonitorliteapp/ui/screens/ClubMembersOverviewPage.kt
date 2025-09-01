@@ -74,6 +74,22 @@ fun ClubMembersOverviewPage(
 
                 }
             }
+
+            // If the club has no members
+            else -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Color(0xFFF0ECF8)),
+                ) {
+                    PageHeader(text = "Club Members")
+                    Text(
+                        text = "This club currently has no members.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+            }
         }
     }
 }
