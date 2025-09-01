@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "ea9f63bd-5938-4fd7-aaca-5cbb8bc5728f",
+		"_postman_id": "e3756958-b2ad-48cb-b22c-4a49b858bf2f",
 		"name": "GymMonitor-Lite API Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43526484",
-		"_collection_link": "https://www.postman.com/team66-8986/workspace/gymmonitor-lite/collection/43526484-ea9f63bd-5938-4fd7-aaca-5cbb8bc5728f?action=share&source=collection_link&creator=43526484"
+		"_collection_link": "https://www.postman.com/team66-8986/workspace/gymmonitor-lite/collection/43526484-e3756958-b2ad-48cb-b22c-4a49b858bf2f?action=share&source=collection_link&creator=43526484"
 	},
 	"item": [
 		{
@@ -573,7 +573,7 @@
 						"timetable"
 					]
 				},
-				"description": "The response should be a 200 OK with the ActiveGymGoer member's full list of upcoming classes which they have booked, ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
+				"description": "The response should be a 200 OK with the full list of upcoming classes happening at ActiveGymGoer's club (Downtown Fitness), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThe start time for each class should come after the current time this test was ran."
 			},
 			"response": []
 		},
@@ -626,7 +626,7 @@
 						}
 					]
 				},
-				"description": "The response should be a 200 OK with the ActiveGymGoer member's list of classes they have booked which start on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
+				"description": "The response should be a 200 OK with the full list of upcoming classes happening at ActiveGymGoer's club (Downtown Fitness) on the given day (for this test, January 1st 2050), ordered by start time in ascending order (earliest first).\n\nEach class includes the following information: class name, instructor name, location name, start time, duration in minutes, current number of bookings, and maximum member capacity.\n\nThis timetable may include classes which have already started/ended (if the given date is before/on the current date), and can be used on dates before the current one."
 			},
 			"response": []
 		},
