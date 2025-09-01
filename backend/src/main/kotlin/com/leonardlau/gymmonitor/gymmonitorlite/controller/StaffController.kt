@@ -6,6 +6,7 @@ import java.net.URI
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffViewMemberSummaryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffScheduleEntryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.CreateGymClassRequestDto
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.GymClassDetailsDto
 import com.leonardlau.gymmonitor.gymmonitorlite.service.UserService
 import com.leonardlau.gymmonitor.gymmonitorlite.service.GymClassService
 import org.springframework.http.ResponseEntity
@@ -129,7 +130,7 @@ class StaffController(
      *
      * @param userDetails Spring Security object containing the authenticated user's details (from JWT).
      * @param request The request body containing the new class details, following the format of CreateGymClassRequestDto.
-     * @return The created gym class, or an error message if creation failed.
+     * @return The created gym class' details, or an error message if creation failed.
      */
     @PostMapping("/classes")
     fun createClass(
@@ -145,8 +146,22 @@ class StaffController(
         // Attempt to create the gym class, save it to the database and respond with the created gym class entity
         return try {
             val gymClass = gymClassService.createClass(staffUser, request)
+
+            // Convert to GymClassDetailsDto format
+            val gymClassDetails = GymClassDetailsDto(
+                id = gymClass.id,
+                name = gymClass.name,
+                instructorName = gymClass.staff.name,
+                startTime = gymClass.startTime,
+                endTime = gymClass.endTime,
+                clubName = gymClass.location.club.name,
+                locationName = gymClass.location.name,
+                description = gymClass.description
+            )
+
             ResponseEntity.created(URI.create("/api/classes/${gymClass.id}")) // Location of the new class' details page
-                          .body(gymClass) // Response body with the created gym class
+                          .body(gymClassDetails) // Response body with the created gym class' details
+
         } catch (ex: IllegalArgumentException) {
             // If an error occured with creating the class (failed validation), respond with the error message
             ResponseEntity.badRequest().body(mapOf("error" to ex.message))
