@@ -1,7 +1,11 @@
 # GymMonitor-Lite
 
 GymMonitor-Lite is a Kotlin/Spring Boot backend API project inspired by the GymMaster members app, with additional staff features based on the main GymMaster system.  
-It provides functionality for both **members** and **staff** of a gym, including class booking, attendance tracking, membership management, and staff scheduling.
+
+It provides:
+- Member features: dashboard overview, class timetables and booking, attendance tracking (scan-in), and viewing membership details.
+- Staff features: overview of members in their club, viewing their own class schedule, and creating new classes.
+- Shared functionality: JWT-based authentication, role-based access control, and automated membership billing.
 
 This project was primarily built to practice my Kotlin skills while leveraging my existing experience with Spring Boot, PostgreSQL, and REST APIs. It demonstrates real-world, role-based API design, clean architecture principles, and Kotlin-specific development practices—showing how I can build maintainable, production-ready backend systems similar to those used at GymMaster.
 
