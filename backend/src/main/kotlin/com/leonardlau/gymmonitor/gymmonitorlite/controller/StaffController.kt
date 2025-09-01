@@ -97,6 +97,7 @@ class StaffController(
             val currentBookings = gymClassService.getcurrentBookingsForClass(gymClass.id)
             val durationMinutes = java.time.Duration.between(gymClass.startTime, gymClass.endTime).toMinutes()
             StaffScheduleEntryDto(
+                classId = gymClass.id,
                 className = gymClass.name,
                 locationName = gymClass.location.name,
                 startTime = gymClass.startTime,

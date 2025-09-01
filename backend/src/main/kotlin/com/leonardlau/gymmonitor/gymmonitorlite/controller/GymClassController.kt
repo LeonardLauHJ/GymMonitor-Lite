@@ -41,6 +41,7 @@ class GymClassController(
             ?: return ResponseEntity.status(404).body(mapOf("error" to "Class not found"))
 
         val gymClassDetails = GymClassDetailsDto(
+            id = gymClass.id,
             name = gymClass.name,
             instructorName = gymClass.staff.name,
             startTime = gymClass.startTime,

@@ -6,12 +6,14 @@ import java.time.Duration
 /**
  * DTO for displaying limited info about a booking.
  *
+ * @property classId Id of the booked gym class.
  * @property className Name of the booked gym class.
  * @property locationName Location where the class is held.
  * @property startTime When the class starts.
  * @property durationMinutes Duration of the class in minutes.
  */
 data class BookingSummaryDto (
+    val classId: Int,
     val className: String,
     val locationName: String,
     val startTime: LocalDateTime,
@@ -29,6 +31,7 @@ data class BookingSummaryDto (
             // Get the total duration by finding the length between the start and end time
             val duration = Duration.between(gymClass.startTime, gymClass.endTime).toMinutes()
             return BookingSummaryDto (
+                classId = gymClass.id,
                 className = gymClass.name,
                 locationName = gymClass.location.name,
                 startTime = gymClass.startTime,

@@ -104,6 +104,7 @@ class MemberController(
             val currentBookings = gymClassService.getcurrentBookingsForClass(gymClass.id)
             val durationMinutes = java.time.Duration.between(gymClass.startTime, gymClass.endTime).toMinutes()
             TimetableEntryDto(
+                classId = gymClass.id,
                 className = gymClass.name,
                 instructorName = gymClass.staff.name,
                 locationName = gymClass.location.name,
