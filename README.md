@@ -109,7 +109,7 @@ Checks if the current user is authenticated. Returns user details if logged in, 
 > For these endpoints, you must be authenticated as a user with the MEMBER role.
 
 ### `GET /member/dashboard`
-Returns a dashboard overview for the authenticated member. This includes their total number of bookings, their list of upcoming bookings (which includes the name of the class, location, start time, and duration in minutes), their total number of recorded visits to the club, and the amount of money they owe the club in dollars.
+Returns a dashboard overview for the authenticated member. This includes their total number of bookings, their list of upcoming bookings (which includes the id and name of the class, location, start time, and duration in minutes), their total number of recorded visits to the club, and the amount of money they owe the club in dollars.
 
 **Response example**
 ```json
@@ -118,12 +118,14 @@ Returns a dashboard overview for the authenticated member. This includes their t
   "Total Bookings": 2,
   "Upcoming Bookings": [
     {
+      "id": 1,
       "className": "Sunrise Power Yoga",
       "locationName": "Studio A",
       "startTime": "2025-08-20T06:30:00",
       "durationMinutes": 60
     },
     {
+      "id": 3,
       "className": "Spin 45",
       "locationName": "Spin Room",
       "startTime": "2025-08-21T18:00:00",
@@ -144,6 +146,7 @@ Returns the timetable of classes at the member’s club. The `date` parameter is
 ```json
 [
   {
+    "id": 1,
     "className": "Sunrise Power Yoga",
     "instructorName": "Jordan Lee",
     "locationName": "Studio A",
@@ -153,6 +156,17 @@ Returns the timetable of classes at the member’s club. The `date` parameter is
     "maxCapacity": 20
   },
   {
+    "id": 2,
+    "className": "Weight Lifting",
+    "instructorName": "Bryan Kent",
+    "locationName": "Weights Room",
+    "startTime": "2025-08-23T12:00:00",
+    "durationMinutes": 30,
+    "currentBookings": 2,
+    "maxCapacity": 10
+  },
+  {
+    "id": 3,
     "className": "Spin 45",
     "instructorName": "Taylor Kim",
     "locationName": "Spin Room",
@@ -210,6 +224,7 @@ Returns details for a specific class.
 **Response example** (`GymClassDetailsDto`)
 ```json
 {
+  "id": 1,
   "name": "Sunrise Power Yoga",
   "instructorName": "Jordan Lee",
   "startTime": "2025-08-20T06:30:00",
@@ -261,6 +276,7 @@ Returns classes **taught by the authenticated staff member**. The `date` paramet
 ```json
 [
   {
+    "id": 1,
     "className": "Sunrise Power Yoga",
     "locationName": "Studio A",
     "startTime": "2025-08-20T06:30:00",
@@ -291,8 +307,8 @@ Creates a new class with the authenticated staff member as the instructor.
 }
 ```
 
-**Response**
-- Returns the created class **including its generated `id`**. Example:
+**Response** (`GymClassDetailsDto`)
+- Returns the details of the created class **including its generated `id`**. Example:
 ```json
 {
   "id": 42,
@@ -306,9 +322,13 @@ Creates a new class with the authenticated staff member as the instructor.
 ```
 
 **Notes**
+- The startTime must be in the future
+- The endTime must be after the startTime
 - Only locations belonging to the staff member’s club may be used (validated in service).
-- `400/404` style errors may be returned for invalid location IDs, cross-club usage, etc.
+- `400/404` style errors may be returned for invalid times, location IDs, cross-club usage, etc.
 
+**Errors**
+- `400 Bad Request` — invalid times and/or location ID
 
 ## 🗓️ Scheduled Billing
 

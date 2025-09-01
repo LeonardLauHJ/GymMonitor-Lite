@@ -1458,7 +1458,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"locationId\": 3,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2025-08-18T06:30:00\",\r\n  \"endTime\": \"2025-08-18T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
+					"raw": "{\r\n  \"locationId\": 3,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2050-08-18T06:30:00\",\r\n  \"endTime\": \"2050-08-18T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1478,7 +1478,7 @@
 						"classes"
 					]
 				},
-				"description": "This test should successfully create a new gym class and return its details in the response, testing that gym class creation works.\n\nThe response should be a 201 Created, with the location header set to the new gym class' details page (/api/classes/22), and the body should include: the gym class id, the location, the staff member instructing it (this will automatically be assigned to the authenticatted staff member, which should be Alice Staff), the class name, description, start and ending time, and the maximum capacity."
+				"description": "This test should successfully create a new gym class and return its details in the response, testing that gym class creation works.\n\nThe response should be a 201 Created, with the location header set to the new gym class' details page (/api/classes/22), and the body should include: the gym class id and name, instructor name, start and end times, club name, location name, and a description of the class."
 			},
 			"response": []
 		},
@@ -1526,6 +1526,118 @@
 					]
 				},
 				"description": "Follow-up test to the 'Create gym class - Success' test, which must be run prior to this test.\n\nThis test simply gets the details of the created gym class, showing that it was saved properly and is usable.\n\nThe response should be a 200 OK, with the gym class' details."
+			},
+			"response": []
+		},
+		{
+			"name": "Create gym class - Start time is in the past",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"locationId\": 3,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2025-08-18T06:30:00\",\r\n  \"endTime\": \"2025-08-01T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/staff/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"classes"
+					]
+				},
+				"description": "This test attempts to create a gym class with a start time which is in the past.\n\nThe response should be a 400 Bad Request, with the error message: \"Start time must be in the future\"."
+			},
+			"response": []
+		},
+		{
+			"name": "Create gym class - End time is before start time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assert that the response gives a status code 400 Bad Request\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{staff_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"locationId\": 3,\r\n  \"name\": \"Sunrise Power Yoga\",\r\n  \"description\": \"A high-energy morning yoga flow combining strength, flexibility, and mindfulness. Perfect for starting the day feeling energised.\",\r\n  \"startTime\": \"2025-08-18T06:30:00\",\r\n  \"endTime\": \"2025-08-01T07:30:00\",\r\n  \"maxCapacity\": 25\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/staff/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"classes"
+					]
+				},
+				"description": "This test attempts to create a gym class with an end time which is before the start time.\n\nThe response should be a 400 Bad Request, with the error message: \"End time must be after start time\"."
 			},
 			"response": []
 		},
