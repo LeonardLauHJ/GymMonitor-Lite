@@ -7,6 +7,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.TimetableEntry
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -71,6 +72,20 @@ interface ApiService {
     suspend fun getDashboard(
         @Header("Authorization") authHeader: String
     ): Response<DashboardResponse>
+
+    /**
+     * Member timetable endpoint.
+     * This endpoint is accessible to member users only, and is used to get a list of
+     * all upcoming classes at the member's club.
+     * Requires an Authorization header with a Bearer token: `Authorization: Bearer <token>`.
+     *
+     * @param authHeader The authorization header containing the Bearer token.
+     * @return [Response] with a list of [TimetableEntry] items on success; errors in status/body
+     */
+    @GET("api/member/dashboard")
+    suspend fun getFullTimetable(
+        @Header("Authorization") authHeader: String
+    ): Response<List<TimetableEntry>>
 
     /**
      * Club Members Overview endpoint.
