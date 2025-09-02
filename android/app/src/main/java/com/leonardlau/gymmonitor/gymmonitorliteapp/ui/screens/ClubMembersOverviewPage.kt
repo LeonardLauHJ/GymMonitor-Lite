@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClubMemberOverviewCard
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PageHeader
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
 
@@ -22,12 +23,15 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
  * @param clubMembersOverview The list of MemberOverview data to display. Empty if not yet loaded.
  * @param isLoading Whether the data is currently loading.
  * @param errorMessage Error message to display if something went wrong.
+ * @param onOpenDrawer Callback triggered when the header menu button is pressed
+ *                     to open the drawer, e.g. `scope.launch { drawerState.open() }`.
  */
 @Composable
 fun ClubMembersOverviewPage(
     clubMembersOverview: List<MemberOverview> = emptyList(),
     isLoading: Boolean,
-    errorMessage: String?
+    errorMessage: String?,
+    onOpenDrawer: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -59,8 +63,12 @@ fun ClubMembersOverviewPage(
                         .background(color = SoftGray),
                 ) {
 
-                    // Header Section
-                    PageHeader(text = "Club Members")
+                    // Header section with screen title
+                    // and menu icon to open/close the navigation drawer menu
+                    HeaderWithMenu(
+                        title = "Club Members",
+                        onMenuClick = onOpenDrawer
+                    )
 
                     // List of club members with a summary of their information
                     // LazyColumn will only render items that are on-screen
