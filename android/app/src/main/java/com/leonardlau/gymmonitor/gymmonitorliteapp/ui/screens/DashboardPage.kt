@@ -2,12 +2,10 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,13 +16,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.BookingSummary
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.DashboardResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.DashboardStat
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
-import java.time.format.DateTimeFormatter
 import com.leonardlau.gymmonitor.gymmonitorliteapp.R
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.BookingCard
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 
 /**
  * UI composable for the member dashboard.
@@ -38,7 +35,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.BookingCard
 fun DashboardPage(
     dashboard: DashboardResponse?,
     isLoading: Boolean,
-    errorMessage: String?
+    errorMessage: String?,
+    onOpenDrawer: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -68,6 +66,11 @@ fun DashboardPage(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
+                    HeaderWithMenu(
+                        title = dashboard.dashboardTitle,
+                        onMenuClick = onOpenDrawer
+                    )
+
                     // Header section and Profile Picture
                     Box {
                         // Header section with title and background colour
