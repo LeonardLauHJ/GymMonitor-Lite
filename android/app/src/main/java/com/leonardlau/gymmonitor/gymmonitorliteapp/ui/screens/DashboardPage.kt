@@ -30,6 +30,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
  * @param dashboard The dashboard data to display. If null, shows empty state.
  * @param isLoading Whether the data is currently loading.
  * @param errorMessage Error message to display if something went wrong.
+ * @param onOpenDrawer Callback triggered when the header menu button is pressed
+ *                     to open the drawer, e.g. `scope.launch { drawerState.open() }`.
  */
 @Composable
 fun DashboardPage(
@@ -66,6 +68,9 @@ fun DashboardPage(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
+
+                    // Header section with screen title
+                    // and menu icon to open/close the navigation drawer menu
                     HeaderWithMenu(
                         title = dashboard.dashboardTitle,
                         onMenuClick = onOpenDrawer
@@ -77,16 +82,10 @@ fun DashboardPage(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(180.dp)
+                                .height(65.dp)
                                 .background(color = Color(0xFF495D91)),
-                            contentAlignment = Alignment.Center // Center the title text
+                            contentAlignment = Alignment.Center
                         ) {
-                            ScreenTitle(
-                                text = dashboard.dashboardTitle,
-                                color = Color.White,
-                                // Shift the title slightly up
-                                modifier = Modifier.offset(y = (-10).dp)
-                            )
                         }
 
                         // Profile picture, half overlapping the header
@@ -97,7 +96,6 @@ fun DashboardPage(
                             modifier = Modifier
                                 .size(130.dp)
                                 .align(Alignment.BottomCenter) // Bottom center of outer Box
-                                .offset(y = 65.dp) // Push down by half of the size to overlap the edge
                                 .clip(CircleShape), // Turn the image into a circle shape
                             contentScale = ContentScale.Crop // Scale to fill container, crop overflow
                         )
@@ -107,7 +105,7 @@ fun DashboardPage(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 85.dp, bottom = 20.dp),
+                            .padding(top = 25.dp, bottom = 20.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         DashboardStat(
