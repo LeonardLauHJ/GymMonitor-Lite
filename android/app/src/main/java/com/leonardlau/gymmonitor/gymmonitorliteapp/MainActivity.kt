@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClassDetailsScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClubMembersOverviewScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.DashboardScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
@@ -55,6 +58,8 @@ class MainActivity : ComponentActivity() {
                     composable("login") { LoginScreen(navController, userPrefs) }
 
                     composable("dashboard") {
+                        // Wrap in a ProtectedScreen so only authenticated users with
+                        // the required role can access it
                         ProtectedScreen(
                             requiredRole = "MEMBER",
                             navController = navController,
@@ -86,6 +91,26 @@ class MainActivity : ComponentActivity() {
                             ClubMembersOverviewScreen(navController, userPrefs)
                         }
                     }
+
+                    composable(
+                        route = "classDetails/{classId}", // dynamic argument, classId can be any int
+                        // Declares classId as a required argument that must be an Int
+                        arguments = listOf(navArgument("classId") { type = NavType.IntType })
+                    ) { backStackEntry ->
+                        // To get classId, we need to retrieve it from backStackEntry,
+                        // which represents this screen in the navigation history (back stack)
+                        val classId = backStackEntry.arguments?.getInt("classId") ?: 0
+
+                        ProtectedScreen(
+                            requiredRole = null, // no specific role required, any logged-in user can access
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            ClassDetailsScreen(classId, navController, userPrefs)
+                        }
+                    }
+
                 }
             }
         }
