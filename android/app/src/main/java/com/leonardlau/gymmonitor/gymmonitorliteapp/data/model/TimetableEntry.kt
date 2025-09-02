@@ -4,6 +4,7 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.data.model
  * Data class that represents a gym class in the Member Timetable.
  */
 data class TimetableEntry(
+    val classId: Int,
     val className: String,
     val instructorName: String,
     val locationName: String,
