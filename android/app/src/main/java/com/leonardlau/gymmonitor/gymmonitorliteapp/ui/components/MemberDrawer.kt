@@ -1,6 +1,5 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.DrawerState
@@ -39,8 +39,9 @@ import kotlinx.coroutines.launch
  * wrapped in a ModalNavigationDrawer, and this `MemberDrawer` must be supplied
  * as the `drawerContent`.
  *
- * @param onNavigateDashboard Called when "Dashboard" is clicked.
- * @param onNavigateTimetable Called when "Timetable" is clicked.
+ * @param onNavigateDashboard Function to navigate to the Dashboard screen.
+ * @param onNavigateTimetable Function to navigate to the Timetable screen.
+ * @param onLogout Function to log the user out.
  * @param drawerState The current state of the drawer (open/closed).
  * @param scope Coroutine scope used to open/close the drawer asynchronously.
  */
@@ -48,6 +49,7 @@ import kotlinx.coroutines.launch
 fun MemberDrawer(
     onNavigateDashboard: () -> Unit,
     onNavigateTimetable: () -> Unit,
+    onLogout: () -> Unit,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
@@ -106,5 +108,32 @@ fun MemberDrawer(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
+
+        // Push logout to bottom
+        Spacer(modifier = Modifier.weight(1f))
+
+        // Logout button
+        NavigationDrawerItem(
+            label = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                        contentDescription = "Logout",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text("Logout", fontSize = 20.sp, color = Color.White)
+                }
+            },
+            selected = false,
+            onClick = {
+                scope.launch {
+                    drawerState.close()
+                    onLogout()
+                }
+            },
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
     }
 }

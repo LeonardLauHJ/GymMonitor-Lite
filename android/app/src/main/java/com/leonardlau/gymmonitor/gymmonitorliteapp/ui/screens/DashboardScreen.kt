@@ -64,6 +64,16 @@ fun DashboardScreen(
             MemberDrawer(
                 onNavigateDashboard = { navController.navigate("dashboard") },
                 onNavigateTimetable = { navController.navigate("timetable") },
+                onLogout = {
+                    scope.launch {
+                        // Clear the current authentication token
+                        userPrefs.clearToken()
+                        // Redirect to landing page and remove history
+                        navController.navigate("landing") {
+                            popUpTo("landing") { inclusive = true }
+                        }
+                    }
+                },
                 drawerState = drawerState,
                 scope = scope
             )
