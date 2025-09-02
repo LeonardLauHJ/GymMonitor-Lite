@@ -118,14 +118,14 @@ Returns a dashboard overview for the authenticated member. This includes their t
   "Total Bookings": 2,
   "Upcoming Bookings": [
     {
-      "id": 1,
+      "classId": 1,
       "className": "Sunrise Power Yoga",
       "locationName": "Studio A",
       "startTime": "2025-08-20T06:30:00",
       "durationMinutes": 60
     },
     {
-      "id": 3,
+      "classId": 3,
       "className": "Spin 45",
       "locationName": "Spin Room",
       "startTime": "2025-08-21T18:00:00",
@@ -146,7 +146,7 @@ Returns the timetable of classes at the member’s club. The `date` parameter is
 ```json
 [
   {
-    "id": 1,
+    "classId": 1,
     "className": "Sunrise Power Yoga",
     "instructorName": "Jordan Lee",
     "locationName": "Studio A",
@@ -156,7 +156,7 @@ Returns the timetable of classes at the member’s club. The `date` parameter is
     "maxCapacity": 20
   },
   {
-    "id": 2,
+    "classId": 2,
     "className": "Weight Lifting",
     "instructorName": "Bryan Kent",
     "locationName": "Weights Room",
@@ -166,7 +166,7 @@ Returns the timetable of classes at the member’s club. The `date` parameter is
     "maxCapacity": 10
   },
   {
-    "id": 3,
+    "classId": 3,
     "className": "Spin 45",
     "instructorName": "Taylor Kim",
     "locationName": "Spin Room",
@@ -276,7 +276,7 @@ Returns classes **taught by the authenticated staff member**. The `date` paramet
 ```json
 [
   {
-    "id": 1,
+    "classId": 1,
     "className": "Sunrise Power Yoga",
     "locationName": "Studio A",
     "startTime": "2025-08-20T06:30:00",
