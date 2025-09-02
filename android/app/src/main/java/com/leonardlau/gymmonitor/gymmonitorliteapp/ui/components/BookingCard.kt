@@ -1,6 +1,7 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,10 +20,13 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.BookingSummary
  *
  * @param bookingSummary The [BookingSummary] containing the data to display.
  * @param fontSize The size of the text to display. Defaults to 17.sp
+ * @param onClick Lambda function to invoke when the entry is clicked, receives the class ID.
+ *                Should navigate to the Class Details page for this class.
  */
 @Composable
 fun BookingCard(
     bookingSummary: BookingSummary,
+    onClick: (Int) -> Unit,
     fontSize: androidx.compose.ui.unit.TextUnit = 17.sp,
 ) {
     // Parse startTime manually into a readable format 
@@ -43,6 +47,7 @@ fun BookingCard(
     Column(
         modifier = Modifier.fillMaxWidth()
                             .background(color = Color.White)
+                            .clickable { onClick(bookingSummary.classId) }
     ) {
         Row(
             modifier = Modifier.padding(10.dp)

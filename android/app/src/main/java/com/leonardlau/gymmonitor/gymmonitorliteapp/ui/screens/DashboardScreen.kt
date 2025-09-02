@@ -84,7 +84,10 @@ fun DashboardScreen(
             dashboard = viewModel.dashboardData,
             isLoading = viewModel.isLoading,
             errorMessage = viewModel.errorMessage,
-            onOpenDrawer = { scope.launch { drawerState.open() } }
+            onOpenDrawer = { scope.launch { drawerState.open() } },
+            onClassClick = { classId ->
+                navController.navigate("classDetails/$classId")
+            }
         )
     }
 }

@@ -34,13 +34,16 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
  * @param errorMessage Error message to display if something went wrong.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed
  *                     to open the drawer, e.g. `scope.launch { drawerState.open() }`.
+ * @param onClassClick Callback triggered when an upcoming booking is clicked, receives the class ID
+ *                     of the clicked entry. Should navigate to the details page for that class.
  */
 @Composable
 fun DashboardPage(
     dashboard: DashboardResponse?,
     isLoading: Boolean,
     errorMessage: String?,
-    onOpenDrawer: () -> Unit
+    onOpenDrawer: () -> Unit,
+    onClassClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -146,7 +149,13 @@ fun DashboardPage(
                             if (dashboard.upcomingBookings.isNotEmpty()) {
                                 // Create a BookingCard item for each of the upcoming bookings
                                 items(dashboard.upcomingBookings) { booking ->
-                                    BookingCard(booking)
+                                    BookingCard(
+                                        bookingSummary = booking,
+                                        onClick = {
+                                            // Function to navigate to the specific class' details page
+                                            onClassClick(booking.classId)
+                                        }
+                                    )
                                 }
                             } else {
                                 item {
