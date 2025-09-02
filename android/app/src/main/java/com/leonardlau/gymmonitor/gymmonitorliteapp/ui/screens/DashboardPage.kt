@@ -143,7 +143,8 @@ fun DashboardPage(
                         // LazyColumn will only render items that are on-screen
                         // (if list extends past the screen the off-screen ones aren't loaded)
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(0.dp)
+                            verticalArrangement = Arrangement.spacedBy(3.dp),
+                            modifier = Modifier.background(color = SoftGray)
                         ) {
                             // If there are any bookings to display
                             if (dashboard.upcomingBookings.isNotEmpty()) {

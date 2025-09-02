@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Icon
@@ -80,7 +81,7 @@ fun TimetableEntryItem(
                 Text(text = timetableEntry.locationName, fontSize = fontSize)
             }
 
-            // Spacer to push the booking capacity to the right side
+            // Spacer to push the rest to the right side
             Spacer(modifier = Modifier.weight(1f))
 
             // Booking capacity
@@ -94,14 +95,11 @@ fun TimetableEntryItem(
             // Arrow Icon to indicate the entry is clickable
             Column() {
                 Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew, // Left arrow icon
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                     contentDescription = "Next",
                     tint = Color.Black,
                     modifier = Modifier
                         .size(15.dp)
-                        .graphicsLayer {
-                            scaleX = -1f // flip icon horizontally
-                        }
                 )
             }
         }
