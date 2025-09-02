@@ -6,6 +6,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.TimetableEntry
 import retrofit2.Response
@@ -13,6 +14,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 /**
  * Defines all API endpoints that the app can call.
@@ -100,4 +102,17 @@ interface ApiService {
     suspend fun getClubMembersOverview(
         @Header("Authorization") authHeader: String
     ): Response<List<MemberOverview>>
+
+    /**
+     * Fetches detailed information for a single gym class.
+     *
+     * @param id ID of the gym class to retrieve
+     * @param authHeader The authorization header containing the Bearer token
+     * @return [Response] with [GymClassDetailsResponse] on success; errors in status/body
+     */
+    @GET("api/classes/{id}")
+    suspend fun getClassDetails(
+        @Path("id") id: Int,
+        @Header("Authorization") authHeader: String
+    ): Response<GymClassDetailsResponse>
 }
