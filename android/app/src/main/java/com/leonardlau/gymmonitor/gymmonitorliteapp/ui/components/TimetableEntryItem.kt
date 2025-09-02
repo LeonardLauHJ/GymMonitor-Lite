@@ -2,10 +2,16 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -52,7 +58,8 @@ fun TimetableEntryItem(
             .background(Color(0xFFFFFFFF))
     ) {
         Row(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             // Date, time and duration
             Column(modifier = Modifier.padding(horizontal = 10.dp)) {
@@ -68,14 +75,28 @@ fun TimetableEntryItem(
                 Text(text = timetableEntry.locationName, fontSize = fontSize)
             }
 
-            // Spcaer to push the booking capacity to the right side
+            // Spacer to push the booking capacity to the right side
             Spacer(modifier = Modifier.weight(1f))
 
             // Booking capacity
             Column(modifier = Modifier.padding(horizontal = 10.dp)) {
-                Text(
-                    text = "${timetableEntry.currentBookings}/${timetableEntry.maxCapacity}",
-                    fontSize = fontSize
+                BookingCapacityRing(
+                    current = timetableEntry.currentBookings,
+                    max = timetableEntry.maxCapacity
+                )
+            }
+
+            // Arrow Icon to indicate the entry is clickable
+            Column() {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIosNew, // Left arrow icon
+                    contentDescription = "Next",
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .size(15.dp)
+                        .graphicsLayer {
+                            scaleX = -1f // flip icon horizontally
+                        }
                 )
             }
         }
