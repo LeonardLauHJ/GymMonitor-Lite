@@ -13,13 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.PrimaryBlue
 
 /**
  * A reusable component for page headers.
  *
  * @param text The text to display.
  * @param textColor The text colour, defaults to white.
- * @param backgroundColor The background colour, defaults to a bluish purple.
+ * @param backgroundColor The background colour, defaults to the primary blue.
  * @param fontSize Text font size, default 25.sp.
  * @param fontWeight Text font weight, default Bold.
  * @param modifier Optional Modifier for layout/styling.
@@ -27,8 +28,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PageHeader(
     text: String,
-    textColor: Color = Color(0xFFFFFFFF),
-    backgroundColor: Color = Color(0xFF495D91),
+    textColor: Color = Color.White,
+    backgroundColor: Color = PrimaryBlue,
     fontSize: androidx.compose.ui.unit.TextUnit = 25.sp,
     fontWeight: FontWeight = FontWeight.Bold,
     modifier: Modifier = Modifier

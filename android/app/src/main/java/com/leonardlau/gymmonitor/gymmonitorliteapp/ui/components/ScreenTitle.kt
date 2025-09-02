@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ScreenTitle(
     text: String,
-    color: Color = Color(0xFF000000), // Black
+    color: Color = Color.Black,
     fontSize: androidx.compose.ui.unit.TextUnit = 25.sp,
     fontWeight: FontWeight = FontWeight.Bold,
     modifier: Modifier = Modifier

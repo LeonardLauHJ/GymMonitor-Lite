@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.R
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.Surface
 
 /**
  * A reusable component which displays a summary of information about a club member.
@@ -55,7 +56,7 @@ fun ClubMemberOverviewCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
-                .background(color = Color(0xFFF9F9F9))
+                .background(color = Surface)
                 .padding(horizontal = 15.dp),
             contentAlignment = Alignment.Center
         ) {

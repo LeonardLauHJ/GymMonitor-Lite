@@ -22,6 +22,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ScreenTitle
 import com.leonardlau.gymmonitor.gymmonitorliteapp.R
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.BookingCard
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.PrimaryBlue
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
 
 /**
  * UI composable for the member dashboard.
@@ -78,17 +80,17 @@ fun DashboardPage(
 
                     // Header section and Profile Picture
                     Box {
-                        // Header section with title and background colour
+                        // Extend the header background color
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(65.dp)
-                                .background(color = Color(0xFF495D91)),
+                                .background(color = PrimaryBlue),
                             contentAlignment = Alignment.Center
                         ) {
                         }
 
-                        // Profile picture, half overlapping the header
+                        // Profile picture, half overlapping the header background
                         Image(
                             // Profile pictures not yet supported by backend, just use a default
                             painter = painterResource(id = R.drawable.default_profile_icon),
@@ -126,7 +128,7 @@ fun DashboardPage(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = Color(0xFFDCDCDC))
+                            .background(color = Color.LightGray)
                     ) {
                         // Section title
                         Text(

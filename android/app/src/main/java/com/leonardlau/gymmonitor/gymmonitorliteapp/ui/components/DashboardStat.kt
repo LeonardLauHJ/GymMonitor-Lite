@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.TextUnit
 fun DashboardStat(
     value: String,
     label: String,
-    color: Color = Color(0xFF000000),
+    color: Color = Color.Black,
     valueFontSize: TextUnit = MaterialTheme.typography.headlineSmall.fontSize,
     labelFontSize: TextUnit = MaterialTheme.typography.bodyMedium.fontSize,
     modifier: Modifier = Modifier

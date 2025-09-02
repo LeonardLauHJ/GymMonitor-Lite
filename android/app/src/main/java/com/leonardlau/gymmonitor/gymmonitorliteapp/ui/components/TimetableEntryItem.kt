@@ -55,7 +55,7 @@ fun TimetableEntryItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFFFFFFF))
+            .background(Color.White)
     ) {
         Row(
             modifier = Modifier.padding(10.dp),

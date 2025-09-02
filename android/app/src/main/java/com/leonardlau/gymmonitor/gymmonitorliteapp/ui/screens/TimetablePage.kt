@@ -14,6 +14,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.TimetableEntry
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PageHeader
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.TimetableEntryItem
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
 
 /**
  * UI composable for the Club Timetable screen.
@@ -59,7 +60,7 @@ fun TimetablePage(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(color = Color(0xFFF0ECF8)),
+                        .background(color = SoftGray),
                 ) {
 
                     // Header section with screen title
@@ -90,7 +91,7 @@ fun TimetablePage(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(color = Color(0xFFF0ECF8)),
+                        .background(color = SoftGray),
                 ) {
                     PageHeader(text = "Club Timetable")
                     Text(

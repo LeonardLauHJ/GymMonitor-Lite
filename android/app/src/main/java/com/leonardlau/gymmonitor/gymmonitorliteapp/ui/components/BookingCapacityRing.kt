@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.PrimaryBlue
 
 /**
  * A UI composable displaying a circular ring showing booking capacity for a gym class.
@@ -26,7 +27,7 @@ import androidx.compose.ui.unit.sp
  * @param size Diameter of the ring. Default is 50.dp.
  * @param strokeWidth Thickness of the ring. Default is 6.dp.
  * @param backgroundColor Color for the unfilled portion of the ring. Default is LightGray.
- * @param foregroundColor Color for the filled portion of the ring. Default is a bluish purple.
+ * @param foregroundColor Color for the filled portion of the ring. Default is the primary blue.
  * @param fontSize Font size of the text inside the ring. Default is 14.sp.
  */
 @Composable
@@ -36,7 +37,7 @@ fun BookingCapacityRing(
     size: Dp = 50.dp,
     strokeWidth: Dp = 4.dp,
     backgroundColor: Color = Color.LightGray,
-    foregroundColor: Color = Color(0xFF495D91),
+    foregroundColor: Color = PrimaryBlue,
     fontSize: TextUnit = 14.sp
 ) {
     Box(

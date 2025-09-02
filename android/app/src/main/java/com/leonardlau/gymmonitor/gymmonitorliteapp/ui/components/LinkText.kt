@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.LinkBlue
 
 /**
  * A reusable clickable text composable, styled as a hyperlink.
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.sp
  * @param text The text to display.
  * @param onClick Callback function to run when the text is clicked.
  *                e.g. onClick = { navController.navigate("login") }
- * @param color The text colour, defaults to a standard blue colour for links (#1E88E5).
+ * @param color The text colour, defaults to a standard blue colour for links.
  * @param fontSize Text font size, default 16.sp.
  * @param fontWeight Text font weight, default Normal.
  * @param modifier Optional Modifier for layout/styling.
@@ -28,7 +29,7 @@ import androidx.compose.ui.unit.sp
 fun LinkText(
     text: String,
     onClick: () -> Unit,
-    color: Color = Color(0xFF1E88E5),
+    color: Color = LinkBlue,
     fontSize: androidx.compose.ui.unit.TextUnit = 16.sp,
     fontWeight: FontWeight = FontWeight.Normal,
     modifier: Modifier = Modifier

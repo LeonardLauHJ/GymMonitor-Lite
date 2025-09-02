@@ -42,7 +42,7 @@ fun BookingCard(
 
     Column(
         modifier = Modifier.fillMaxWidth()
-                            .background(color = Color(0xFFFFFFFF))
+                            .background(color = Color.White)
     ) {
         Row(
             modifier = Modifier.padding(10.dp)

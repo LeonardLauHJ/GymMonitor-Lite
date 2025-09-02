@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClubMemberOverviewCard
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PageHeader
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
 
 /**
  * UI composable for the club members overview page visible to staff users.
@@ -55,7 +56,7 @@ fun ClubMembersOverviewPage(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(color = Color(0xFFF0ECF8)),
+                        .background(color = SoftGray),
                 ) {
 
                     // Header Section
@@ -81,7 +82,7 @@ fun ClubMembersOverviewPage(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(color = Color(0xFFF0ECF8)),
+                        .background(color = SoftGray),
                 ) {
                     PageHeader(text = "Club Members")
                     Text(

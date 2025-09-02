@@ -2,6 +2,15 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val PrimaryBlue = Color(0xFF495D91)
+
+val Surface = Color(0xFFFAFAFA)
+
+val SoftGray = Color(0xFFF0ECF8)
+
+val LinkBlue = Color(0xFF1E88E5)
+
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

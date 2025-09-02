@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.PrimaryBlue
 
 /**
  * A reusable header bar that displays a title and a button for the drawer menu.
@@ -31,7 +32,7 @@ import androidx.compose.ui.unit.sp
  *
  * @param title The text to display in the header.
  * @param textColor The text colour, defaults to white.
- * @param backgroundColor The background colour, defaults to a bluish purple.
+ * @param backgroundColor The background colour, defaults to the primary blue.
  * @param fontSize Text font size, default 25.sp.
  * @param fontWeight Text font weight, default Bold.
  * @param onMenuClick Callback function triggered when the menu button is pressed.
@@ -39,8 +40,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HeaderWithMenu(
     title: String,
-    textColor: Color = Color(0xFFFFFFFF),
-    backgroundColor: Color = Color(0xFF495D91),
+    textColor: Color = Color.White,
+    backgroundColor: Color = PrimaryBlue,
     fontSize: androidx.compose.ui.unit.TextUnit = 25.sp,
     fontWeight: FontWeight = FontWeight.Bold,
     onMenuClick: () -> Unit
