@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -50,27 +51,27 @@ fun HeaderWithMenu(
             .height(90.dp)
             .background(backgroundColor)
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
+        // Menu button (opens/closes the drawer menu)
+        IconButton(
+            onClick = onMenuClick,
+            modifier = Modifier.offset(y = 10.dp) // Shift downwards
+                                .align(Alignment.CenterStart) // Position at the left side
         ) {
-            // Menu button (opens/closes the drawer menu)
-            IconButton(onClick = onMenuClick) {
-                Icon(
-                    Icons.Default.Menu, // Burger Menu icon
-                    contentDescription = "Menu",
-                    tint = Color.White // Icon color
-                )
-            }
-
-            // Screen/page title to display in the header
-            Text(
-                text = title,
-                color = textColor,
-                fontSize = fontSize,
-                fontWeight = fontWeight,
-                modifier = Modifier.padding(start = 8.dp)
+            Icon(
+                Icons.Default.Menu, // Burger Menu icon
+                contentDescription = "Menu",
+                tint = Color.White // Icon color
             )
         }
+
+        // Screen/page title to display in the header
+        Text(
+            text = title,
+            color = textColor,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            modifier = Modifier.offset(y = 10.dp) // Shift downwards
+                                .align(Alignment.Center) // Position at the center of the screen
+        )
     }
 }
