@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.TimetableEntry
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.PageHeader
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.TimetableEntryItem
 
 /**
  * UI composable for the Club Timetable screen.
@@ -73,17 +74,10 @@ fun TimetablePage(
                     // (if list extends past the screen the off-screen ones aren't loaded)
                     LazyColumn(
                         modifier = Modifier.padding(vertical = 5.dp),
+                        verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         items(timetableEntries) { entry ->
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(text = entry.className)
-                                Text(text = entry.instructorName)
-                                Text(text = entry.locationName)
-                                Text(text = entry.startTime)
-                                Text(text = "${entry.durationMinutes}")
-                                Text(text = "${entry.currentBookings}")
-                                Text(text = "${entry.maxCapacity}")
-                            }
+                            TimetableEntryItem(entry)
                         }
 
                     }
