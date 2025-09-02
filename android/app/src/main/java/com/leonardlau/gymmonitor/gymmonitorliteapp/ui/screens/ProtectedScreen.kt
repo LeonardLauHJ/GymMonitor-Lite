@@ -13,11 +13,12 @@ import kotlinx.coroutines.withContext
 /**
  * General-purpose protected screen wrapper.
  *
- * Ensures that only users with the specified role can access the wrapped content.
+ * Ensures that only correctly authenticated users can access the wrapped content.
  * If the user is not logged in or does not have the required role, they are redirected
  * to the landing page and shown a Toast message.
  *
- * @param requiredRole The role required to access this screen (e.g., "MEMBER").
+ * @param requiredRole The role required to access this screen (e.g., "MEMBER" or "STAFF").
+ *                     If null (no requiredRole given), then any authenticated user can access.
  * @param navController NavController used to redirect unauthorized users.
  * @param userPrefs UserPreferences to get stored JWT token.
  * @param authRepository AuthRepository for checking user authentication.
@@ -25,7 +26,7 @@ import kotlinx.coroutines.withContext
  */
 @Composable
 fun ProtectedScreen(
-    requiredRole: String,
+    requiredRole: String? = null,
     navController: NavController,
     userPrefs: UserPreferences,
     authRepository: AuthRepository,
@@ -57,15 +58,30 @@ fun ProtectedScreen(
                 authRepository.checkAuth(token)
             }
 
-            // If user does not have the required role or has an invalid token
-            if (result.isFailure || result.getOrNull()?.role != requiredRole) {
-                Toast.makeText(navController.context, "Access denied",
-                                Toast.LENGTH_LONG).show()
-                // NOTE: could instead redirect users somewhere else if they have a valid token but wrong role
-                navController.navigate("landing") {
-                    popUpTo("landing") { inclusive = true }
+            // If a role is required
+            if (requiredRole != null) {
+                // If user does not have the required role or has an invalid token
+                if (result.isFailure || result.getOrNull()?.role != requiredRole) {
+                    Toast.makeText(navController.context, "Access denied",
+                        Toast.LENGTH_LONG).show()
+                    // NOTE: could instead redirect users somewhere else if they have a valid token but wrong role
+                    navController.navigate("landing") {
+                        popUpTo("landing") { inclusive = true }
+                    }
+                    return@LaunchedEffect
+                }
+            } else {
+                // If no role is required (any logged-in user can access)
+                if (result.isFailure) {
+                    Toast.makeText(navController.context, "Access denied",
+                        Toast.LENGTH_LONG).show()
+                    navController.navigate("landing") {
+                        popUpTo("landing") { inclusive = true }
+                    }
+                    return@LaunchedEffect
                 }
             }
+
 
         } catch (e: Exception) {
             // If an unexpected error occurs, redirect the user to the landing page
@@ -74,6 +90,7 @@ fun ProtectedScreen(
             navController.navigate("landing") {
                 popUpTo("landing") { inclusive = true }
             }
+            return@LaunchedEffect
         }
     }
 
