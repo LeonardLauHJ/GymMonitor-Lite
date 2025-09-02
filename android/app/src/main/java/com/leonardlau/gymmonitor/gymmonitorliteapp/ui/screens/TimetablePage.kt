@@ -25,13 +25,16 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
  * @param errorMessage Error message to display if something went wrong.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed
  *                     to open the drawer, e.g. `scope.launch { drawerState.open() }`.
+ * @param onClassClick Callback triggered when a timetable entry is clicked, receives the class ID
+ *                     of the clicked entry. Should navigate to the details page for that class.
  */
 @Composable
 fun TimetablePage(
     timetableEntries: List<TimetableEntry> = emptyList(),
     isLoading: Boolean,
     errorMessage: String?,
-    onOpenDrawer: () -> Unit
+    onOpenDrawer: () -> Unit,
+    onClassClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -78,7 +81,13 @@ fun TimetablePage(
                         verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         items(timetableEntries) { entry ->
-                            TimetableEntryItem(entry)
+                            TimetableEntryItem(
+                                timetableEntry = entry,
+                                onClick = {
+                                    // Function to navigate to the specific class' details page
+                                    onClassClick(entry.classId)
+                                }
+                            )
                         }
 
                     }

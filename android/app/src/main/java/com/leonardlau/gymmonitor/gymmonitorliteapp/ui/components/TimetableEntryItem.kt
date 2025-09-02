@@ -1,6 +1,7 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -25,11 +26,14 @@ import java.util.Locale
  * in the club timetable.
  *
  * @param timetableEntry The [TimetableEntry] containing class info to display.
+ * @param onClick Lambda function to invoke when the entry is clicked, receives the class ID.
+ *                Should navigate to the Class Details page for this class.
  * @param fontSize The size of the text. Defaults to 17.sp.
  */
 @Composable
 fun TimetableEntryItem(
     timetableEntry: TimetableEntry,
+    onClick: (Int) -> Unit,
     fontSize: TextUnit = 17.sp,
 ) {
     // Date and time variables
@@ -56,6 +60,7 @@ fun TimetableEntryItem(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
+            .clickable { onClick(timetableEntry.classId) } // invoke the onClick when clicked
     ) {
         Row(
             modifier = Modifier.padding(10.dp),
