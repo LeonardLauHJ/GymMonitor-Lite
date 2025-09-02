@@ -29,7 +29,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.SoftGray
  * UI composable for the member dashboard.
  * Displays dashboard data including total visits, bookings, amount owed, and upcoming bookings.
  *
- * @param dashboard The dashboard data to display. If null, shows empty state.
+ * @param dashboard The dashboard data to display, null if not yet loaded.
  * @param isLoading Whether the data is currently loading.
  * @param errorMessage Error message to display if something went wrong.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed
