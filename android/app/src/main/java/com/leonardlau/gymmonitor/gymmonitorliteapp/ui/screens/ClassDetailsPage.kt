@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.R
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClassDetailsBanner
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.DateAndTimeCard
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.PrimaryBlue
 
@@ -83,14 +84,14 @@ fun ClassDetailsPage(
                     // Top section, displaying the name of the class and the instructor
                     ClassDetailsBanner(classDetails)
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
 
-                    Text("Instructor: ${classDetails.instructorName}")
-                    Text("Start Time: ${classDetails.startTime}")
-                    Text("End Time: ${classDetails.endTime}")
-                    Text("Club: ${classDetails.clubName}")
-                    Text("Location: ${classDetails.locationName}")
-                    Text("Description: ${classDetails.description}")
+                    Column {
+                        DateAndTimeCard(classDetails.startTime, classDetails.endTime)
+                        Text("Club: ${classDetails.clubName}")
+                        Text("Location: ${classDetails.locationName}")
+                        Text("Description: ${classDetails.description}")
+                    }
                 }
             }
         }
