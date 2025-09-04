@@ -1,5 +1,6 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -46,6 +48,9 @@ fun ClassDetailsScreen(
     navController: NavController,
     userPrefs: UserPreferences
 ) {
+    // Get the current Android context, used for showing Toast status messages
+    val context = LocalContext.current
+
     // Get the ViewModel to hold the state and logic
     val viewModel: ClassDetailsViewModel = viewModel()
 
@@ -103,6 +108,19 @@ fun ClassDetailsScreen(
             userRole = viewModel.userRole,
             isLoading = viewModel.isLoading,
             errorMessage = viewModel.errorMessage,
+            onBookClassClick = {
+                // Only proceed if classDetails is not null
+                viewModel.classDetails?.let { details ->
+                    // Launch a coroutine to read the token from UserPreferences
+                    scope.launch {
+                        val token = userPrefs.token.first()
+
+                        viewModel.bookClass(details.id, token) { success, message ->
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            },
             onOpenDrawer = { scope.launch { drawerState.open() } }
         )
     }

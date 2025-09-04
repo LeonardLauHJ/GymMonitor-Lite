@@ -21,6 +21,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClassDetailsBan
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.ClubAndLocationCard
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.DateAndTimeCard
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 
 /**
  * UI composable for displaying detailed information about a single gym class.
@@ -29,6 +30,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
  * @param userRole The authenticated user's role.
  * @param isLoading Whether the data is currently loading.
  * @param errorMessage Error message to display if something went wrong.
+ * @param onBookClassClick Callback triggered when the Book Class button is pressed.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed.
  */
 @Composable
@@ -37,6 +39,7 @@ fun ClassDetailsPage(
     userRole: String?,
     isLoading: Boolean,
     errorMessage: String?,
+    onBookClassClick: () -> Unit,
     onOpenDrawer: () -> Unit
 ) {
     Column(
@@ -88,10 +91,20 @@ fun ClassDetailsPage(
                         Text(
                             text = classDetails.description,
                             fontSize = 16.sp,
-                            modifier = Modifier.fillMaxWidth()
-                                                .padding(20.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp),
                             textAlign = TextAlign.Center // Center all lines
                         )
+
+                        // Book Class button, only visible to MEMBER users
+                        if (userRole == "MEMBER") {
+                            SubmitButton(
+                                text = "Book Class",
+                                isLoading = false, // TODO need to make a new variable
+                                onClick = onBookClassClick
+                            )
+                        }
                     }
                 }
             }
