@@ -42,6 +42,8 @@ class MemberController(
         val user = userService.findByEmail(userDetails.username)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "User not found"))
 
+        val totalBookings = userService.getBookingCount(user)
+
         // Convert full Booking entities into BookingSummaryDto format
         // (Only shows gym class name, location, start time, duration)
         val upcomingBookings = userService.getUpcomingBookings(user)
@@ -53,7 +55,7 @@ class MemberController(
         // Pack the dashboard data into a strongly typed DTO, for a clear, consistent, and easily extendable API response.
         val dashboardDetails = DashboardDto(
             dashboardTitle = "${user.name}'s Dashboard",
-            totalBookings = upcomingBookings.size,
+            totalBookings = totalBookings,
             upcomingBookings = upcomingBookings,
             totalVisits = totalVisits,
             amountOwed = "$%.2f".format(centsOwed / 100.0)

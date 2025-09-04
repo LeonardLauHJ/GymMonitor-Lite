@@ -30,6 +30,14 @@ interface BookingRepository : JpaRepository<Booking, Int> {
     ): List<Booking>
 
     /**
+     * Counts how many bookings have been made by the given User
+     *
+     * @param member The member to check the number of bookings for.
+     * @return The number of bookings made by the member.
+     */
+    fun countByMember(member: User): Int
+
+    /**
      * Counts how many users have booked the given class.
      *
      * @param gymClass The class to check.

@@ -9,7 +9,7 @@ import com.leonardlau.gymmonitor.gymmonitorlite.dto.BookingSummaryDto
  * a summary of the user's gym activity, bookings, and financials.
  *
  * @property dashboardTitle The title message of the dashboard
- * @property totalBookings The total number of upcoming bookings for the user.
+ * @property totalBookings The total number of bookings ever made by the user.
  * @property upcomingBookings A list of upcoming bookings represented in summary format.
  * @property totalVisits The total number of visits the user has made to the gym.
  * @property amountOwed The amount (in dollars) the user owes to the club, formatted as a string (e.g., "$12.34").

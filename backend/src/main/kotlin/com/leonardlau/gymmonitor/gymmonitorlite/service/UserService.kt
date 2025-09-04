@@ -43,6 +43,14 @@ class UserService(
     fun getAllBookings(user: User) = bookingRepository.findByMember(user)
 
     /**
+     * Retrieves the total number of bookings ever made by the user.
+     * 
+     * @param user The user to retrieve the number of bookings for.
+     * @return The number of bookings made by the user.
+     */
+    fun getBookingCount(user: User): Int = bookingRepository.countByMember(user)
+
+    /**
      * Retrieves the upcoming bookings for a user.
      * Only bookings with status "BOOKED" and gym class start time after now are returned.
      *
