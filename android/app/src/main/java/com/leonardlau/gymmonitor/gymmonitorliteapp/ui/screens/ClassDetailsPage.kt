@@ -26,6 +26,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
  * UI composable for displaying detailed information about a single gym class.
  *
  * @param classDetails The data to display, null if not yet loaded.
+ * @param userRole The authenticated user's role.
  * @param isLoading Whether the data is currently loading.
  * @param errorMessage Error message to display if something went wrong.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed.
@@ -33,6 +34,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 @Composable
 fun ClassDetailsPage(
     classDetails: GymClassDetailsResponse?,
+    userRole: String?,
     isLoading: Boolean,
     errorMessage: String?,
     onOpenDrawer: () -> Unit

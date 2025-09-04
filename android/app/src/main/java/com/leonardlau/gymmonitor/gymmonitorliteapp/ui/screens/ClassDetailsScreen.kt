@@ -12,7 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -57,11 +61,15 @@ fun ClassDetailsScreen(
             // Load the gym class details data
             // This will update the viewModel's state values
             viewModel.loadClassDetails(classId, token)
+
+            // Check the user's role and update the userRole variable accordingly
+            viewModel.checkUserRole(token)
         } else {
             // If no token, then the user is not logged in.
             navController.navigate("landing") {
                 popUpTo("landing") { inclusive = true }
             }
+
         }
     }
 
@@ -92,6 +100,7 @@ fun ClassDetailsScreen(
         // Render the screen UI with state from the ViewModel
         ClassDetailsPage(
             classDetails = viewModel.classDetails,
+            userRole = viewModel.userRole,
             isLoading = viewModel.isLoading,
             errorMessage = viewModel.errorMessage,
             onOpenDrawer = { scope.launch { drawerState.open() } }
