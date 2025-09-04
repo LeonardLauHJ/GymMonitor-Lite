@@ -36,6 +36,11 @@ class ClassDetailsViewModel(
     // True if the currently authenticated user is able to book the class, otherwise false
     var canBook by mutableStateOf(false)
 
+    // Public function to change canBook's value to false
+    fun markClassAsBooked() {
+        canBook = false
+    }
+
     var errorMessage by mutableStateOf<String?>(null)
         private set
 

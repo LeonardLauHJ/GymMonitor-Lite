@@ -119,6 +119,12 @@ fun ClassDetailsScreen(
 
                         viewModel.bookClass(details.id, token) { success, message ->
                             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+
+                            if (success) {
+                                // If the class was successfully booked, update canBook to
+                                // false to remove the Book Class button from view
+                                viewModel.markClassAsBooked()
+                            }
                         }
                     }
                 }
