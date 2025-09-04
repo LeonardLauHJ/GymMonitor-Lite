@@ -12,6 +12,7 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.data.model
  * @property clubName Name of the club this class belongs to.
  * @property locationName Location where the class is held.
  * @property description Description of the gym class.
+ * @property bookingStatus "CAN_BOOK" if the current user can book, otherwise "CANNOT_BOOK"
  */
 data class GymClassDetailsResponse (
     val id: Int,
@@ -21,6 +22,7 @@ data class GymClassDetailsResponse (
     val endTime: String,
     val clubName: String,
     val locationName: String,
-    val description: String
+    val description: String,
+    val bookingStatus: String
 )
 

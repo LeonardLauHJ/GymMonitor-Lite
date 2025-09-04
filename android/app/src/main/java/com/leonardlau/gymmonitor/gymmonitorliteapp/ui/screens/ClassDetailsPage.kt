@@ -30,6 +30,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
  * @param userRole The authenticated user's role.
  * @param isDataLoading Whether the class data is currently loading.
  * @param isBookingInProgress Whether the class is currently in the process of being booked.
+ * @param canBook Whether the currently authenticated user is allowed to book this class.
  * @param errorMessage Error message to display if something went wrong.
  * @param onBookClassClick Callback triggered when the Book Class button is pressed.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed.
@@ -40,6 +41,7 @@ fun ClassDetailsPage(
     userRole: String?,
     isDataLoading: Boolean,
     isBookingInProgress: Boolean,
+    canBook: Boolean,
     errorMessage: String?,
     onBookClassClick: () -> Unit,
     onOpenDrawer: () -> Unit
@@ -99,8 +101,9 @@ fun ClassDetailsPage(
                             textAlign = TextAlign.Center // Center all lines
                         )
 
-                        // Book Class button, only visible to MEMBER users
-                        if (userRole == "MEMBER") {
+                        // Book Class button
+                        // Only display if the currently authenticated user is able to book the class
+                        if (canBook) {
                             SubmitButton(
                                 text = "Book Class",
                                 isLoading = isBookingInProgress,

@@ -108,6 +108,7 @@ fun ClassDetailsScreen(
             userRole = viewModel.userRole,
             isDataLoading = viewModel.isLoading,
             isBookingInProgress = viewModel.isBookingInProgress,
+            canBook = viewModel.canBook,
             errorMessage = viewModel.errorMessage,
             onBookClassClick = {
                 // Only proceed if classDetails is not null

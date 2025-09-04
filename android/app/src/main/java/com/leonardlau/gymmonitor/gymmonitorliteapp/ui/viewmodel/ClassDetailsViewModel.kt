@@ -33,6 +33,9 @@ class ClassDetailsViewModel(
     var isBookingInProgress by mutableStateOf(false)
         private set
 
+    // True if the currently authenticated user is able to book the class, otherwise false
+    var canBook by mutableStateOf(false)
+
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
@@ -63,6 +66,8 @@ class ClassDetailsViewModel(
             // Fetch the gym class details data
             classRepository.getClassDetails(id, token).onSuccess { details ->
                 classDetails = details
+                // If bookingStatus is "CAN_BOOK", set canBook to true
+                canBook = details.bookingStatus == "CAN_BOOK"
             }.onFailure { e ->
                 // If an error occurs, set the returned error message
                 errorMessage = e.message
