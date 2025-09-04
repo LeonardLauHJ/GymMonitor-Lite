@@ -29,6 +29,10 @@ class ClassDetailsViewModel(
     var isLoading by mutableStateOf(false)
         private set
 
+    // True while a class booking is in progress
+    var isBookingInProgress by mutableStateOf(false)
+        private set
+
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
@@ -96,6 +100,7 @@ class ClassDetailsViewModel(
      */
     fun bookClass(id: Int, token: String, onResult: (success: Boolean, message: String) -> Unit) {
         viewModelScope.launch {
+            isBookingInProgress = true
             bookingErrorMessage = null
 
             // Make the request to the backend and get back the result
@@ -110,6 +115,8 @@ class ClassDetailsViewModel(
                 bookingErrorMessage = e.message
                 onResult(false, bookingErrorMessage!!)
             }
+
+            isBookingInProgress = false
         }
     }
 }

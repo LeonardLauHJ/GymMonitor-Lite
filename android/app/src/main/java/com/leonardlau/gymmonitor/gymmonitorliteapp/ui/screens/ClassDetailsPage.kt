@@ -28,7 +28,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
  *
  * @param classDetails The data to display, null if not yet loaded.
  * @param userRole The authenticated user's role.
- * @param isLoading Whether the data is currently loading.
+ * @param isDataLoading Whether the class data is currently loading.
+ * @param isBookingInProgress Whether the class is currently in the process of being booked.
  * @param errorMessage Error message to display if something went wrong.
  * @param onBookClassClick Callback triggered when the Book Class button is pressed.
  * @param onOpenDrawer Callback triggered when the header menu button is pressed.
@@ -37,7 +38,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
 fun ClassDetailsPage(
     classDetails: GymClassDetailsResponse?,
     userRole: String?,
-    isLoading: Boolean,
+    isDataLoading: Boolean,
+    isBookingInProgress: Boolean,
     errorMessage: String?,
     onBookClassClick: () -> Unit,
     onOpenDrawer: () -> Unit
@@ -49,7 +51,7 @@ fun ClassDetailsPage(
         when {
             // Display a loading spinner if the data has not yet been loaded,
             // as it gets fetched asynchronously in the background.
-            isLoading -> {
+            isDataLoading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
@@ -101,7 +103,7 @@ fun ClassDetailsPage(
                         if (userRole == "MEMBER") {
                             SubmitButton(
                                 text = "Book Class",
-                                isLoading = false, // TODO need to make a new variable
+                                isLoading = isBookingInProgress,
                                 onClick = onBookClassClick
                             )
                         }
