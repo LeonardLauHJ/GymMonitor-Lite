@@ -73,6 +73,49 @@ class GymClassService(
     }
 
     /**
+     * Returns whether a member can book a given gym class or not.
+     *
+     * @param user The user attempting to book; can be null if unauthenticated.
+     * @param gymClass The class to check booking eligibility for.
+     * @return "CAN_BOOK" if the member can book, "CANNOT_BOOK" otherwise.
+     */
+    fun getBookingStatusForMember(user: User?, gymClass: GymClass): String {
+        if (user == null) return "CANNOT_BOOK"
+
+        // Only members can book classes
+        if (user.role != "MEMBER") return "CANNOT_BOOK"
+
+        // Cannot book classes which have already started in the past
+        if (gymClass.startTime.isBefore(LocalDateTime.now())) return "CANNOT_BOOK"
+
+        // Cannot book if the member has already booked the class
+        if (bookingRepository.existsByMemberAndGymClass(user, gymClass)) return "CANNOT_BOOK"
+
+        // Cannot book if the class is already full
+        val currentBookings = bookingRepository.countByGymClass(gymClass)
+        if (currentBookings >= gymClass.maxCapacity) return "CANNOT_BOOK"
+
+        // Check that the user has not reached the weekly booking limit during the week the class starts on 
+        val plan = user.membershipPlan
+        if (plan != null) {
+            val classWeekStart = gymClass.startTime.toLocalDate()
+                .with(java.time.DayOfWeek.MONDAY)
+                .atStartOfDay()
+            val classWeekEnd = classWeekStart.plusDays(7)
+
+            val bookingsInWeek = bookingRepository.countByMemberAndGymClass_StartTimeBetween(
+                member = user,
+                start = classWeekStart,
+                end = classWeekEnd
+            )
+            if (bookingsInWeek >= plan.classesPerWeek) return "CANNOT_BOOK"
+        }
+
+        // If all checks pass, the member can book the class
+        return "CAN_BOOK"
+    }
+
+    /**
      * Attempts to book a class for the given user.
      *
      * Booking is only allowed if:

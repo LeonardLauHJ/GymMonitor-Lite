@@ -6,7 +6,7 @@ import java.net.URI
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffViewMemberSummaryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.StaffScheduleEntryDto
 import com.leonardlau.gymmonitor.gymmonitorlite.dto.CreateGymClassRequestDto
-import com.leonardlau.gymmonitor.gymmonitorlite.dto.GymClassDetailsDto
+import com.leonardlau.gymmonitor.gymmonitorlite.dto.GymClassCreationResponseDto
 import com.leonardlau.gymmonitor.gymmonitorlite.service.UserService
 import com.leonardlau.gymmonitor.gymmonitorlite.service.GymClassService
 import org.springframework.http.ResponseEntity
@@ -147,8 +147,8 @@ class StaffController(
         return try {
             val gymClass = gymClassService.createClass(staffUser, request)
 
-            // Convert to GymClassDetailsDto format
-            val gymClassDetails = GymClassDetailsDto(
+            // Convert to GymClassCreationResponseDto format
+            val gymClassDetails = GymClassCreationResponseDto(
                 id = gymClass.id,
                 name = gymClass.name,
                 instructorName = gymClass.staff.name,

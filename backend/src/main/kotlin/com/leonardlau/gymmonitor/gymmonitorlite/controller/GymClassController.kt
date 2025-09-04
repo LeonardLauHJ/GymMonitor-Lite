@@ -35,10 +35,20 @@ class GymClassController(
      * @return A response entity containing class details, or 404 if not found.
      */
     @GetMapping("/{id}")
-    fun getClassDetails(@PathVariable id: Int): ResponseEntity<Any> {
+    fun getClassDetails(
+        @PathVariable id: Int,
+        @AuthenticationPrincipal userDetails: UserDetails
+    ): ResponseEntity<Any> {
+        // Get the currently authenticated user, if any.
+        val user = userService.findByEmail(userDetails.username)
+
         // Attempt to get the gym class with the given id. If it doesn't exist, return a 404 error
         val gymClass = gymClassService.getClassById(id)
             ?: return ResponseEntity.status(404).body(mapOf("error" to "Class not found"))
+
+        // Get the booking status for the user. Either "CAN_BOOK" if the user is able to book the class,
+        // otherwise "CANNOT_BOOK"
+        val bookingStatus = gymClassService.getBookingStatusForMember(user, gymClass)
 
         val gymClassDetails = GymClassDetailsDto(
             id = gymClass.id,
@@ -48,7 +58,8 @@ class GymClassController(
             endTime = gymClass.endTime,
             clubName = gymClass.location.club.name,
             locationName = gymClass.location.name,
-            description = gymClass.description
+            description = gymClass.description,
+            bookingStatus = bookingStatus
         )
 
         return ResponseEntity.ok(gymClassDetails)

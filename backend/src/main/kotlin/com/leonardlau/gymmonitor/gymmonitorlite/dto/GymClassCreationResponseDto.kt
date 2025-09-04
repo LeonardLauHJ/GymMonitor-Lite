@@ -3,7 +3,9 @@ package com.leonardlau.gymmonitor.gymmonitorlite.dto
 import java.time.LocalDateTime
 
 /**
- * DTO representing detailed info about a gym class for the gym class details page.
+ * DTO representing the format of data to return after creating a Gym Class. 
+ * Contains detailed info about a gym class for the gym class details page.
+ * (Same as GymClassDetailsDto except for the bookingStatus property)
  * 
  * @property id Id of the gym class.
  * @property name Name of the gym class.
@@ -13,9 +15,8 @@ import java.time.LocalDateTime
  * @property clubName Name of the club this class belongs to.
  * @property locationName Location where the class is held.
  * @property description Description of the gym class.
- * @property bookingStatus "CAN_BOOK" if the current user can book, otherwise "CANNOT_BOOK"
  */
-data class GymClassDetailsDto(
+data class GymClassCreationResponseDto(
     val id: Int,
     val name: String,
     val instructorName: String,
@@ -23,6 +24,5 @@ data class GymClassDetailsDto(
     val endTime: LocalDateTime,
     val clubName: String,
     val locationName: String,
-    val description: String,
-    val bookingStatus: String
+    val description: String
 )
