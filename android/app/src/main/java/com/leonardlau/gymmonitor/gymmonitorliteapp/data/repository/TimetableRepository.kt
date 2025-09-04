@@ -18,7 +18,7 @@ class TimetableRepository {
      */
     suspend fun getFullTimetable(token: String): Result<List<TimetableEntry>> {
         return try {
-            // Send a POST request to the timetable endpoint with
+            // Send a GET request to the timetable endpoint (no date) with
             // "Bearer <token>" in the Authorization header
             val response = RetrofitClient.apiService.getFullTimetable("Bearer $token")
 

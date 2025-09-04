@@ -18,7 +18,7 @@ class DashboardRepository {
      */
     suspend fun getDashboard(token: String): Result<DashboardResponse> {
         return try {
-            // Send a POST request to the dashboard endpoint with "Bearer <token>"
+            // Send a GET request to the dashboard endpoint with "Bearer <token>"
             // in the Authorization header
             val response = RetrofitClient.apiService.getDashboard("Bearer $token")
 

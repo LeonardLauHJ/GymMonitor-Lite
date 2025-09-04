@@ -18,7 +18,7 @@ class ClubMembersOverviewRepository {
      */
     suspend fun getClubMembersOverview(token: String): Result<List<MemberOverview>> {
         return try {
-            // Send a POST request to the club members overview (Staff view club members)
+            // Send a GET request to the club members overview (Staff view club members)
             // endpoint with "Bearer <token>" in the Authorization header
             val response = RetrofitClient.apiService.getClubMembersOverview("Bearer $token")
 

@@ -19,7 +19,7 @@ class ClassRepository {
      */
     suspend fun getClassDetails(id: Int, token: String): Result<GymClassDetailsResponse> {
         return try {
-            // Send a POST request to the dashboard endpoint with "Bearer <token>"
+            // Send a GET request to the class details endpoint with "Bearer <token>"
             // in the Authorization header
             val response = RetrofitClient.apiService.getClassDetails(id, "Bearer $token")
 

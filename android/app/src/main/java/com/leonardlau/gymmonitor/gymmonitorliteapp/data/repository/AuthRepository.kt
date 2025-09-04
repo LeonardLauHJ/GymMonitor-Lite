@@ -28,7 +28,7 @@ class AuthRepository {
             // Send a POST request to the signup endpoint with the provided details
             val response = RetrofitClient.apiService.signup(request)
 
-            // If the response was successful (HTTP 200 OK)
+            // If the response was successful
             if (response.isSuccessful) {
                 // Return the success message (fallback if backend didn't send one)
                 Result.success(response.body()?.message ?: "Signup successful")
@@ -57,7 +57,7 @@ class AuthRepository {
         request: LoginRequest
     ): Result<String> {
         return try {
-            // Send a POST request to the signup endpoint with the provided details
+            // Send a GET request to the login endpoint with the provided details
             val response = RetrofitClient.apiService.login(request)
 
             // If the response was successful (HTTP 200 OK)
