@@ -231,9 +231,14 @@ Returns details for a specific class.
   "endTime": "2025-08-20T07:30:00",
   "clubName": "Downtown Fitness",
   "locationName": "Studio A",
-  "description": "A high-energy morning flow."
+  "description": "A high-energy morning flow.",
+  "bookingStatus": "CAN_BOOK"
 }
 ```
+
+**Notes**
+- This endpoint is accessible to both MEMBER and STAFF users.
+- bookingStatus will either show "CAN_BOOK" if the currently authenticated user is able to book the class, or "CANNOT_BOOK" if they are unable to. STAFF users are unable to book any classes.
 
 ---
 
@@ -307,7 +312,7 @@ Creates a new class with the authenticated staff member as the instructor.
 }
 ```
 
-**Response** (`GymClassDetailsDto`)
+**Response** (`GymClassCreationResponseDto`)
 - Returns the details of the created class **including its generated `id`**. Example:
 ```json
 {

@@ -674,7 +674,7 @@
 						"1"
 					]
 				},
-				"description": "This test gets the details for the class with id 1. This is the Morning Yoga class, which is instructed by Alice Staff.\n\nThe response should be a 200 OK with the following information: id and name of the class, instructor name, start time, end time, name of the club and location its at, and a description of the class.\n\nThis endpoint is accessible to both member and staff users."
+				"description": "This test gets the details for the class with id 1. This is the Morning Yoga class, which is instructed by Alice Staff, and has already been booked by ActiveGymGoer.\n\nThe response should be a 200 OK with the following information: id and name of the class, instructor name, start time, end time, name of the club and location its at, description of the class, and the booking status (whether or not the user can book it).\n\nThis endpoint is accessible to both member and staff users."
 			},
 			"response": []
 		},
