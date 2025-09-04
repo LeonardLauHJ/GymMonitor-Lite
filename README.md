@@ -115,7 +115,7 @@ Returns a dashboard overview for the authenticated member. This includes their t
 ```json
 {
   "message": "Alice Wong's Dashboard",
-  "Total Bookings": 2,
+  "Total Bookings": 12,
   "Upcoming Bookings": [
     {
       "classId": 1,
