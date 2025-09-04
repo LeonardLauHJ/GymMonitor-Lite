@@ -1,5 +1,6 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote
 
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.BookClassResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.DashboardResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginResponse
@@ -115,4 +116,17 @@ interface ApiService {
         @Path("id") id: Int,
         @Header("Authorization") authHeader: String
     ): Response<GymClassDetailsResponse>
+
+    /**
+     * Books an upcoming class for the authenticated user.
+     *
+     * @param id ID of the gym class to book
+     * @param authHeader The authorization header containing the Bearer token
+     * @return [Response] with [BookClassResponse] on success; errors in status/body
+     */
+    @POST("api/classes/{id}/book")
+    suspend fun bookClass(
+        @Path("id") id: Int,
+        @Header("Authorization") authHeader: String
+    ): Response<BookClassResponse>
 }
