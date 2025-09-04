@@ -39,4 +39,33 @@ class ClassRepository {
             Result.failure(e)
         }
     }
+
+    /**
+     * Attempts to book a single gym class for the authenticated user.
+     *
+     * @param id ID of the class to fetch
+     * @param token JWT token for authentication
+     * @return Result containing class details or exception with error message
+     */
+    suspend fun bookClass(id: Int, token: String): Result<String> {
+        return try {
+            // Send a POST request to the bookClass endpoint with the provided details
+            val response = RetrofitClient.apiService.bookClass(id, "Bearer $token")
+
+            // If the response was successful
+            if (response.isSuccessful) {
+                // Set the Result as a success with the success message
+                Result.success(response.body()?.message ?: "Successfully booked class")
+            } else {
+                // Parse the error JSON from the backend
+                val errorJson = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorJson, ErrorResponse::class.java)
+
+                // Return a failure result with the backend's error message
+                Result.failure(Exception(errorResponse.error))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Failed to book class"))
+        }
+    }
 }

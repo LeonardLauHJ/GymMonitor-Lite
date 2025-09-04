@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
-import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.DashboardResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.ClassRepository
@@ -32,6 +30,10 @@ class ClassDetailsViewModel(
         private set
 
     var errorMessage by mutableStateOf<String?>(null)
+        private set
+
+    // Error message to display if failed to book a class
+    var bookingErrorMessage by mutableStateOf<String?>(null)
         private set
 
     // Variable to keep track of user's role
@@ -78,6 +80,35 @@ class ClassDetailsViewModel(
             }
             if (result.isSuccess) {
                 userRole = result.getOrNull()?.role
+            }
+        }
+    }
+
+    /**
+     * Attempts to book the class with the given [id] for the user with the given [token].
+     *
+     * @param id       ID of the class to book.
+     * @param token    Authentication token of the user to book the class for.
+     * @param onResult Callback to notify the UI of whether the function succeeded or failed,
+     *                 along with a message to display.
+     *                 e.g. onResult(boolean, "example message")
+     *                 where boolean is true if the function succeeded, and false if it failed.
+     */
+    fun bookClass(id: Int, token: String, onResult: (success: Boolean, message: String) -> Unit) {
+        viewModelScope.launch {
+            bookingErrorMessage = null
+
+            // Make the request to the backend and get back the result
+            val result = classRepository.bookClass(id, token)
+
+            // If the booking was successful
+            result.onSuccess { result ->
+                // Set the result to success with the message from backend
+                onResult(true, result)
+            }.onFailure { e ->
+                // Otherwise set the result to failure with the message from backend if given
+                bookingErrorMessage = e.message
+                onResult(false, bookingErrorMessage!!)
             }
         }
     }
