@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
  *
  * @param onNavigateDashboard Function to navigate to the Dashboard screen.
  * @param onNavigateTimetable Function to navigate to the Timetable screen.
+ * @param onNavigateMembership Function to navigate to the Membership details screen.
  * @param onLogout Function to log the user out.
  * @param drawerState The current state of the drawer (open/closed).
  * @param scope Coroutine scope used to open/close the drawer asynchronously.
