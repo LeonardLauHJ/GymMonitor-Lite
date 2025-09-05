@@ -10,6 +10,12 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the login screen.
+ * Responsible for fetching dashboard data for members and storing state for it.
+ *
+ * @property repository Handles making the login request to the backend API.
+ */
 class LoginViewModel(
     private val repository: AuthRepository = AuthRepository()
 ) : ViewModel() {
