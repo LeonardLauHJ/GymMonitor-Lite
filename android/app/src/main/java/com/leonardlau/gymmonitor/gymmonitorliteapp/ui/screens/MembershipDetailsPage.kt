@@ -3,14 +3,17 @@ package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MembershipDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.MembershipDetailsCard
 
 /**
  * UI composable for displaying detailed information about a single gym class.
@@ -62,12 +65,9 @@ fun MembershipDetailsPage(
                         onMenuClick = onOpenDrawer
                     )
 
-                    Text(membershipDetails.clubName)
-                    Text(membershipDetails.dateJoined)
-                    Text("${ membershipDetails.totalVisits }")
-                    Text(membershipDetails.membershipPlanName)
-                    Text(membershipDetails.nextBillingDate)
-                    Text(membershipDetails.amountDue)
+                    Column (modifier = Modifier.padding(15.dp)) {
+                        MembershipDetailsCard(membershipDetails)
+                    }
                 }
             }
         }
