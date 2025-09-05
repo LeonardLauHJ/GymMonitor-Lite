@@ -73,7 +73,7 @@ fun TimetablePage(
                         onMenuClick = onOpenDrawer
                     )
 
-                    // List of club members with a summary of their information
+                    // List of class entries in the timetable
                     // LazyColumn will only render items that are on-screen
                     // (if list extends past the screen the off-screen ones aren't loaded)
                     LazyColumn(
@@ -84,7 +84,7 @@ fun TimetablePage(
                             TimetableEntryItem(
                                 timetableEntry = entry,
                                 onClick = {
-                                    // Function to navigate to the specific class' details page
+                                    // If clicked, navigate to the specific class' details page
                                     onClassClick(entry.classId)
                                 }
                             )
