@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material3.DrawerState
@@ -41,6 +42,7 @@ import kotlinx.coroutines.launch
  *
  * @param onNavigateClubMembers Function to navigate to the Club Members screen.
  * @param onNavigateStaffSchedule Function to navigate to the staff Class Schedule screen.
+ * @param onNavigateCreateClass Function to navigate to the Create a New Class screen.
  * @param onLogout Function to log the user out.
  * @param drawerState The current state of the drawer (open/closed).
  * @param scope Coroutine scope used to open/close the drawer asynchronously.
@@ -49,6 +51,7 @@ import kotlinx.coroutines.launch
 fun StaffDrawer(
     onNavigateClubMembers: () -> Unit,
     onNavigateStaffSchedule: () -> Unit,
+    onNavigateCreateClass: () -> Unit,
     onLogout: () -> Unit,
     drawerState: DrawerState,
     scope: CoroutineScope
@@ -78,6 +81,7 @@ fun StaffDrawer(
         val menuItems = listOf(
             "Club Members" to Icons.Default.Group,
             "Class Schedule" to Icons.Default.CalendarToday,
+            "Create a New Class" to Icons.Default.AddCircleOutline,
         )
 
         // Create a NavigationDrawerItem for each of the menuItems
@@ -103,6 +107,7 @@ fun StaffDrawer(
                     when (label) {
                         "Club Members" -> onNavigateClubMembers()
                         "Class Schedule" -> onNavigateStaffSchedule()
+                        "Create a New Class" -> onNavigateCreateClass()
                     }
                 },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

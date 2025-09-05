@@ -13,6 +13,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClassDetailsScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClubMembersOverviewScreen
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.CreateClassScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.DashboardScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
@@ -132,6 +133,17 @@ class MainActivity : ComponentActivity() {
                             authRepository = authRepository
                         ) {
                             ClassDetailsScreen(classId, navController, userPrefs)
+                        }
+                    }
+
+                    composable("createClass") {
+                        ProtectedScreen(
+                            requiredRole = "STAFF",
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            CreateClassScreen(navController, userPrefs)
                         }
                     }
 
