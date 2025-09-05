@@ -7,6 +7,8 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.LoginResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CreateClassRequest
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CreateClassResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MembershipDetailsResponse
@@ -150,4 +152,18 @@ interface ApiService {
         @Path("id") id: Int,
         @Header("Authorization") authHeader: String
     ): Response<BookClassResponse>
+
+    /**
+     * Creates a new gym class for the authenticated staff user.
+     * Automatically sets the current staff user as the instructor.
+     *
+     * @param request The request body containing the information needed to create a new gym class.
+     * @param authHeader The authorization header containing the Bearer token
+     * @return [Response] with [BookClassResponse] on success; errors in status/body
+     */
+    @POST("api/staff/classes")
+    suspend fun createClass(
+        @Body request: CreateClassRequest,
+        @Header("Authorization") authHeader: String
+    ): Response<CreateClassResponse>
 }
