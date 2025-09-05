@@ -84,24 +84,45 @@ fun ClassDetailsScreen(
     ModalNavigationDrawer(
         drawerState = drawerState, // Controls whether the drawer is open or closed
         drawerContent = {
-            // Drawer content is defined in MemberDrawer
-            MemberDrawer(
-                onNavigateDashboard = { navController.navigate("dashboard") },
-                onNavigateTimetable = { navController.navigate("timetable") },
-                onNavigateMembership = { navController.navigate("membership") },
-                onLogout = {
-                    scope.launch {
-                        // Clear the current authentication token
-                        userPrefs.clearToken()
-                        // Redirect to landing page and remove history
-                        navController.navigate("landing") {
-                            popUpTo("landing") { inclusive = true }
+            // Since this screen is accessible by both MEMBER and STAFF users,
+            // check the user's role and ensure the correct drawer is used
+            if (viewModel.userRole == "STAFF") {
+                // Drawer content is defined in StaffDrawer
+                StaffDrawer(
+                    onNavigateClubMembers = { navController.navigate("clubMembersOverview") },
+                    onLogout = {
+                        scope.launch {
+                            // Clear the current authentication token
+                            userPrefs.clearToken()
+                            // Redirect to landing page and remove history
+                            navController.navigate("landing") {
+                                popUpTo("landing") { inclusive = true }
+                            }
                         }
-                    }
-                },
-                drawerState = drawerState,
-                scope = scope
-            )
+                    },
+                    drawerState = drawerState,
+                    scope = scope
+                )
+            } else {
+                // Drawer content is defined in MemberDrawer
+                MemberDrawer(
+                    onNavigateDashboard = { navController.navigate("dashboard") },
+                    onNavigateTimetable = { navController.navigate("timetable") },
+                    onNavigateMembership = { navController.navigate("membership") },
+                    onLogout = {
+                        scope.launch {
+                            // Clear the current authentication token
+                            userPrefs.clearToken()
+                            // Redirect to landing page and remove history
+                            navController.navigate("landing") {
+                                popUpTo("landing") { inclusive = true }
+                            }
+                        }
+                    },
+                    drawerState = drawerState,
+                    scope = scope
+                )
+            }
         }
     ) {
         // Render the screen UI with state from the ViewModel
