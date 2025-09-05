@@ -18,7 +18,7 @@ class LoginViewModel(
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 
-    // State variable to track if a signup request is currently in progress
+    // State variable to track if a login request is currently in progress
     var isLoading by mutableStateOf(false)
         private set // anyone can read, only this class can change
 
@@ -26,7 +26,7 @@ class LoginViewModel(
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    // Success message returned from backend (null if not signed up yet)
+    // Success message returned from backend (null if not logged in yet)
     var successMessage by mutableStateOf<String?>(null)
         private set
 

@@ -43,7 +43,7 @@ class TimetableViewModel(
             isLoading = true
             errorMessage = null
 
-            // Fetch the club members overview data
+            // Fetch the timetable data
             timetableRepository.getFullTimetable(token).onSuccess { timetableEntries ->
                 timetableData = timetableEntries
             }.onFailure { e ->
