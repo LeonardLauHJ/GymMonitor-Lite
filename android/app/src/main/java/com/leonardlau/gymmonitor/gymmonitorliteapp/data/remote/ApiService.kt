@@ -9,6 +9,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.SignupResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MembershipDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.TimetableEntry
 import retrofit2.Response
 import retrofit2.http.Body
@@ -89,6 +90,20 @@ interface ApiService {
     suspend fun getFullTimetable(
         @Header("Authorization") authHeader: String
     ): Response<List<TimetableEntry>>
+
+    /**
+     * Member view membership details endpoint.
+     * This endpoint is accessible to member users only, and is used to get information
+     * about the member user's current membership.
+     * Requires an Authorization header with a Bearer token: `Authorization: Bearer <token>`.
+     *
+     * @param authHeader The authorization header containing the Bearer token.
+     * @return [Response] with [MembershipDetailsResponse] items on success; errors in status/body
+     */
+    @GET("api/member/membership")
+    suspend fun getMembershipDetails(
+        @Header("Authorization") authHeader: String
+    ): Response<MembershipDetailsResponse>
 
     /**
      * Club Members Overview endpoint.
