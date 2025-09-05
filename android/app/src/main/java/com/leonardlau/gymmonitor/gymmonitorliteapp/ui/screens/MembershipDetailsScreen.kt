@@ -63,6 +63,7 @@ fun MembershipDetailsScreen(
             MemberDrawer(
                 onNavigateDashboard = { navController.navigate("dashboard") },
                 onNavigateTimetable = { navController.navigate("timetable") },
+                onNavigateMembership = { navController.navigate("membership") },
                 onLogout = {
                     scope.launch {
                         // Clear the current authentication token

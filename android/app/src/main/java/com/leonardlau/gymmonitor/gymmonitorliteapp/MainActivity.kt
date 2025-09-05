@@ -16,6 +16,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClubMembersOvervie
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.DashboardScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.MembershipDetailsScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ProtectedScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.TimetableScreen
@@ -78,6 +79,17 @@ class MainActivity : ComponentActivity() {
                             authRepository = authRepository
                         ) {
                             TimetableScreen(navController, userPrefs)
+                        }
+                    }
+
+                    composable("membership") {
+                        ProtectedScreen(
+                            requiredRole = "MEMBER",
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            MembershipDetailsScreen(navController, userPrefs)
                         }
                     }
 

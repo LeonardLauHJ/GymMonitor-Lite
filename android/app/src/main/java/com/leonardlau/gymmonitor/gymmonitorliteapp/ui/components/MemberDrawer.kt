@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.DrawerState
@@ -49,6 +50,7 @@ import kotlinx.coroutines.launch
 fun MemberDrawer(
     onNavigateDashboard: () -> Unit,
     onNavigateTimetable: () -> Unit,
+    onNavigateMembership: () -> Unit,
     onLogout: () -> Unit,
     drawerState: DrawerState,
     scope: CoroutineScope
@@ -77,7 +79,8 @@ fun MemberDrawer(
         // Drawer Menu Items, with names and a corresponding icon to show beside them
         val menuItems = listOf(
             "Dashboard" to Icons.Default.Home,
-            "Timetable" to Icons.Default.CalendarToday
+            "Timetable" to Icons.Default.CalendarToday,
+            "Membership" to Icons.Default.Badge
         )
 
         // Create a NavigationDrawerItem for each of the menuItems
@@ -103,6 +106,7 @@ fun MemberDrawer(
                     when (label) {
                         "Dashboard" -> onNavigateDashboard()
                         "Timetable" -> onNavigateTimetable()
+                        "Membership" -> onNavigateMembership()
                     }
                 },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

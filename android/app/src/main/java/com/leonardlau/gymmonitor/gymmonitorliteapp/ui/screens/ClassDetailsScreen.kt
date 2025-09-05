@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.MemberDrawer
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.StaffDrawer
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.ClassDetailsViewModel
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.DashboardViewModel
 import kotlinx.coroutines.flow.first
@@ -87,6 +88,7 @@ fun ClassDetailsScreen(
             MemberDrawer(
                 onNavigateDashboard = { navController.navigate("dashboard") },
                 onNavigateTimetable = { navController.navigate("timetable") },
+                onNavigateMembership = { navController.navigate("membership") },
                 onLogout = {
                     scope.launch {
                         // Clear the current authentication token
