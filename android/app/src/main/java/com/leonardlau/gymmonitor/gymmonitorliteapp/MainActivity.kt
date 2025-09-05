@@ -15,7 +15,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClassDetailsScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ClubMembersOverviewScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.CreateClassScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.DashboardScreen
-import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingPage
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LandingScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.MembershipDetailsScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ProtectedScreen
@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = "landing" // The page shown when starting the app
                 ) {
-                    composable("landing") { LandingPage(navController) }
+                    composable("landing") { LandingScreen(navController, userPrefs) }
                     composable("signup") { SignUpScreen(navController) }
                     composable("login") { LoginScreen(navController, userPrefs) }
 
