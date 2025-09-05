@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.DateTimeInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.HeaderWithMenu
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.NumberInputField
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.SubmitButton
@@ -16,15 +17,15 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.TextInputField
  * @param locationId Current location ID input value
  * @param name Current class name input value
  * @param description Current class description input value
- * @param startTime Current start time input value (e.g. ISO string or formatted date/time)
- * @param endTime Current end time input value
+ * @param startTimeDisplay Current start time value to display on screen
+ * @param endTimeDisplay Current end time value to display on screen
  * @param maxCapacity Current maximum capacity input value
  * @param isLoading Whether a class creation request is currently in progress
  * @param onLocationIdChange Callback when the location ID input changes
  * @param onNameChange Callback when the class name input changes
  * @param onDescriptionChange Callback when the class description input changes
- * @param onStartTimeChange Callback when the start time input changes
- * @param onEndTimeChange Callback when the end time input changes
+ * @param onStartTimeClick Callback when the start time field is clicked
+ * @param onStartTimeClick Callback when the end time field is clicked
  * @param onMaxCapacityChange Callback when the max capacity input changes
  * @param onSubmitClick Callback when the Create Class button is clicked to submit the form
  * @param onOpenDrawer Callback triggered when the header menu button is pressed.
@@ -34,15 +35,15 @@ fun CreateClassPage(
     locationId: String,
     name: String,
     description: String,
-    startTime: String,
-    endTime: String,
+    startTimeDisplay: String,
+    endTimeDisplay: String,
     maxCapacity: String,
     isLoading: Boolean,
     onLocationIdChange: (String) -> Unit,
     onNameChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
-    onStartTimeChange: (String) -> Unit,
-    onEndTimeChange: (String) -> Unit,
+    onStartTimeClick: () -> Unit,
+    onEndTimeClick: () -> Unit,
     onMaxCapacityChange: (String) -> Unit,
     onSubmitClick: () -> Unit,
     onOpenDrawer: () -> Unit
@@ -63,7 +64,7 @@ fun CreateClassPage(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(top = 32.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Input fields
@@ -81,19 +82,20 @@ fun CreateClassPage(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // TODO: currently you need to enter a timestamp, need to get a date/time picker
-            TextInputField(
-                value = startTime,
-                onValueChange = onStartTimeChange,
+            // Opens a date/time picker when clicked
+            DateTimeInputField(
+                value = startTimeDisplay,
                 label = "Start Time",
-                modifier = Modifier.fillMaxWidth()
+                onClick = onStartTimeClick,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
             )
 
-            TextInputField(
-                value = endTime,
-                onValueChange = onEndTimeChange,
+            // Opens a date/time picker when clicked
+            DateTimeInputField(
+                value = endTimeDisplay,
                 label = "End Time",
-                modifier = Modifier.fillMaxWidth()
+                onClick = onEndTimeClick,
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
             )
 
             NumberInputField(

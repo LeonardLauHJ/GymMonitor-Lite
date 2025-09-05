@@ -9,6 +9,9 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CreateClassRequest
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.AuthRepository
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository.ClassRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 /**
  * ViewModel for the Create Class screen.
@@ -21,9 +24,17 @@ class CreateClassViewModel (
     var locationId by mutableStateOf("")
     var name by mutableStateOf("")
     var description by mutableStateOf("")
+    var maxCapacity by mutableStateOf("")
+
+    // startTime and endTime needs two different variables
+    // These are the actual values that will be kept in the background and send to the endpoint
+    // They need to be in timestamp format
     var startTime by mutableStateOf("")
     var endTime by mutableStateOf("")
-    var maxCapacity by mutableStateOf("")
+    // These are the values to display to the user on the UI, in a readable format
+    // (DD Month YYYY, xx:xx AM/PM)
+    var startTimeDisplay by mutableStateOf("")
+    var endTimeDisplay by mutableStateOf("")
 
     // State variable to track if a signup request is currently in progress
     var isLoading by mutableStateOf(false)
@@ -32,6 +43,32 @@ class CreateClassViewModel (
     // Latest error message (null if no error)
     var errorMessage by mutableStateOf<String?>(null)
         private set
+
+    /**
+     * Sets the start time for the class.
+     * Stores both:
+     * - The timestamp string ("YYYY-MM-DDTHH:mm:ss") for backend API use.
+     * - A human-readable string (DD Month YYYY, xx:xx AM/PM) for display in the UI.
+     *
+     * @param selected The [LocalDateTime] chosen by the user from the date/time picker.
+     */
+    fun setStartTime(selected: LocalDateTime) {
+        startTime = selected.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) // backend
+        startTimeDisplay = selected.format(DateTimeFormatter.ofPattern("dd MMM yyyy, h:mm a")) // user
+    }
+
+    /**
+     * Sets the end time for the class.
+     * Stores both:
+     * - The timestamp string ("YYYY-MM-DDTHH:mm:ss") for backend API use.
+     * - A human-readable string (DD Month YYYY, xx:xx AM/PM) for display in the UI.
+     *
+     * @param selected The [LocalDateTime] chosen by the user from the date/time picker.
+     */
+    fun setEndTime(selected: LocalDateTime) {
+        endTime = selected.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) // backend
+        endTimeDisplay = selected.format(DateTimeFormatter.ofPattern("dd MMM yyyy, h:mm a"))
+    }
 
     /**
      * Attempts to create a new gym class with the current form data.
@@ -61,6 +98,20 @@ class CreateClassViewModel (
         val maxCapacityInt = maxCapacity.toIntOrNull()
         if (maxCapacityInt == null) {
             onResult(false, "Maximum capacity must be a number")
+            return
+        }
+
+        // Validate startTime and endTime
+        try {
+            LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        } catch (e: DateTimeParseException) {
+            onResult(false, "Start time must be in format yyyy-MM-ddTHH:mm:ss")
+            return
+        }
+        try {
+            LocalDateTime.parse(endTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        } catch (e: DateTimeParseException) {
+            onResult(false, "End time must be in format yyyy-MM-ddTHH:mm:ss")
             return
         }
 

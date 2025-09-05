@@ -1,5 +1,7 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.widget.Toast
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -17,9 +19,10 @@ import androidx.navigation.NavController
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.local.UserPreferences
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.components.StaffDrawer
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.CreateClassViewModel
-import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.viewmodel.SignUpViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.util.Calendar
 
 /**
  * A composable screen that connects the [CreateClassPage] UI with the [CreateClassViewModel].
@@ -60,6 +63,46 @@ fun CreateClassScreen(
         }
     }
 
+    /**
+     * Opens a date picker followed by a time picker dialog, and returns the selected date and time.
+     *
+     * This function first shows a [DatePickerDialog] for the user to pick a year, month, and day.
+     * Once a date is selected, a [TimePickerDialog] is shown for the user to pick hours and minutes.
+     * The selected date and time are then combined into a [LocalDateTime] object and passed to [onSelected].
+     *
+     * @param onSelected Callback invoked with the [LocalDateTime] chosen by the user.
+     */
+    fun openDateTimePicker(onSelected: (LocalDateTime) -> Unit) {
+        // Get the current date and time to use as defaults in the pickers
+        val calendar = Calendar.getInstance()
+
+        // Show a DatePickerDialog for the user to select year, month, and day
+        DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                // Once the user selects a date, show a TimePickerDialog for hour and minute
+                TimePickerDialog(
+                    context,
+                    { _, hour, minute ->
+                        // Combine the selected date and time into a LocalDateTime
+                        val selected = LocalDateTime.of(year, month + 1, dayOfMonth, hour, minute)
+                        // Pass the selected LocalDateTime to the callback
+                        onSelected(selected)
+                    },
+                    // use current date/time as default
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    false // use 12-hour format
+                ).show()
+            },
+            // use current date/time as default
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+
     // Wrap the screen inside a ModalNavigationDrawer, which allows us to show
     // a side navigation drawer that can slide in and out.
     ModalNavigationDrawer(
@@ -90,15 +133,15 @@ fun CreateClassScreen(
             locationId = viewModel.locationId,
             name = viewModel.name,
             description = viewModel.description,
-            startTime = viewModel.startTime,
-            endTime = viewModel.endTime,
+            startTimeDisplay = viewModel.startTimeDisplay,
+            endTimeDisplay = viewModel.endTimeDisplay,
             maxCapacity = viewModel.maxCapacity,
             isLoading = viewModel.isLoading,
             onLocationIdChange = { viewModel.locationId = it },
             onNameChange = { viewModel.name = it },
             onDescriptionChange = { viewModel.description = it },
-            onStartTimeChange = { viewModel.startTime = it },
-            onEndTimeChange = { viewModel.endTime = it },
+            onStartTimeClick = { openDateTimePicker { viewModel.setStartTime(it) } },
+            onEndTimeClick = { openDateTimePicker { viewModel.setEndTime(it) } },
             onMaxCapacityChange = { viewModel.maxCapacity = it },
             onSubmitClick = {
                 // Call the viewmodel's create class function with the current user's JWT token
