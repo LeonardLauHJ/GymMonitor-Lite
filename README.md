@@ -404,7 +404,7 @@ Each Postman test includes a full description of its purpose and expected outcom
 > - **Windows / macOS:** Open **Docker Desktop** to start the Docker Engine.  
 > - **Linux:** Ensure the Docker daemon (`dockerd`) is running (usually starts automatically).
 
-0. Before starting the containers, create a `.env` file in the project root with the following variables:
+### 0. Before starting the containers, create a `.env` file in the project root with the following variables:
 
 ```env
 DB_URL=jdbc:postgresql://db:5432/postgres
@@ -418,12 +418,14 @@ APP_JWT_EXPIRATION_MS=86400000
 You can use these example values for testing/demo purposes. 
 In a production environment, replace APP_JWT_SECRET with a secure random string.
 
+### 1. Start the backend
+
 1. Open your terminal.  
 
-2. Navigate to the project folder:
+2. Navigate to the project backend folder:
 
 ```bash
-cd path/to/GymMonitor-Lite
+cd path/to/GymMonitor-Lite/backend
 ```
 
 3. Start the PostgreSQL database container:
@@ -443,3 +445,26 @@ docker compose build
 ```bash
 3. docker compose up kotlinapp
 ```
+
+> At this point, the backend API should be running at http://localhost:8080.
+
+### 2. Run the Android frontend
+
+1. Open Android Studio.
+
+2. Select Open an existing project and choose the 'android' folder.
+
+3. Select an emulator or connected device in Android Studio.
+
+4. Press Run / Play to start the app.
+
+
+**Recommended Demo Accounts:**
+
+**Member Account (ActiveGymGoer)**
+- Email: active@dtf.com
+- Password: password
+
+**Staff Account (Alice Staff)**
+- Email: alice.staff@dtf.com
+- Password: password
