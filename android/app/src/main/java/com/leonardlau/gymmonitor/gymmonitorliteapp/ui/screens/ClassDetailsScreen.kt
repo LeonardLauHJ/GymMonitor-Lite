@@ -90,6 +90,7 @@ fun ClassDetailsScreen(
                 // Drawer content is defined in StaffDrawer
                 StaffDrawer(
                     onNavigateClubMembers = { navController.navigate("clubMembersOverview") },
+                    onNavigateStaffSchedule = { navController.navigate("staffSchedule") },
                     onLogout = {
                         scope.launch {
                             // Clear the current authentication token

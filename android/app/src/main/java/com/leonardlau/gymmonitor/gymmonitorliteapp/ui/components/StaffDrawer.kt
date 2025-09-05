@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
  * as the `drawerContent`.
  *
  * @param onNavigateClubMembers Function to navigate to the Club Members screen.
+ * @param onNavigateStaffSchedule Function to navigate to the staff Class Schedule screen.
  * @param onLogout Function to log the user out.
  * @param drawerState The current state of the drawer (open/closed).
  * @param scope Coroutine scope used to open/close the drawer asynchronously.
@@ -46,6 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun StaffDrawer(
     onNavigateClubMembers: () -> Unit,
+    onNavigateStaffSchedule: () -> Unit,
     onLogout: () -> Unit,
     drawerState: DrawerState,
     scope: CoroutineScope
@@ -73,7 +76,8 @@ fun StaffDrawer(
 
         // Drawer Menu Items, with names and a corresponding icon to show beside them
         val menuItems = listOf(
-            "Club Members" to Icons.Default.Group
+            "Club Members" to Icons.Default.Group,
+            "Class Schedule" to Icons.Default.CalendarToday,
         )
 
         // Create a NavigationDrawerItem for each of the menuItems
@@ -98,6 +102,7 @@ fun StaffDrawer(
                     // What to do after clicking, based on which item was clicked
                     when (label) {
                         "Club Members" -> onNavigateClubMembers()
+                        "Class Schedule" -> onNavigateStaffSchedule()
                     }
                 },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

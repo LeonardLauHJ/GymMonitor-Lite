@@ -19,6 +19,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.LoginScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.MembershipDetailsScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.ProtectedScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.SignUpScreen
+import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.StaffScheduleScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.screens.TimetableScreen
 import com.leonardlau.gymmonitor.gymmonitorliteapp.ui.theme.GymMonitorLiteAppTheme
 import kotlinx.coroutines.MainScope
@@ -101,6 +102,17 @@ class MainActivity : ComponentActivity() {
                             authRepository = authRepository
                         ) {
                             ClubMembersOverviewScreen(navController, userPrefs)
+                        }
+                    }
+
+                    composable("staffSchedule") {
+                        ProtectedScreen(
+                            requiredRole = "STAFF",
+                            navController = navController,
+                            userPrefs = userPrefs,
+                            authRepository = authRepository
+                        ) {
+                            StaffScheduleScreen(navController, userPrefs)
                         }
                     }
 
