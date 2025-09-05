@@ -10,6 +10,7 @@ import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CheckAuthResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MemberOverview
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.MembershipDetailsResponse
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.StaffScheduleEntry
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.TimetableEntry
 import retrofit2.Response
 import retrofit2.http.Body
@@ -118,6 +119,11 @@ interface ApiService {
     suspend fun getClubMembersOverview(
         @Header("Authorization") authHeader: String
     ): Response<List<MemberOverview>>
+
+    @GET("api/staff/schedule")
+    suspend fun getFullStaffSchedule(
+        @Header("Authorization") authHeader: String
+    ): Response<List<StaffScheduleEntry>>
 
     /**
      * Fetches detailed information for a single gym class.
