@@ -454,9 +454,21 @@ docker compose build
 
 2. Select Open an existing project and choose the 'android' folder.
 
-3. Select an emulator or connected device in Android Studio.
+3. **(If needed)** Create a `local.properties` file in the project root with the path to your Android SDK:
 
-4. Press Run / Play to start the app.
+**Windows:**
+```
+sdk.dir=C:\Users\YourUsername\AppData\Local\Android\Sdk
+```
+
+**Mac/Linux:**
+```
+sdk.dir=/Users/YourUsername/Library/Android/sdk
+```
+
+4. Select an emulator or connected device in Android Studio.
+
+5. Press Run / Play to start the app.
 
 
 **Recommended Demo Accounts:**
