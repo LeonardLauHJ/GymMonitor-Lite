@@ -1,6 +1,8 @@
 package com.leonardlau.gymmonitor.gymmonitorliteapp.data.repository
 
 import com.google.gson.Gson
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CreateClassRequest
+import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.CreateClassResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.ErrorResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.model.GymClassDetailsResponse
 import com.leonardlau.gymmonitor.gymmonitorliteapp.data.remote.RetrofitClient
@@ -92,4 +94,37 @@ class ClassRepository {
         }
     }
 
+    /**
+     * Makes a request to the backend to create a new gym class with the provided details.
+     *
+     * @param request The details required for a new gym class.
+     * @param token JWT token for authentication
+     * @return the details of the created gym class if the request succeeded,
+     *         or an exception with an error message if it failed.
+     */
+    suspend fun createClass(
+        request: CreateClassRequest,
+        token: String
+    ): Result<CreateClassResponse> {
+        return try {
+            // Send a POST request to the create gym class endpoint with the provided details
+            val response = RetrofitClient.apiService.createClass(request, "Bearer $token")
+
+            // If the response was successful
+            if (response.isSuccessful) {
+                // Set the Result as a success with the response body containing the class data
+                Result.success(response.body()!!)
+            } else {
+                // Parse the error JSON from the backend
+                val errorJson = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorJson, ErrorResponse::class.java)
+
+                // Return a failure result with the backend's error message
+                Result.failure(Exception(errorResponse.error))
+            }
+        } catch (e: Exception) {
+            // If something unexpected happened
+            Result.failure(e)
+        }
+    }
 }
