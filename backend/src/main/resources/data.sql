@@ -103,7 +103,7 @@ INSERT INTO visits (member_id, club_id, scanned_at) VALUES
 
 -- BusyBee (user_id = 5) booked upcoming classes, filling out the MaxCapacityClass
 INSERT INTO gym_classes (location_id, staff_id, name, description, start_time, end_time, max_capacity) VALUES
-(1, 1, 'Upcoming Yoga', 'Relaxing yoga session', NOW() + INTERVAL '2 days 07 hours', NOW() + INTERVAL '2 days 08 hours', 10),
+(1, 1, 'Bookable Yoga', 'Relaxing yoga session', NOW() + INTERVAL '8 days 07 hours', NOW() + INTERVAL '2 days 08 hours', 10),
 (2, 2, 'MaxCapacityClass', 'This class does not have any more room to book', NOW() + INTERVAL '1 day 08 hours', NOW() + INTERVAL '1 day 09 hours', 1);
 
 INSERT INTO bookings (gym_class_id, member_id, booked_at, status) VALUES
