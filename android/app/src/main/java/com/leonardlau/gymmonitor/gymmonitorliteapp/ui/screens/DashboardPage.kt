@@ -162,7 +162,8 @@ fun DashboardPage(
                                 item {
                                     Text(
                                         text = "You have no upcoming bookings",
-                                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                                                            .fillMaxWidth(),
                                         style = MaterialTheme.typography.bodyMedium
                                     )
                                 }
