@@ -1,9 +1,14 @@
 # GymMonitor-Lite
 
-GymMonitor-Lite is a Kotlin/Spring Boot backend API project inspired by the GymMaster members app, with additional staff features based on the main GymMaster system.  
+GymMonitor-Lite is a full-stack gym management system inspired by GymMaster.
+It includes: 
+- A Kotlin/Spring Boot backend API (with PostgreSQL) 
+- A Jetpack Compose Android frontend
+
+It demonstrates end-to-end product delivery: from database and JWT authentication to mobile UI and role-based features for both members and staff.
 
 It provides:
-- Member features: dashboard overview, class timetables and booking, attendance tracking (scan-in), and viewing membership details.
+- Member features: dashboard overview, class timetables and booking, attendance tracking, and viewing membership details.
 - Staff features: overview of members in their club, viewing their own class schedule, and creating new classes.
 - Shared functionality: JWT-based authentication, role-based access control, and automated membership billing.
 
@@ -13,6 +18,7 @@ This API is designed for demo purposes, with preconfigured users and a Postman c
 
 ## 🛠 Tech Stack
 
+### Backend
 - **Language:** Kotlin  
 - **Framework:** Spring Boot  
 - **Database:** PostgreSQL (with JPA/Hibernate)  
@@ -21,6 +27,99 @@ This API is designed for demo purposes, with preconfigured users and a Postman c
 - **Containerization / Deployment:** Docker  
 - **Other Tools:** Spring Security, Gradle, LocalDateTime / JPA date handling
 
+### Frontend
+- **Language:** Kotlin  
+- **UI:** Jetpack Compose (Material)
+- **Navigation:** Compose Navigation 
+- **Networking:** Retrofit + Gson
+- **Persistence:** DataStore (Preferences) for JWT storage
+- **Async:** Coroutines + Flow
+- **Architecture:** MVVM with repository pattern and composable UI separation
+
+## How to run
+
+> **Note:** You must have Docker running before starting these steps.  
+> - **Windows / macOS:** Open **Docker Desktop** to start the Docker Engine.  
+> - **Linux:** Ensure the Docker daemon (`dockerd`) is running (usually starts automatically).
+
+### 0. Before starting the containers, create a `.env` file in the project root with the following variables:
+
+```env
+DB_URL=jdbc:postgresql://db:5432/postgres
+PG_USER=postgres
+PG_PASSWORD=postgres
+
+APP_JWT_SECRET=n2D90Zp8m4hYJxTz7KsA0PqRfWxVlEbCgHsJrT1MvYfW6p8dKqNxRsTuVzYxAzGp
+APP_JWT_EXPIRATION_MS=86400000
+```
+
+You can use these example values for testing/demo purposes. 
+In a production environment, replace APP_JWT_SECRET with a secure random string.
+
+### 1. Start the backend
+
+1. Open your terminal.  
+
+2. Navigate to the project folder:
+
+```bash
+cd path/to/GymMonitor-Lite/backend
+```
+
+3. Start the PostgreSQL database container:
+
+```bash
+docker compose up -d db
+```
+
+4. Build the Kotlin app container:
+
+```bash
+docker compose build
+```
+
+5. Start the Kotlin app container:
+
+```bash
+3. docker compose up kotlinapp
+```
+
+> At this point, the backend API should be running at http://localhost:8080.
+
+### 2. Run the Android frontend
+
+1. Open Android Studio.
+
+2. Select Open an existing project and choose the 'android' folder.
+
+3. **(If needed)** Create a `local.properties` file in the project root with the path to your Android SDK:
+
+**Windows:**
+```
+sdk.dir=C:\Users\YourUsername\AppData\Local\Android\Sdk
+```
+
+**Mac/Linux:**
+```
+sdk.dir=/Users/YourUsername/Library/Android/sdk
+```
+
+4. Select an emulator or connected device in Android Studio.
+
+5. Press Run / Play to start the app.
+
+
+**Recommended Demo Accounts:**
+
+**Member Account (ActiveGymGoer)**
+- Email: active@dtf.com
+- Password: password
+
+**Staff Account (Alice Staff)**
+- Email: alice.staff@dtf.com
+- Password: password
+
+# Backend
 
 ## 📌 API Endpoints
 
@@ -397,86 +496,64 @@ Each Postman test includes a full description of its purpose and expected outcom
    - Passed requests show **PASSED** in green, failed requests show **FAILED** in red. If the Collection Runner is used, a summary of total tests passed/failed is displayed at the end.
 
 
+# Frontend (Android)
 
-## How to run
+The Android app is built with **Kotlin** and **Jetpack Compose**, following an **MVVM + repository** pattern.  
+It integrates tightly with the backend API and supports role-based features with clean separation between UI and logic.  
 
-> **Note:** You must have Docker running before starting these steps.  
-> - **Windows / macOS:** Open **Docker Desktop** to start the Docker Engine.  
-> - **Linux:** Ensure the Docker daemon (`dockerd`) is running (usually starts automatically).
+---
 
-### 0. Before starting the containers, create a `.env` file in the project root with the following variables:
+### 🧭 Navigation  
+- Implemented using **Compose Navigation**.  
+- **Start destination**: `landing` (login/signup).  
+- **Protected routes** use a custom `ProtectedScreen` wrapper, which checks the persisted JWT and required role (`MEMBER` or `STAFF`) before rendering. In the case that any unauthorized users manages to navigate to a screen they are not allowed to view, they will be redirected back to the landing page with a toast message.  
+- Role-based **navigation drawer menus** allow users to navigate between the different pages of the app. These can be opened by clicking the burger menu icon on the top left of any page after logging in, and different options will be shown to users based on their role:  
+  - **Member drawer** → Dashboard, Timetable, Membership, Class Details & Booking.  
+  - **Staff drawer** → Club Members Overview, Staff Schedule, Create Class.  
 
-```env
-DB_URL=jdbc:postgresql://db:5432/postgres
-PG_USER=postgres
-PG_PASSWORD=postgres
+---
 
-APP_JWT_SECRET=n2D90Zp8m4hYJxTz7KsA0PqRfWxVlEbCgHsJrT1MvYfW6p8dKqNxRsTuVzYxAzGp
-APP_JWT_EXPIRATION_MS=86400000
-```
+### 🔐 Authentication & Persistence  
+- **JWT tokens** are saved securely in **DataStore (Preferences)** via `UserPreferences`.  
+- Tokens persist across app restarts and are cleared on logout.  
+- On navigation to a protected screen, the stored token is validated via `/auth/check`.  
 
-You can use these example values for testing/demo purposes. 
-In a production environment, replace APP_JWT_SECRET with a secure random string.
+---
 
-### 1. Start the backend
+### 🌐 Networking  
+- **Retrofit + Gson** handle HTTP requests/responses to the backend API.  
+- Base URL defaults to the Android emulator alias: `http://10.0.2.2:8080/`.  
+- **Repositories** wrap API calls and return `Result<T>` objects, surfacing errors in a user-friendly way.  
+- **Hardening**: booking classes retries automatically if an **OkHttp EOFException** occurs (a known small-payload POST edge case).  
 
-1. Open your terminal.  
+---
 
-2. Navigate to the project backend folder:
+### 🧱 Architecture & State Management  
+- **UI Layer**:  
+  - `*Page` composables → pure UI (stateless, parameter-driven).  
+  - `*Screen` composables → connect ViewModels, navigation, drawers, and side effects.  
+- **ViewModels**: Manage state with `mutableStateOf` and call repositories inside `viewModelScope`.  
+- **UserPreferences (DataStore)**: Persists JWT tokens using Kotlin Flows.  
 
-```bash
-cd path/to/GymMonitor-Lite/backend
-```
+---
 
-3. Start the PostgreSQL database container:
+### 👤 Member Features  
+- **Dashboard**: Shows visits, bookings, amount owed, and upcoming classes.  
+- **Timetable**: Browse classes at the member’s club; filter by date.  
+- **Membership**: Displays membership details, billing, and visit history.  
+- **Class booking**: Drill into Class Details and book if eligible.  
 
-```bash
-docker compose up -d db
-```
+---
 
-4. Build the Kotlin app container:
+### 🧑‍🏫 Staff Features  
+- **Club Members Overview**: Summary of all members at the staff’s club.  
+- **Staff Schedule**: Classes taught by the staff member.  
+- **Create Class**: Full form with validation. Start/end times use date & time pickers (12-hour UI), converted to ISO-8601 before submission.  
 
-```bash
-docker compose build
-```
+---
 
-5. Start the Kotlin app container:
-
-```bash
-3. docker compose up kotlinapp
-```
-
-> At this point, the backend API should be running at http://localhost:8080.
-
-### 2. Run the Android frontend
-
-1. Open Android Studio.
-
-2. Select Open an existing project and choose the 'android' folder.
-
-3. **(If needed)** Create a `local.properties` file in the project root with the path to your Android SDK:
-
-**Windows:**
-```
-sdk.dir=C:\Users\YourUsername\AppData\Local\Android\Sdk
-```
-
-**Mac/Linux:**
-```
-sdk.dir=/Users/YourUsername/Library/Android/sdk
-```
-
-4. Select an emulator or connected device in Android Studio.
-
-5. Press Run / Play to start the app.
-
-
-**Recommended Demo Accounts:**
-
-**Member Account (ActiveGymGoer)**
-- Email: active@dtf.com
-- Password: password
-
-**Staff Account (Alice Staff)**
-- Email: alice.staff@dtf.com
-- Password: password
+### 🧪 Notable Patterns  
+- **ProtectedScreen**: centralized role/auth guard for composables.  
+- **Page vs Screen separation**: testable UI, clean side-effect handling.  
+- **Result-based repositories**: consistent error handling.  
+- **JWT persistence via DataStore**: safe, asynchronous local storage.  
