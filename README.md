@@ -1,22 +1,67 @@
 # GymMonitor-Lite
 
-GymMonitor-Lite is a full-stack gym management system inspired by GymMaster.
-It includes: 
-- A Kotlin/Spring Boot backend API (with PostgreSQL) 
+GymMonitor Lite is a full-stack gym management system with:
+- A Kotlin/Spring Boot backend (PostgreSQL, JWT, Docker)
 - A Jetpack Compose Android frontend
 
-It demonstrates end-to-end product delivery: from database and JWT authentication to mobile UI and role-based features for both members and staff.
+It covers the full workflow of a gym platform: authentication, role-based features for members and staff, bookings, timetables, membership details, visit tracking, and automated billing.  
 
-It provides:
-- Member features: dashboard overview, class timetables and booking, attendance tracking, and viewing membership details.
-- Staff features: overview of members in their club, viewing their own class schedule, and creating new classes.
-- Shared functionality: JWT-based authentication, role-based access control, and automated membership billing.
+For an in-depth walkthrough of the project with architecture diagrams, screenshots, and demo videos, see the **[GymMonitor Lite Portfolio Showcase](https://leonard-portfolio-xi.vercel.app/gymmonitor-lite)**.
 
-This project was primarily built to practice my Kotlin skills while leveraging my existing experience with Spring Boot, PostgreSQL, and REST APIs. It demonstrates real-world, role-based API design, clean architecture principles, and Kotlin-specific development practices—showing how I can build maintainable, production-ready backend systems similar to those used at GymMaster.
+---
 
-This API is designed for demo purposes, with preconfigured users and a Postman collection included to test all endpoints.
+## 📂 Project Structure
+
+```
+.
+├── android/     # Jetpack Compose Android app (frontend)
+├── backend/     # Spring Boot API (backend)
+│ ├── postman/   # Postman collection & environment for API testing
+```
+
+---
+
+## 📱 Frontend (Android App)
+
+The Android client is a native Kotlin app built with Jetpack Compose, following a layered MVVM architecture.
+
+- **Architecture:** MVVM with repositories and ViewModels to separate UI, state, and logic  
+- **Persistence:** JWT tokens stored in DataStore for automatic login across sessions  
+- **Networking:** Retrofit + Gson for API calls  
+- **Navigation:** Compose Navigation + role-based protected routes  
+- **Async:** Coroutines + Flow for state and network handling  
+
+### Features
+- **Member users:** dashboard, timetables, bookings, membership details, daily scan-ins  
+- **Staff users:** club member overview, personal teaching schedule, create new classes  
+- **Shared:** JWT authentication, navigation drawer menus, responsive and modular UI  
+
+---
+
+## ⚙️ Backend (Spring Boot API)
+
+The backend is a Kotlin/Spring Boot REST API with PostgreSQL, JWT authentication, and role-based access control.  
+It manages core business logic such as class bookings with capacity/weekly limits, visit tracking, member dashboards, and automated billing.
+
+- **Language:** Kotlin  
+- **Framework:** Spring Boot  
+- **Database:** PostgreSQL (via JPA/Hibernate)  
+- **Auth:** JWT + Spring Security  
+- **Deployment:** Docker  
+- **Testing:** Postman suite with 30+ automated requests  
+
+---
 
 ## 🛠 Tech Stack
+
+### Frontend
+- **Language:** Kotlin  
+- **UI:** Jetpack Compose
+- **Navigation:** Compose Navigation 
+- **Networking:** Retrofit + Gson
+- **Persistence:** DataStore for JWT storage
+- **Async:** Coroutines + Flow
+- **Architecture:** MVVM with repository pattern
 
 ### Backend
 - **Language:** Kotlin  
@@ -25,16 +70,9 @@ This API is designed for demo purposes, with preconfigured users and a Postman c
 - **Authentication:** JWT (JSON Web Tokens)  
 - **Testing / API Demo:** Postman  
 - **Containerization / Deployment:** Docker  
-- **Other Tools:** Spring Security, Gradle, LocalDateTime / JPA date handling
+- **Other Tools:** Spring Security, Gradle
 
-### Frontend
-- **Language:** Kotlin  
-- **UI:** Jetpack Compose (Material)
-- **Navigation:** Compose Navigation 
-- **Networking:** Retrofit + Gson
-- **Persistence:** DataStore (Preferences) for JWT storage
-- **Async:** Coroutines + Flow
-- **Architecture:** MVVM with repository pattern and composable UI separation
+---
 
 ## How to run
 
@@ -81,7 +119,7 @@ docker compose build
 5. Start the Kotlin app container:
 
 ```bash
-3. docker compose up kotlinapp
+docker compose up kotlinapp
 ```
 
 > At this point, the backend API should be running at http://localhost:8080.
@@ -90,24 +128,15 @@ docker compose build
 
 1. Open Android Studio.
 
-2. Select Open an existing project and choose the 'android' folder.
+2. Open the `android/` folder as the project.
 
-3. **(If needed)** Create a `local.properties` file in the project root with the path to your Android SDK:
-
-**Windows:**
-```
-sdk.dir=C:\Users\YourUsername\AppData\Local\Android\Sdk
-```
-
-**Mac/Linux:**
-```
-sdk.dir=/Users/YourUsername/Library/Android/sdk
-```
+3. Ensure `local.properties` points to your Android SDK.
 
 4. Select an emulator or connected device in Android Studio.
 
-5. Press Run / Play to start the app.
+5. Run the app from Android Studio.
 
+---
 
 **Recommended Demo Accounts:**
 
@@ -119,7 +148,7 @@ sdk.dir=/Users/YourUsername/Library/Android/sdk
 - Email: alice.staff@dtf.com
 - Password: password
 
-# Backend
+--
 
 ## 📌 API Endpoints
 
@@ -148,7 +177,7 @@ Registers a **member** account for a specific club using a club code and members
 - `409 Conflict` — email already in use
 
 **Notes**
-- Emails are stored in lowercase to allow for case-insentitive login, and to avoid duplicate accounts with different casing.
+- Emails are stored in lowercase to allow for case-insensitive login, and to avoid duplicate accounts with different casing.
 - After signing up, you will not be automatically logged in to the account.
 - Only new member users can be created.
 
@@ -434,22 +463,15 @@ Creates a new class with the authenticated staff member as the instructor.
 **Errors**
 - `400 Bad Request` — invalid times and/or location ID
 
-## 🗓️ Scheduled Billing
-
-The system runs a daily scheduler at **2:00 AM** to automatically handle membership billing updates. For each user, it:
-
-1. Checks if their membership billing date is today or has already passed.
-2. Updates their billing records with the amount due for their current membership plan.
-3. Updates their next billing date according to the plan’s billing period.
-
-This ensures that membership billing information stays up-to-date automatically.
-
-
 ## 🧪 Postman Tests
 
-A Postman collection is included in this repo to test all API endpoints. It contains 32 tests covering both success cases and important error cases for each endpoint.
+The Postman collection and environment files are located in `backend/postman/`.
+
+These are included to test all API endpoints. It contains 37 tests covering both success cases and important error cases for each endpoint.
 
 These tests are intended to be run **in order**, as some depend on data created in previous requests.  
+
+The app automatically wipes, recreates, and reseeds the database whenever it starts, so to get fresh demo data, just restart the backend Kotlin app (`docker compose up kotlinapp`)—no rebuild required.
 
 Each Postman test includes a full description of its purpose and expected outcome, with test scripts to validate that the endpoint returns the expected status code.
 
@@ -495,65 +517,17 @@ Each Postman test includes a full description of its purpose and expected outcom
    - Each test validates the expected status code, and the login tests will also validate that a JWT token was given.  
    - Passed requests show **PASSED** in green, failed requests show **FAILED** in red. If the Collection Runner is used, a summary of total tests passed/failed is displayed at the end.
 
+## 🗓️ Scheduled Billing
 
-# Frontend (Android)
+The system runs a daily scheduler at **2:00 AM** to automatically handle membership billing updates. For each user, it:
 
-The Android app is built with **Kotlin** and **Jetpack Compose**, following an **MVVM + repository** pattern.  
-It integrates tightly with the backend API and supports role-based features with clean separation between UI and logic.  
+1. Checks if their membership billing date is today or has already passed.
+2. Updates their billing records with the amount due for their current membership plan.
+3. Updates their next billing date according to the plan’s billing period.
 
----
+This ensures that membership billing information stays up-to-date automatically.
 
-### 🧭 Navigation  
-- Implemented using **Compose Navigation**.  
-- **Start destination**: `landing` (login/signup).  
-- **Protected routes** use a custom `ProtectedScreen` wrapper, which checks the persisted JWT and required role (`MEMBER` or `STAFF`) before rendering. In the case that any unauthorized users manages to navigate to a screen they are not allowed to view, they will be redirected back to the landing page with a toast message.  
-- Role-based **navigation drawer menus** allow users to navigate between the different pages of the app. These can be opened by clicking the burger menu icon on the top left of any page after logging in, and different options will be shown to users based on their role:  
-  - **Member drawer** → Dashboard, Timetable, Membership, Class Details & Booking.  
-  - **Staff drawer** → Club Members Overview, Staff Schedule, Create Class.  
 
----
+## License
 
-### 🔐 Authentication & Persistence  
-- **JWT tokens** are saved securely in **DataStore (Preferences)** via `UserPreferences`.  
-- Tokens persist across app restarts and are cleared on logout.  
-- On navigation to a protected screen, the stored token is validated via `/auth/check`.  
-
----
-
-### 🌐 Networking  
-- **Retrofit + Gson** handle HTTP requests/responses to the backend API.  
-- Base URL defaults to the Android emulator alias: `http://10.0.2.2:8080/`.  
-- **Repositories** wrap API calls and return `Result<T>` objects, surfacing errors in a user-friendly way.  
-- **Hardening**: booking classes retries automatically if an **OkHttp EOFException** occurs (a known small-payload POST edge case).  
-
----
-
-### 🧱 Architecture & State Management  
-- **UI Layer**:  
-  - `*Page` composables → pure UI (stateless, parameter-driven).  
-  - `*Screen` composables → connect ViewModels, navigation, drawers, and side effects.  
-- **ViewModels**: Manage state with `mutableStateOf` and call repositories inside `viewModelScope`.  
-- **UserPreferences (DataStore)**: Persists JWT tokens using Kotlin Flows.  
-
----
-
-### 👤 Member Features  
-- **Dashboard**: Shows visits, bookings, amount owed, and upcoming classes.  
-- **Timetable**: Browse classes at the member’s club; filter by date.  
-- **Membership**: Displays membership details, billing, and visit history.  
-- **Class booking**: Drill into Class Details and book if eligible.  
-
----
-
-### 🧑‍🏫 Staff Features  
-- **Club Members Overview**: Summary of all members at the staff’s club.  
-- **Staff Schedule**: Classes taught by the staff member.  
-- **Create Class**: Full form with validation. Start/end times use date & time pickers (12-hour UI), converted to ISO-8601 before submission.  
-
----
-
-### 🧪 Notable Patterns  
-- **ProtectedScreen**: centralized role/auth guard for composables.  
-- **Page vs Screen separation**: testable UI, clean side-effect handling.  
-- **Result-based repositories**: consistent error handling.  
-- **JWT persistence via DataStore**: safe, asynchronous local storage.  
+This project is for educational/demo purposes only.
