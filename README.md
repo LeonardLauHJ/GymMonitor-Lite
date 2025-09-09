@@ -4,7 +4,10 @@ GymMonitor Lite is a full-stack gym management system with:
 - A Kotlin/Spring Boot backend (PostgreSQL, JWT, Docker)
 - A Jetpack Compose Android frontend
 
-It covers the full workflow of a gym platform: authentication, role-based features for members and staff, bookings, timetables, membership details, visit tracking, and automated billing.  
+It showcases a full end-to-end gym management platform, from database and JWT authentication to a responsive mobile UI.
+- Member features: dashboard overview, class timetables and booking, attendance tracking, and membership details.
+- Staff features: club member overview, personal class schedules, and creating new classes.
+- Shared functionality: JWT-based authentication, role-based access control, and automated membership billing. 
 
 For an in-depth walkthrough of the project with architecture diagrams, screenshots, and demo videos, see the **[GymMonitor Lite Portfolio Showcase](https://leonard-portfolio-xi.vercel.app/gymmonitor-lite)**.
 
